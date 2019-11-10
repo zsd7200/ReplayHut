@@ -11,6 +11,23 @@ const logout = (req, res) => {
   res.redirect('/');
 };
 
+const userList = (req, res) => {
+  res.render('users');
+};
+
+
+// Retrieves all accounts
+const getAccounts = (request, response) => {
+  const res = response;
+
+  // Sending back users
+  return Account.AccountModel.find((err, docs) => {
+    if (err) return res.status(400).json({ err });
+
+    return res.json({ users: docs });
+  });
+};
+
 const login = (request, response) => {
   const req = request;
   const res = response;
@@ -93,3 +110,5 @@ module.exports.login = login;
 module.exports.logout = logout;
 module.exports.signup = signup;
 module.exports.getToken = getToken;
+module.exports.getAccounts = getAccounts;
+module.exports.userList = userList;

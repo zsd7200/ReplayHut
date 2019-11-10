@@ -36,6 +36,13 @@ const jsTask = (done) => {
   }))
   .pipe(gulp.dest('./hosted'));
 
+  gulp.src(['./client/users/*.js', './client/helper/*.js'])
+  .pipe(concat('userBundle.js'))
+  .pipe(babel({
+    presets: ['@babel/preset-env', '@babel/preset-react']
+  }))
+  .pipe(gulp.dest('./hosted'));
+
   done();
 };
 

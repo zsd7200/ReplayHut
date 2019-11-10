@@ -59,7 +59,7 @@ nav {
 .domoForm {
   border: 2px solid #338acc;
   height: 35px;
-  width: 700px;
+  width: 1000px;
   margin-top: 0px;
   padding-top: 10px;
   background-color: #55acee;
@@ -74,10 +74,14 @@ nav {
     float: left;
     color: white;
   }
+}
 
-  input[type=text] {
-    float: left;
-  }
+#powerLabel {
+  width: 150px;
+}
+
+.domoForm input[type=text] {
+  float: left;
 }
 
 .makeDomoSubmit {
@@ -198,7 +202,7 @@ nav {
   transform: rotate(330deg);
 }
 
-#domos {
+#domos, #userList {
   width: 40%;
   min-width: 400px;
   border: 2px solid #55acee;
@@ -207,7 +211,7 @@ nav {
   margin-top: 100px;
 }
 
-.domo {
+.domo, .user {
   width: 95%;
   margin: 0 auto;
   margin-top: 2px;
@@ -218,13 +222,13 @@ nav {
   padding: 10px;
   min-height: 60px;
   overflow: hidden;
+}
 
-  &:hover {
-    transition: border-color 0.2s ease-out;
-    border-color: rgba(255, 255, 255, 0.8);
-    transition: background-color 2.6s ease-out;
-    background-color: #66bfff;
-  }
+.domo:hover {
+  transition: border-color 0.2s ease-out;
+  border-color: rgba(255, 255, 255, 0.8);
+  transition: background-color 2.6s ease-out;
+  background-color: #66bfff;
 }
 
 img.domoFace {
@@ -248,9 +252,9 @@ h3 {
 
   &.domoName {
     float: left;
-    width: 200px;
+    width: 150px;
     font-weight: bold;
-    padding-left: 65px;
+    padding-left: 50px;
     font-size: 1.5em;
   }
 
@@ -262,6 +266,12 @@ h3 {
     padding-right: 40px;
     font-size: 1.5em;
   }
+
+  &.domoPower {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: left;
+  }
 }
 
 .domo {
@@ -272,14 +282,4 @@ h3 {
   &:last-child {
     margin-bottom: 10px;
   }
-}
-
-.about {
-  margin: auto;
-  margin-top: 50px;
-  width: 60%;
-  border-radius: 25px;
-  border: 2px solid #55acee;
-  background-color: #f0f0f0;
-  text-align: center;
 }
