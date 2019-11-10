@@ -1,0 +1,54 @@
+{
+  "name": "replayhut",
+  "version": "1.0.0",
+  "description": "IGME-430 Project 2",
+  "main": "./server/app.js",
+  "scripts": {
+    "build": "gulp build",
+    "watch": "gulp watch",
+    "nodemon": "nodemon --watch ./server ./server/app.js ",
+    "start": "node ./server/app.js",
+    "pretest": "eslint ./server --fix",
+    "test": "echo \"Tests complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zsd7200/ReplayHut.git"
+  },
+  "author": "zsd7200 and tam8217",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "connect-redis": "^3.0.2",
+    "cookie-parser": "^1.4.4",
+    "csurf": "^1.10.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.17.0",
+    "mongoose": "^5.7.7",
+    "serve-favicon": "^2.5.0",
+    "underscore": "^1.9.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-eslint": "^6.0.0",
+    "gulp-nodemon": "^2.4.2",
+    "gulp-sass": "^4.0.2",
+    "node-sass": "^4.13.0",
+    "nodemon": "^1.19.4"
+  },
+  "bugs": {
+    "url": "https://github.com/zsd7200/ReplayHut/issues"
+  },
+  "homepage": "https://github.com/zsd7200/ReplayHut#readme"
+}
