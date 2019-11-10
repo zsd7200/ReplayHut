@@ -57,8 +57,6 @@ module.exports.build = gulp.parallel(sassTask, jsTask, lintTask);
 
 // create a watch script
 const watch = () => {
-    console.log("HEY");
-    
   // check for changes in style.scss, then run sassTask
   gulp.watch('./scss/style.scss', sassTask);
   
