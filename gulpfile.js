@@ -22,6 +22,7 @@ const sassTask = (done) => {
 // build js with babel
 // same basic idea as the above sassTask
 const jsTask = (done) => {
+  // loginBundle
   gulp.src(['./client/login/*.js', './client/helper/*.js'])
   .pipe(concat('loginBundle.js')) // gulp-concat is needed to make bundles
   .pipe(babel({
@@ -29,6 +30,7 @@ const jsTask = (done) => {
   }))
   .pipe(gulp.dest('./hosted'));
   
+  // bundle (clientside js)
   gulp.src(['./client/app/*.js', './client/helper/*.js'])
   .pipe(concat('bundle.js'))
   .pipe(babel({
@@ -36,6 +38,7 @@ const jsTask = (done) => {
   }))
   .pipe(gulp.dest('./hosted'));
 
+  // userBundle
   gulp.src(['./client/users/*.js', './client/helper/*.js'])
   .pipe(concat('userBundle.js'))
   .pipe(babel({
