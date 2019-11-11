@@ -18,7 +18,7 @@ const router = (app) => {
 
   app.post('/createClip', mid.requiresLogin, controllers.Replay.createClip);
   app.get('/create', mid.requiresLogin, controllers.Replay.createPage);
-  app.get('/gallery', mid.requiresSecure, mid.requiresLogout, controllers.Replay.galleryPage);
+  app.get('/gallery', mid.requiresSecure, mid.requiresLogin, controllers.Replay.galleryPage);
   app.get('/getClips', mid.requiresLogin, controllers.Replay.getClips);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);

@@ -2,6 +2,7 @@
 
 var makePost = function makePost(e) {
   e.preventDefault();
+  console.log("Error");
   $("#domoMessage").animate({
     width: 'hide'
   }, 350);
