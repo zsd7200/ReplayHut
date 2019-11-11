@@ -15,13 +15,16 @@
 </head>
 <body> 
   <nav><a href="/login"><img id="logo" src="/assets/img/hut.png" alt="hut logo"/></a>
-    <div class="navlink"><a id="loginButton" href="/login">Login</a></div>
+    <div class="navlink"><a id="loginButton" class="current-page" href="/login">Login</a></div>
     <div class="navlink"><a id="signupButton" href="/signup">Sign up</a></div>
-    <div class="navlink"><a href="/info">About</a></div>
   </nav>
   <section id="content"></section>
-  <div id="domoMessage"><img id="speech" src="/assets/img/speech.png" alt="speech box"/>
-    <h3><span id="errorMessage">Wrong username or password</span></h3><img id="domo" src="assets/img/domo.png" alt="domo"/>
+  <div id="domoMessage">
+    <div class="speech-bubble-ds" alt="speech box">
+      <h4><span id="errorMessage">Wrong username or password.</span></h4>
+      <div class="speech-bubble-ds-arrow"></div>
+    </div>
+    <img id="domo" src="assets/img/domo.png" alt="domo"/>
   </div>
   <script src="/assets/loginBundle.js"></script>
 </body>

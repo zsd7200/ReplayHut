@@ -3,6 +3,10 @@ const models = require('../models');
 const { Replays } = models;
 
 const createPage = (req, res) => res.render('create', { csrfToken: req.csrfToken() });
+const galleryPage = (req, res) => {
+  console.log('loading gallery');
+  res.render('gallery', { csrfToken: req.csrfToken() });
+};
 
 const createClip = (req, res) => {
   if (!req.body.title || !req.body.description) {
@@ -10,7 +14,7 @@ const createClip = (req, res) => {
   }
   let char1; let
     char2;
-  char1 = char2;
+
   if (!req.body.char1) {
     char1 = '';
   }
@@ -41,7 +45,19 @@ const createClip = (req, res) => {
   return clipPromise;
 };
 
-module.exports = {
-  createClip,
-  createPage,
+// Retrieves all clips
+const getClips = (request, response) => {
+  const res = response;
+
+  // Sending back users
+  return Replays.ReplayModel.find((err, docs) => {
+    if (err) return res.status(400).json({ err });
+
+    return res.json({ clips: docs });
+  });
 };
+
+module.exports.createClip = createClip;
+module.exports.createPage = createPage;
+module.exports.galleryPage = galleryPage;
+module.exports.getClips = getClips;

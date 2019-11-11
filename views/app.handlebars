@@ -16,15 +16,21 @@
 <body>
   <nav><a href="/login"><img id="logo" src="/assets/img/hut.png" alt="hut logo"/></a>
     <div class="navlink"><a href="/logout">Log out</a></div>
-    <div class="navlink"><a href="/info">About</a></div>
+    <div class="navlink"><a href="/create">Create a Clip</a></div>
+    <div class="navlink"><a href="/gallery">Clip Gallery</a></div>
     <div class="navlink"><a href="/users">User List</a></div>
+    <div class="navlink"><a href="/info">About</a></div>
   </nav>
   <section id="makeDomo">
   </section>
   <section id="domos">
   </section>
-  <div id="domoMessage"><img id="speech" src="/assets/img/speech.png" alt="speech box"/>
-    <h3><span id="errorMessage"></span></h3><img id="domo" src="assets/img/domo.png" alt="domo"/>
+  <div id="domoMessage">
+    <div class="speech-bubble-ds" alt="speech box">
+      <h4><span id="errorMessage">Wrong username or password.</span></h4>
+      <div class="speech-bubble-ds-arrow"></div>
+    </div>
+    <img id="domo" src="assets/img/domo.png" alt="domo"/>
   </div>
   <script src="/assets/bundle.js"></script>
 </body>
