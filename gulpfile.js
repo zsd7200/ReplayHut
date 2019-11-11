@@ -1,6 +1,7 @@
 // import gulp and plugins
 const gulp = require('gulp');
 const concat = require('gulp-concat');
+const plumber = require('gulp-plumber');
 const babel = require('gulp-babel');
 const sass = require('gulp-sass');
 const nodemon = require('gulp-nodemon');
@@ -10,6 +11,8 @@ const eslint = require('gulp-eslint');
 const sassTask = (done) => {
   // get the file to convert to css
   gulp.src('./scss/style.scss')
+  // prevents errors from plugins
+  .pipe(plumber())
   // convert scss to css
   .pipe(sass().on('error', sass.logError))
   // output the file to hosted folder
@@ -22,41 +25,55 @@ const sassTask = (done) => {
 // build js with babel
 // same basic idea as the above sassTask
 const jsTask = (done) => {
+  // bundle (clientside js)
+  gulp.src(['./client/app/*.js', './client/helper/*.js'])
+  .pipe(plumber())
+  .pipe(concat('bundle.js')) // gulp-concat is needed to make bundles
+  .pipe(babel({
+    presets: ['@babel/preset-env', '@babel/preset-react']
+  }))
+  .pipe(gulp.dest('./hosted'));
+
+  // infoBundle
+  gulp.src(['./client/info/*.js', './client/helper/*.js'])
+  .pipe(plumber())
+  .pipe(concat('infoBundle.js'))
+  .pipe(babel({
+    presets: ['@babel/preset-env', '@babel/preset-react']
+  }))
+  .pipe(gulp.dest('./hosted'));
+
   // loginBundle
   gulp.src(['./client/login/*.js', './client/helper/*.js'])
-  .pipe(concat('loginBundle.js')) // gulp-concat is needed to make bundles
+  .pipe(plumber())
+  .pipe(concat('loginBundle.js'))
   .pipe(babel({
     presets: ['@babel/preset-env', '@babel/preset-react']
   }))
   .pipe(gulp.dest('./hosted'));
   
-  // bundle (clientside js)
-  gulp.src(['./client/app/*.js', './client/helper/*.js'])
-  .pipe(concat('bundle.js'))
-  .pipe(babel({
-    presets: ['@babel/preset-env', '@babel/preset-react']
-  }))
-  .pipe(gulp.dest('./hosted'));
-
   // userBundle
   gulp.src(['./client/users/*.js', './client/helper/*.js'])
+  .pipe(plumber())
   .pipe(concat('userBundle.js'))
   .pipe(babel({
     presets: ['@babel/preset-env', '@babel/preset-react']
   }))
   .pipe(gulp.dest('./hosted'));
-
+  
+  
   done();
 };
 
 // eslint on server code
 const lintTask = (done) => {
-  gulp.src(['./server/*.js'])
+  gulp.src(['./server/**/*.js'])
   .pipe(eslint())
   // format makes the output readable
   .pipe(eslint.format())
   // if there is an error, stop the task
   .pipe(eslint.failAfterError())
+  
   
   done();
 };
@@ -71,7 +88,7 @@ const watch = () => {
   gulp.watch('./scss/style.scss', sassTask);
   
   // check for changhes in js files, then run jsTask
-  gulp.watch('./client/*.js', jsTask);
+  gulp.watch('./client/**/*.js', jsTask);
   
   // set up nodemon so it restarts the server on a change on any file (except those already being checked above)
   nodemon({

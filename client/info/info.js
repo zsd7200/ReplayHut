@@ -3,9 +3,8 @@ const InfoData = function(props) {
 
     return (    
         <div className="about">
-            <h3>DomoMaker</h3>
-            <h4>created by <a href="https://github.com/renardchien">renardchien</a> and <a href="https://github.com/AustinWilloughby">AustinWilloughby</a></h4>
-            <h5>modified by <a href="https://github.com/zsd7200">Zack Dunham</a> for DomoMaker-E</h5>
+            <h3 id="title">Replay Hut</h3>
+            <h5>modified by <a href="https://github.com/zsd7200">Zack Dunham</a> and <a href="https://github.com/tam8217">Tristan Marshall</a> from DomoMaker</h5>
         </div>
     );
 };

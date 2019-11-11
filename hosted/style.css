@@ -231,3 +231,17 @@ h3.domoPower {
 
 .domo:last-child {
   margin-bottom: 10px; }
+
+.about {
+  margin: auto;
+  margin-top: 50px;
+  width: 800px;
+  border-radius: 25px;
+  border: 2px solid #422B12;
+  background-color: #f0f0f0;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+#title {
+  padding-bottom: 10px; }
