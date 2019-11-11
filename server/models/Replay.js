@@ -18,6 +18,9 @@ const ReplaySchema = new mongoose.Schema({
   character2: {
     type: String, required: false, trim: true, set: setName,
   },
+  description: {
+    type: String, required: true, trim: true, set: setName,
+  },
   creator: { type: mongoose.Schema.ObjectId, required: true, ref: 'Account' },
   postDate: { type: Date, default: Date.now },
 });

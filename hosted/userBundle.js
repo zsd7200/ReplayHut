@@ -16,7 +16,9 @@ var UserList = function UserList(props) {
       className: "user"
     }, React.createElement("h3", {
       className: "userName"
-    }, "Username: ", user.username));
+    }, "Username: ", user.username), React.createElement("h3", {
+      className: "clipsMade"
+    }, "Clips Posted: ", user.createdClips));
   });
   return React.createElement("div", {
     className: "userList"

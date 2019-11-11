@@ -10,10 +10,6 @@ const router = (app) => {
   app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);
   app.get('/users', mid.requiresSecure, mid.requiresLogin, controllers.Account.userList);
 
-  app.get('/getDomos', mid.requiresLogin, controllers.Domo.getDomos);
-  app.post('/maker', mid.requiresLogin, controllers.Domo.make);
-  app.get('/maker', mid.requiresLogin, controllers.Domo.makerPage);
-
   app.get('/info', mid.requiresSecure, controllers.Info.infoPage);
 
   app.post('/createClip', mid.requiresLogin, controllers.Replay.createClip);

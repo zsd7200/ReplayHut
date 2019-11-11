@@ -1,5 +1,6 @@
 const ClipList = function(props) 
 {
+    console.log(props);
     // If no clip have been made, show error
     if(props.clips.length === 0)
     {

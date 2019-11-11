@@ -1,6 +1,6 @@
 const makePost = (e) =>{
     e.preventDefault();
-    console.log("Error");
+    //console.log("Error");
     $("#domoMessage").animate({width:'hide'}, 350);
     if($("#clipTitle").val() == '' || $("#clipDesc").val() == '') {
         handleError("Hey! Make sure you fill out all the fields!");

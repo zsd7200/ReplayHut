@@ -5,6 +5,8 @@ const models = require('../models');
 
 const { Replays } = models;
 
+const { Account } = models;
+
 const createPage = (req, res) => res.render('create', { csrfToken: req.csrfToken() });
 const galleryPage = (req, res) => {
   console.log('loading gallery');
@@ -15,20 +17,12 @@ const createClip = (req, res) => {
   if (!req.body.title || !req.body.description) {
     return res.status(400).json({ error: 'Hey! Make sure you fill out all the fields!' });
   }
-  let char1; let
-    char2;
 
-  if (!req.body.char1) {
-    char1 = '';
-  }
-  if (!req.body.char2) {
-    char2 = '';
-  }
-
+  console.log(req.body);
   const clipData = {
     title: req.body.title,
-    character1: char1,
-    character2: char2,
+    character1: req.body.char1,
+    character2: req.body.char2,
     description: req.body.description,
     creator: req.session.account._id,
   };
@@ -37,7 +31,28 @@ const createClip = (req, res) => {
 
   const clipPromise = newClip.save();
 
-  clipPromise.then(() => res.json({ redirect: '/create' }));
+  clipPromise.then(() => {
+    res.json({ redirect: '/create' });
+    // Used to increment the amount of domos created by one person
+    Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
+      // Error check
+      if (err) return res.json({ err });
+
+      // If no error, create a temp variable to store changes
+      const foundUser = doc;
+
+      // Increasing their amount of domos
+      foundUser.createdClips++;
+
+      // Handling promise to reassign the user's info
+      const updatePromise = foundUser.save();
+
+      updatePromise.then(() => console.log('Updated'));
+
+      updatePromise.catch((err2) => res.json({ err2 }));
+      return true;
+    });
+  });
 
   clipPromise.catch((err) => {
     console.log(err);

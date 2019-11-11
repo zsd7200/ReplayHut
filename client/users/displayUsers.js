@@ -15,6 +15,7 @@ const UserList = function(props)
         return(
             <div className="user">
                 <h3 className="userName">Username: {user.username}</h3>
+                <h3 className="clipsMade">Clips Posted: {user.createdClips}</h3>
             </div>
         );
     });

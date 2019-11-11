@@ -24,6 +24,7 @@ const AccountSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  createdClips: { type: Number, required: true, default: 0 },
   createdDate: {
     type: Date,
     default: Date.now,
