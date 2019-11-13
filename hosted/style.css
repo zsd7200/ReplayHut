@@ -283,3 +283,25 @@ h3.domoPower {
 
 .current-page {
   border: 2px solid #BA7D2F; }
+
+#clipList {
+  border: 1px solid blue;
+  width: 100%;
+  padding-right: calc((100% - ((600px + 30px) * 3)) / 2);
+  padding-left: calc((100% - ((600px + 30px) * 3)) / 2); }
+
+.clip {
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 7px 7px 4px grey;
+  width: 600px;
+  padding: 5px;
+  margin: 5px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  display: inline-block;
+  transition: .5s; }
+
+.clip:hover {
+  box-shadow: 7px 7px 4px #73c9e6;
+  transition: .5s; }
