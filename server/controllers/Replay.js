@@ -24,7 +24,8 @@ const createClip = (req, res) => {
     character1: req.body.char1,
     character2: req.body.char2,
     description: req.body.description,
-    creator: req.session.account._id,
+    creatorUN: req.session.account.username,
+    creatorID: req.session.account._id,
   };
 
   const newClip = new Replays.ReplayModel(clipData);

@@ -1,8 +1,7 @@
 "use strict";
 
 var ClipList = function ClipList(props) {
-  console.log(props); // If no clip have been made, show error
-
+  // If no clip have been made, show error
   if (props.clips.length === 0) {
     return React.createElement("div", {
       className: "clipList"
@@ -23,7 +22,7 @@ var ClipList = function ClipList(props) {
       className: "char2"
     }, "Character 2: ", clip.character2), React.createElement("h5", {
       className: "creator"
-    }, "Creator: ", clip.creator), React.createElement("h5", {
+    }, "Creator: ", clip.creatorUN), React.createElement("h5", {
       className: "description"
     }, "Description: ", clip.description), React.createElement("h5", {
       className: "post-date"

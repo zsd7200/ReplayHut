@@ -15,6 +15,9 @@ const userList = (req, res) => {
   res.render('users');
 };
 
+const myAccount = (req, res) => {
+  res.render('account');
+};
 
 // Retrieves all accounts
 const getAccounts = (request, response) => {
@@ -25,6 +28,16 @@ const getAccounts = (request, response) => {
     if (err) return res.status(400).json({ err });
 
     return res.json({ users: docs });
+  });
+};
+
+const getMyAccount = (request, response) => {
+  const res = response;
+console.log(res.session);
+  return Account.AccountModel.findByUsername(res.session.account.username, (err, docs) => {
+    if (err) return res.status(400).json({ err });
+
+    return res.json({ account: docs });
   });
 };
 
@@ -112,3 +125,5 @@ module.exports.signup = signup;
 module.exports.getToken = getToken;
 module.exports.getAccounts = getAccounts;
 module.exports.userList = userList;
+module.exports.getMyAccount = getMyAccount;
+module.exports.myAccount = myAccount;

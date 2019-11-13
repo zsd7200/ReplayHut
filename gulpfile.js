@@ -70,7 +70,7 @@ const jsTask = (done) => {
   }))
   .pipe(gulp.dest('./hosted'));
   
-  //createBundle
+  //galleryBundle
   gulp.src(['./client/gallery/*.js', './client/helper/*.js'])
   .pipe(plumber())
   .pipe(concat('galleryBundle.js'))
@@ -79,6 +79,14 @@ const jsTask = (done) => {
   }))
   .pipe(gulp.dest('./hosted'));
   
+   //accountBundle
+   gulp.src(['./client/account/*.js', './client/helper/*.js'])
+   .pipe(plumber())
+   .pipe(concat('accountBundle.js'))
+   .pipe(babel({
+     presets: ['@babel/preset-env', '@babel/preset-react']
+   }))
+   .pipe(gulp.dest('./hosted'));
 
   done();
 };
