@@ -33,8 +33,9 @@ const getAccounts = (request, response) => {
 
 const getMyAccount = (request, response) => {
   const res = response;
-console.log(res.session);
-  return Account.AccountModel.findByUsername(res.session.account.username, (err, docs) => {
+  const req = request;
+
+  return Account.AccountModel.findByUsername(req.session.account.username, (err, docs) => {
     if (err) return res.status(400).json({ err });
 
     return res.json({ account: docs });

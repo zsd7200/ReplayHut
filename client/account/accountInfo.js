@@ -1,9 +1,9 @@
-const listOutAccount = function(props)
+const ListOutAccount = function(props)
 {
     return(
         <div classname="accountArea">
-            <h1>Hello {props.creatorUN}!</h1>
-            <p>You've made {props.createdClips} Clips</p>
+            <h1>Hello {props.account.username}!</h1>
+            <p>You've made {props.account.createdClips} Clips</p>
             <h3>Change password</h3>
             <label htmlFor="pass">Password: </label>
             <input id="pass" type="password" name ="pass" placeholder="password"/>
@@ -18,7 +18,7 @@ const listOutAccount = function(props)
 const setup = function()
 {
     sendAjax('GET', '/getMyAccount', null, (data) =>{
-        ReactDOM.render(<listOutAccount account={data.account} />, document.querySelector("#accountArea"));
+        ReactDOM.render(<ListOutAccount account={data.account} />, document.querySelector("#accountArea"));
     });
 }
 

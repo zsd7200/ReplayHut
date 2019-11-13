@@ -1,9 +1,10 @@
 "use strict";
 
-var listOutAccount = function listOutAccount(props) {
+var ListOutAccount = function ListOutAccount(props) {
+  console.log(props);
   return React.createElement("div", {
     classname: "accountArea"
-  }, React.createElement("h1", null, "Hello ", props.creatorUN, "!"), React.createElement("p", null, "You've made ", props.createdClips, " Clips"), React.createElement("h3", null, "Change password"), React.createElement("label", {
+  }, React.createElement("h1", null, "Hello ", props.account.username, "!"), React.createElement("p", null, "You've made ", props.account.createdClips, " Clips"), React.createElement("h3", null, "Change password"), React.createElement("label", {
     htmlFor: "pass"
   }, "Password: "), React.createElement("input", {
     id: "pass",
@@ -22,7 +23,7 @@ var listOutAccount = function listOutAccount(props) {
 
 var setup = function setup() {
   sendAjax('GET', '/getMyAccount', null, function (data) {
-    ReactDOM.render(React.createElement("listOutAccount", {
+    ReactDOM.render(React.createElement(ListOutAccount, {
       account: data.account
     }), document.querySelector("#accountArea"));
   });
