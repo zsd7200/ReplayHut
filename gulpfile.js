@@ -25,14 +25,6 @@ const sassTask = (done) => {
 // build js with babel
 // same basic idea as the above sassTask
 const jsTask = (done) => {
-  // bundle (clientside js)
-  gulp.src(['./client/app/*.js', './client/helper/*.js'])
-  .pipe(plumber())
-  .pipe(concat('bundle.js')) // gulp-concat is needed to make bundles
-  .pipe(babel({
-    presets: ['@babel/preset-env', '@babel/preset-react']
-  }))
-  .pipe(gulp.dest('./hosted'));
 
   // infoBundle
   gulp.src(['./client/info/*.js', './client/helper/*.js'])

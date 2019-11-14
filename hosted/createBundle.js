@@ -1,8 +1,7 @@
 "use strict";
 
 var makePost = function makePost(e) {
-  e.preventDefault(); //console.log("Error");
-
+  e.preventDefault();
   $("#domoMessage").animate({
     width: 'hide'
   }, 350);

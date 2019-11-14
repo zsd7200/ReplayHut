@@ -13,6 +13,7 @@ const router = (app) => {
 
   app.get('/myAccount', mid.requiresSecure, mid.requiresLogin, controllers.Account.myAccount);
 
+  app.post('/changePassword', mid.requiresLogin, controllers.Account.changePassword);
   app.get('/info', mid.requiresSecure, controllers.Info.infoPage);
 
   app.post('/createClip', mid.requiresLogin, controllers.Replay.createClip);

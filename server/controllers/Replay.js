@@ -1,6 +1,3 @@
-// Questions: Best way to save images into the database
-// Best way to update an element of the user's account
-// each time they post
 const models = require('../models');
 
 const { Replays } = models;
@@ -9,7 +6,6 @@ const { Account } = models;
 
 const createPage = (req, res) => res.render('create', { csrfToken: req.csrfToken() });
 const galleryPage = (req, res) => {
-  console.log('loading gallery');
   res.render('gallery', { csrfToken: req.csrfToken() });
 };
 

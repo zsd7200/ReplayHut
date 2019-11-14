@@ -64,6 +64,44 @@ const login = (request, response) => {
   });
 };
 
+const changePassword = (request, response) => {
+  const req = request;
+  const res = response;
+
+  req.body.pass = `${req.body.pass}`;
+  req.body.pass2 = `${req.body.pass2}`;
+
+  if (!req.body.pass || !req.body.pass2) {
+    return res.status(400).json({ error: 'Hey, make sure you fill out both fields!' });
+  }
+
+  if (req.body.pass !== req.body.pass2) {
+    return res.status(400).json({ error: "Woah, those passwords don't match!" });
+  }
+
+  Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
+    Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
+      if (err) return res.status(400).json({ err });
+
+      const foundUser = doc;
+
+      foundUser.password = hash;
+
+      foundUser.salt = salt;
+
+      const updatePromise = foundUser.save();
+
+      updatePromise.then(() => console.log('Successfully changed password!'));
+
+      updatePromise.catch((err2) => res.json({ err2 }));
+
+      return true;
+    });
+    return true;
+  });
+
+  return true;
+};
 const signup = (request, response) => {
   const req = request;
   const res = response;
@@ -128,3 +166,4 @@ module.exports.getAccounts = getAccounts;
 module.exports.userList = userList;
 module.exports.getMyAccount = getMyAccount;
 module.exports.myAccount = myAccount;
+module.exports.changePassword = changePassword;

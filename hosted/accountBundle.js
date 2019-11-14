@@ -1,10 +1,35 @@
 "use strict";
 
+var passChange = function passChange(e) {
+  e.preventDefault();
+  $("#domoMessage").animate({
+    width: 'hide'
+  }, 350);
+
+  if ($("#pass").val() == '' || $("#pass2").val() == '') {
+    handleError("Hey, make sure you fill out both fields!");
+    return false;
+  }
+
+  if ($("#pass").val() !== $("#pass2").val()) {
+    handleError("Woah, those passwords don't match!");
+    return false;
+  }
+
+  sendAjax('POST', $("#changePassForm").attr("action"), $("#changePassForm").serialize());
+  return false;
+};
+
 var ListOutAccount = function ListOutAccount(props) {
-  console.log(props);
   return React.createElement("div", {
     classname: "accountArea"
-  }, React.createElement("h1", null, "Hello ", props.account.username, "!"), React.createElement("p", null, "You've made ", props.account.createdClips, " Clips"), React.createElement("h3", null, "Change password"), React.createElement("label", {
+  }, React.createElement("h1", null, "Hello ", props.account.username, "!"), React.createElement("p", null, "You've made ", props.account.createdClips, " Clips"), React.createElement("h3", null, "Change password"), React.createElement("form", {
+    id: "changePassForm",
+    name: "changePassForm",
+    onSubmit: passChange,
+    action: "/changePassword",
+    method: "POST"
+  }, React.createElement("label", {
     htmlFor: "pass"
   }, "Password: "), React.createElement("input", {
     id: "pass",
@@ -18,19 +43,34 @@ var ListOutAccount = function ListOutAccount(props) {
     type: "password",
     name: "pass2",
     placeholder: "retype password"
-  }), React.createElement("br", null), React.createElement("button", null, "Sign up for Prime!"));
+  }), React.createElement("input", {
+    type: "hidden",
+    name: "_csrf",
+    value: props.csrf
+  }), React.createElement("input", {
+    className: "formSubmit",
+    type: "submit",
+    value: "Change Password"
+  })), React.createElement("br", null), React.createElement("button", null, "Sign up for Prime!"));
 };
 
-var setup = function setup() {
+var setup = function setup(csrf) {
   sendAjax('GET', '/getMyAccount', null, function (data) {
     ReactDOM.render(React.createElement(ListOutAccount, {
-      account: data.account
+      account: data.account,
+      csrf: csrf
     }), document.querySelector("#accountArea"));
   });
 };
 
+var getToken = function getToken() {
+  sendAjax('GET', '/getToken', null, function (result) {
+    setup(result.csrfToken);
+  });
+};
+
 $(document).ready(function () {
-  setup();
+  getToken();
 });
 
 var handleError = function handleError(message) {
