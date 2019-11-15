@@ -3,6 +3,7 @@ $mediumBrown: #A06E32;
 $darkBrown: #915E2A;
 $darkestBrown: #422B12;
 $clipWidth: 600px;
+$loaderColor: #98cf61;
 
 html, body {
   height: 100%;
@@ -357,8 +358,7 @@ h3 {
     border: 2px solid $lightBrown;
 }
 
-#clipList {
-    border:1px solid blue;
+.clipList {
     width: 100%;
     padding-right: calc((100% - ((#{$clipWidth} + 30px) * 3)) / 2);
     padding-left: calc((100% - ((#{$clipWidth} + 30px) * 3)) / 2);
@@ -380,4 +380,30 @@ h3 {
 .clip:hover{
     box-shadow: 7px 7px 4px #73c9e6;
     transition: .5s;
+}
+
+.noClips {
+    text-align: center;
+    padding-top: 20%;
+}
+
+
+/* https://www.w3schools.com/howto/howto_css_loader.asp */
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid $loaderColor;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.creator {
+    float: right;
 }
