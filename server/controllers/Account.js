@@ -55,6 +55,8 @@ const login = (request, response) => {
 
   return Account.AccountModel.authenticate(username, password, (err, account) => {
     if (err || !account) {
+      console.log('Displaying here');
+
       return res.status(401).json({ error: 'Wrong username or password!' });
     }
 
@@ -67,18 +69,69 @@ const login = (request, response) => {
 const changePassword = (request, response) => {
   const req = request;
   const res = response;
-
+  req.body.currentPass = `${req.body.currentPass}`;
   req.body.pass = `${req.body.pass}`;
   req.body.pass2 = `${req.body.pass2}`;
 
-  if (!req.body.pass || !req.body.pass2) {
-    return res.status(400).json({ error: 'Hey, make sure you fill out both fields!' });
+  if (!req.body.pass || !req.body.pass2 || !req.body.currentPass) {
+    return res.status(400).json({ message: 'Hey, make sure you fill out both fields!' });
   }
 
   if (req.body.pass !== req.body.pass2) {
-    return res.status(400).json({ error: "Woah, those passwords don't match!" });
+    return res.status(400).json({ message: "Woah, those passwords don't match!" });
   }
 
+  Account.AccountModel.authenticate(req.session.account.username, req.body.currentPass,
+    (err, doc) => {
+      console.log('Displaying 2');
+      if (err) {
+        console.log('pls)_');
+        return res.status(401).json({ messsage: 'Current Password Incorrect' });
+      }
+
+      if (!doc) {
+        console.log('work');
+        return res.status(401).json({ message: 'invalid credentials' });
+      }
+
+      Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
+        Account.AccountModel.updateOne({ username: req.session.account.username },
+          { salt, password: hash }, (err2) => {
+            if (err2) {
+              return res.status(400).json({ err2 });
+            }
+
+            return res.json({ message: 'password successfully changed' });
+          });
+        return true;
+      });
+      return true;
+    });
+  /* Account.AccountModel.authenticate(req.session.account.username, req.body.currentPass,
+    (err, doc) => {
+
+      if (err === undefined)
+      return res.status(400).json({ message: 'Current Password not correct' });
+
+      Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
+        const foundUser = doc;
+
+        foundUser.password = hash;
+
+        foundUser.salt = salt;
+
+        const updatePromise = foundUser.save();
+
+        updatePromise.then(() => res.json({ message: 'Password change successful!' }));
+
+        updatePromise.catch((err2) => res.json({ err2 }));
+
+        return true;
+      });
+
+      return true;
+    }); */
+  /*
   Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
     Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
       if (err) return res.status(400).json({ err });
@@ -99,7 +152,7 @@ const changePassword = (request, response) => {
     });
     return true;
   });
-
+*/
   return true;
 };
 const signup = (request, response) => {

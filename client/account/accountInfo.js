@@ -2,7 +2,7 @@ const passChange = (e) =>{
     e.preventDefault();
     $("#domoMessage").animate({width:'hide'}, 350);
 
-    if( $("#pass").val() == '' || $("#pass2").val() == '') {
+    if( $("#pass").val() == '' || $("#pass2").val() == '' || $("#currentPass").val() == '') {
         handleError("Hey, make sure you fill out both fields!");
         return false;
     }
@@ -11,9 +11,13 @@ const passChange = (e) =>{
         handleError("Woah, those passwords don't match!");
         return false;
     }
+    
 
-    sendAjax('POST', $("#changePassForm").attr("action"), $("#changePassForm").serialize());
-
+    sendAjax('POST', $("#changePassForm").attr("action"), $("#changePassForm").serialize(),(result)=>{handleError(result.message);}, (xhr, status, error) =>{
+        if(error === 'Unauthorized')
+            handleError("Current password is not correct");
+    });
+    
     return false;
 };
 
@@ -25,10 +29,12 @@ const ListOutAccount = function(props)
             <p>You've made {props.account.createdClips} Clips</p>
             <h3>Change password</h3>
             <form id="changePassForm" name="changePassForm" onSubmit={passChange} action="/changePassword" method="POST">
-                <label htmlFor="pass">Password: </label>
-                <input id="pass" type="password" name ="pass" placeholder="password"/>
-                <label htmlFor="pass2">Password: </label>
-                <input id="pass2" type="password" name ="pass2" placeholder="retype password"/>
+                <label htmlFor="currentPass">New Password: </label>
+                <input id="currentPass" type="password" name ="currentPass" placeholder="Current password"/>
+                <label htmlFor="pass">New Password: </label>
+                <input id="pass" type="password" name ="pass" placeholder="New password"/>
+                <label htmlFor="pass2">Retype New Password: </label>
+                <input id="pass2" type="password" name ="pass2" placeholder="Retype password"/>
                 <input type="hidden" name="_csrf" value={props.csrf} />
                 <input className="formSubmit" type="submit" value="Change Password"/>
             </form>
