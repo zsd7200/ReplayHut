@@ -1,13 +1,31 @@
 "use strict";
 
+var formatDate = function formatDate(date) {
+  // save a new date based on UTC date
+  var localDate = new Date(date); // create variables to modify for 12-hour clock
+
+  var hour = 0;
+  var amPm = "AM"; // 12-hour clock check
+
+  if (localDate.getHours() + 1 > 12) {
+    hour = localDate.getHours() - 12;
+    amPm = "PM";
+  } // create a new string based on localDate data and 12-hour clock modifications
+
+
+  var newDate = localDate.getMonth() + 1 + "/" + localDate.getDate() + "/" + localDate.getFullYear() + " "; // date
+
+  newDate += hour + ":" + localDate.getMinutes() + ":" + localDate.getSeconds() + " " + amPm; // time
+
+  return newDate;
+};
+
 var ClipList = function ClipList(props) {
   // If no clip have been made, show error
   if (props.clips.length === 0) {
     return React.createElement("div", {
-      className: "clipList"
-    }, React.createElement("h3", {
       className: "noClips"
-    }, "No clips found!"));
+    }, React.createElement("h3", null, "No clips found!"));
   } // Displaying each clip
 
 
@@ -16,17 +34,17 @@ var ClipList = function ClipList(props) {
       className: "clip"
     }, React.createElement("h3", {
       className: "clip-title"
-    }, "Title: ", clip.title), React.createElement("h5", {
+    }, "Title: ", clip.title, React.createElement("h5", {
+      className: "creator"
+    }, "Creator: ", clip.creatorUN)), React.createElement("h5", {
       className: "char1"
     }, "Character 1: ", clip.character1), React.createElement("h5", {
       className: "char2"
     }, "Character 2: ", clip.character2), React.createElement("h5", {
-      className: "creator"
-    }, "Creator: ", clip.creatorUN), React.createElement("h5", {
       className: "description"
     }, "Description: ", clip.description), React.createElement("h5", {
       className: "post-date"
-    }, "Posted: ", clip.postDate));
+    }, "Posted: ", formatDate(clip.postDate)));
   });
   return React.createElement("div", {
     className: "clipList"
@@ -38,7 +56,7 @@ var setup = function setup() {
   sendAjax('GET', '/getClips', null, function (data) {
     ReactDOM.render(React.createElement(ClipList, {
       clips: data.clips
-    }), document.querySelector("#clipList"));
+    }), document.querySelector("#clips"));
   });
 };
 
