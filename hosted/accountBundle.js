@@ -6,17 +6,21 @@ var passChange = function passChange(e) {
     width: 'hide'
   }, 350);
 
-  if ($("#pass").val() == '' || $("#pass2").val() == '') {
-    handleError("Hey, make sure you fill out both fields!");
+  if ($("#pass").val() == '' || $("#pass2").val() == '' || $("#currentPass").val() == '') {
+    handleError("Hey, make sure you fill out all fields!");
     return false;
   }
 
   if ($("#pass").val() !== $("#pass2").val()) {
-    handleError("Woah, those passwords don't match!");
+    handleError("Woah, those new passwords don't match!");
     return false;
   }
 
-  sendAjax('POST', $("#changePassForm").attr("action"), $("#changePassForm").serialize());
+  sendAjax('POST', $("#changePassForm").attr("action"), $("#changePassForm").serialize(), function (result) {
+    handleError(result.message);
+  }, function (xhr, status, error) {
+    if (error === 'Unauthorized') handleError("Current password is not correct");
+  });
   return false;
 };
 
@@ -30,19 +34,26 @@ var ListOutAccount = function ListOutAccount(props) {
     action: "/changePassword",
     method: "POST"
   }, React.createElement("label", {
+    htmlFor: "currentPass"
+  }, "New Password: "), React.createElement("input", {
+    id: "currentPass",
+    type: "password",
+    name: "currentPass",
+    placeholder: "Current password"
+  }), React.createElement("label", {
     htmlFor: "pass"
-  }, "Password: "), React.createElement("input", {
+  }, "New Password: "), React.createElement("input", {
     id: "pass",
     type: "password",
     name: "pass",
-    placeholder: "password"
+    placeholder: "New password"
   }), React.createElement("label", {
     htmlFor: "pass2"
-  }, "Password: "), React.createElement("input", {
+  }, "Retype New Password: "), React.createElement("input", {
     id: "pass2",
     type: "password",
     name: "pass2",
-    placeholder: "retype password"
+    placeholder: "Retype password"
   }), React.createElement("input", {
     type: "hidden",
     name: "_csrf",
@@ -87,7 +98,7 @@ var redirect = function redirect(response) {
   window.location = response.redirect;
 };
 
-var sendAjax = function sendAjax(type, action, data, success) {
+var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({
     cache: false,
     type: type,
@@ -95,9 +106,10 @@ var sendAjax = function sendAjax(type, action, data, success) {
     data: data,
     dataType: "json",
     success: success,
-    error: function error(xhr, status, _error) {
-      var messageObj = JSON.parse(xhr.responseText);
-      handleError(messageObj.error);
-    }
+    error: error
+    /*function(xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    handleError(messageObj.error);}*/
+
   });
 };

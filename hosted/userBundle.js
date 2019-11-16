@@ -8,8 +8,11 @@ var UserList = function UserList(props) {
     }, React.createElement("h3", {
       className: "noUsers"
     }, "No users found"));
-  } //Displaying each user
+  }
 
+  props.users.sort(function (a, b) {
+    return b.createdClips - a.createdClips;
+  }); //Displaying each user
 
   var userNodes = props.users.map(function (user) {
     return React.createElement("div", {
@@ -31,6 +34,9 @@ var setup = function setup() {
     ReactDOM.render(React.createElement(UserList, {
       users: data.users
     }), document.querySelector("#userList"));
+  }, function (xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    handleError(messageObj.error);
   });
 };
 
@@ -52,7 +58,7 @@ var redirect = function redirect(response) {
   window.location = response.redirect;
 };
 
-var sendAjax = function sendAjax(type, action, data, success) {
+var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({
     cache: false,
     type: type,
@@ -60,9 +66,10 @@ var sendAjax = function sendAjax(type, action, data, success) {
     data: data,
     dataType: "json",
     success: success,
-    error: function error(xhr, status, _error) {
-      var messageObj = JSON.parse(xhr.responseText);
-      handleError(messageObj.error);
-    }
+    error: error
+    /*function(xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    handleError(messageObj.error);}*/
+
   });
 };

@@ -59,6 +59,10 @@ const setup = function()
     // Retrieving the accounts
     sendAjax('GET', '/getClips', null, (data) => {
         ReactDOM.render(<ClipList clips={data.clips} />, document.querySelector("#clips"));
+    },
+    (xhr, status, error) =>{
+        var messageObj = JSON.parse(xhr.responseText);
+        handleError(messageObj.error);
     });
 }
 

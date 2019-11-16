@@ -3,12 +3,12 @@ const passChange = (e) =>{
     $("#domoMessage").animate({width:'hide'}, 350);
 
     if( $("#pass").val() == '' || $("#pass2").val() == '' || $("#currentPass").val() == '') {
-        handleError("Hey, make sure you fill out both fields!");
+        handleError("Hey, make sure you fill out all fields!");
         return false;
     }
 
     if($("#pass").val() !== $("#pass2").val()) {
-        handleError("Woah, those passwords don't match!");
+        handleError("Woah, those new passwords don't match!");
         return false;
     }
     

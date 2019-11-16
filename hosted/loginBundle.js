@@ -7,12 +7,15 @@ var handleLogin = function handleLogin(e) {
   }, 350);
 
   if ($("#user").val() == '' || $("#pass").val() == '') {
-    handleError("RAWR: Username or password is empty!");
+    handleError("Hey! Username or password is empty!");
     return false;
   }
 
   console.log($("input[name-_csrf]").val());
-  sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), redirect);
+  sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), redirect, function (xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    handleError(messageObj.error);
+  });
   return false;
 };
 
@@ -32,7 +35,10 @@ var handleSignup = function handleSignup(e) {
     return false;
   }
 
-  sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), redirect);
+  sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), redirect, function (xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    handleError(messageObj.error);
+  });
   return false;
 };
 
@@ -161,7 +167,7 @@ var redirect = function redirect(response) {
   window.location = response.redirect;
 };
 
-var sendAjax = function sendAjax(type, action, data, success) {
+var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({
     cache: false,
     type: type,
@@ -169,9 +175,10 @@ var sendAjax = function sendAjax(type, action, data, success) {
     data: data,
     dataType: "json",
     success: success,
-    error: function error(xhr, status, _error) {
-      var messageObj = JSON.parse(xhr.responseText);
-      handleError(messageObj.error);
-    }
+    error: error
+    /*function(xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    handleError(messageObj.error);}*/
+
   });
 };

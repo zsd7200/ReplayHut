@@ -9,6 +9,8 @@ const UserList = function(props)
             </div>
         )
     }
+    //Code for sorting taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+    props.users.sort(function(a,b) {return b.createdClips-a.createdClips});
     
     //Displaying each user
     const userNodes = props.users.map(function(user){
@@ -33,6 +35,10 @@ const setup = function()
     sendAjax('GET', '/getAccounts', null, (data) =>{
         ReactDOM.render(<UserList users={data.users} />, document.querySelector("#userList"));
 
+    },
+    (xhr, status, error) =>{
+        var messageObj = JSON.parse(xhr.responseText);
+        handleError(messageObj.error);
     });
 }
 

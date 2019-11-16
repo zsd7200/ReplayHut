@@ -4,13 +4,16 @@ const handleLogin = (e) => {
     $("#domoMessage").animate({width:'hide'}, 350);
     
     if($("#user").val() == '' || $("#pass").val() == '') {
-        handleError("RAWR: Username or password is empty!");
+        handleError("Hey! Username or password is empty!");
         return false;
     }
     
     console.log($("input[name-_csrf]").val());
     
-    sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), redirect);
+    sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), redirect, (xhr, status, error) =>{
+        var messageObj = JSON.parse(xhr.responseText);
+        handleError(messageObj.error);
+    });
     
     return false;
 };
@@ -30,7 +33,10 @@ const handleSignup = (e) => {
         return false;
     }
     
-    sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), redirect);
+    sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), redirect, (xhr, status, error) =>{
+        var messageObj = JSON.parse(xhr.responseText);
+        handleError(messageObj.error);
+    });
     
     return false;
 };

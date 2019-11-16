@@ -57,6 +57,9 @@ var setup = function setup() {
     ReactDOM.render(React.createElement(ClipList, {
       clips: data.clips
     }), document.querySelector("#clips"));
+  }, function (xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    handleError(messageObj.error);
   });
 };
 
@@ -78,7 +81,7 @@ var redirect = function redirect(response) {
   window.location = response.redirect;
 };
 
-var sendAjax = function sendAjax(type, action, data, success) {
+var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({
     cache: false,
     type: type,
@@ -86,9 +89,10 @@ var sendAjax = function sendAjax(type, action, data, success) {
     data: data,
     dataType: "json",
     success: success,
-    error: function error(xhr, status, _error) {
-      var messageObj = JSON.parse(xhr.responseText);
-      handleError(messageObj.error);
-    }
+    error: error
+    /*function(xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    handleError(messageObj.error);}*/
+
   });
 };
