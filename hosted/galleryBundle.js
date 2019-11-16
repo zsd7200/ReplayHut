@@ -1,7 +1,7 @@
 "use strict";
 
-var ytWidth = 386;
-var ytHeight = 215;
+var ytWidth = 436;
+var ytHeight = 245;
 
 var formatDate = function formatDate(date) {
   // save a new date based on UTC date
@@ -67,9 +67,9 @@ var ClipList = function ClipList(props) {
           width: ytWidth,
           height: ytHeight,
           src: clip.youtube,
-          frameborder: "0",
+          frameBorder: "0",
           allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-          allowfullscreen: true
+          allowFullScreen: true
         }));
       } else {
         return React.createElement("div", {
@@ -90,10 +90,10 @@ var ClipList = function ClipList(props) {
           width: ytWidth,
           height: ytHeight,
           src: clip.youtube,
-          frameborder: "0",
+          frameBorder: "0",
           allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-          allowfullscreen: true
-        }));
+          allowFullScreen: true
+        }), "                    ");
       }
     } else if (clip.character2 !== '') {
       return React.createElement("div", {
@@ -114,9 +114,9 @@ var ClipList = function ClipList(props) {
         width: ytWidth,
         height: ytHeight,
         src: clip.youtube,
-        frameborder: "0",
+        frameBorder: "0",
         allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-        allowfullscreen: true
+        allowFullScreen: true
       }));
     } else {
       return React.createElement("div", {
@@ -135,9 +135,9 @@ var ClipList = function ClipList(props) {
         width: ytWidth,
         height: ytHeight,
         src: clip.youtube,
-        frameborder: "0",
+        frameBorder: "0",
         allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-        allowfullscreen: true
+        allowFullScreen: true
       }));
     }
   });

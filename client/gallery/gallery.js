@@ -1,5 +1,5 @@
-const ytWidth = 386;
-const ytHeight = 215;
+const ytWidth = 436;
+const ytHeight = 245;
 
 const formatDate = (date) => {
     // save a new date based on UTC date
@@ -60,7 +60,15 @@ const ClipList = function(props)
                         <h5 className="char1">Character 1: {clip.character1}</h5>
                         <h5 className="char2">Character 2: {clip.character2}</h5>
                         <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
-                        <iframe width={ytWidth} height={ytHeight} src={clip.youtube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe 
+                            width={ytWidth} 
+                            height={ytHeight} 
+                            src={clip.youtube} 
+                            frameBorder="0" 
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                            allowFullScreen
+                            >
+                        </iframe>
                     </div>
                 );
             } else {
@@ -73,8 +81,15 @@ const ClipList = function(props)
                         <h5 className="description">Description: {clip.description}</h5>
                         <h5 className="char1">Character 1: {clip.character1}</h5>
                         <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
-                        <iframe width={ytWidth} height={ytHeight} src={clip.youtube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
+                        <iframe 
+                            width={ytWidth} 
+                            height={ytHeight} 
+                            src={clip.youtube} 
+                            frameBorder="0" 
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                            allowFullScreen
+                            >
+                        </iframe>                    </div>
                 );
             }
         } else if (clip.character2 !== ''){
@@ -87,7 +102,15 @@ const ClipList = function(props)
                     <h5 className="description">Description: {clip.description}</h5>
                     <h5 className="char2">Character 2: {clip.character2}</h5>
                     <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
-                    <iframe width={ytWidth} height={ytHeight} src={clip.youtube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe 
+                        width={ytWidth} 
+                        height={ytHeight} 
+                        src={clip.youtube} 
+                        frameBorder="0" 
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                        allowFullScreen
+                        >
+                    </iframe>
                 </div>
             );
         } else {
@@ -99,7 +122,15 @@ const ClipList = function(props)
                     <h5 className="game">Game: {clip.game}</h5>
                     <h5 className="description">Description: {clip.description}</h5>
                     <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
-                    <iframe width={ytWidth} height={ytHeight} src={clip.youtube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe 
+                        width={ytWidth} 
+                        height={ytHeight} 
+                        src={clip.youtube} 
+                        frameBorder="0" 
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                        allowFullScreen
+                        >
+                    </iframe>
                 </div>
             );
         }
