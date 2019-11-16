@@ -45,6 +45,41 @@ nav {
       transition: background-color 0.8s ease;
       background-color: #BA7D2F; }
 
+.mainForm {
+  height: 300px;
+  width: 350px;
+  margin: 0 auto;
+  padding-top: 350px;
+  font-size: 1.2em; }
+  .mainForm h3 {
+    text-align: center; }
+  .mainForm label {
+    display: inline-block;
+    width: 100px;
+    margin-right: 10px;
+    text-align: right;
+    font-size: 1.2em; }
+
+.formSubmit {
+  transition: background-color 0.4s ease;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: -3;
+  font-size: 1.2em;
+  width: 120px;
+  background-color: #BA7D2F;
+  border-radius: 2px;
+  border-color: #915E2A;
+  padding: 3px 0px;
+  color: white;
+  text-decoration: none; }
+  .formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
+    color: white; }
+  .formSubmit:hover {
+    transition: background-color 0.4s ease;
+    background-color: #A06E32; }
+
 #user, #pass, #pass2 {
   text-align: center;
   font-size: 1.1em;
