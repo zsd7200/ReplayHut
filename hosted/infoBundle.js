@@ -5,7 +5,7 @@ var InfoData = function InfoData(props) {
     width: 'toggle'
   }, 350);
   return React.createElement("div", {
-    className: "about"
+    className: "content-box"
   }, React.createElement("h3", {
     id: "title"
   }, "Replay Hut"), React.createElement("h5", null, "modified by ", React.createElement("a", {

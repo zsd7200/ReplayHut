@@ -45,44 +45,6 @@ nav {
       transition: background-color 0.8s ease;
       background-color: #BA7D2F; }
 
-.domoForm {
-  border: 2px solid #422B12;
-  border-top: none;
-  height: 55px;
-  width: 1100px;
-  margin-top: 0px;
-  padding-top: 10px;
-  background-color: #A06E32;
-  border-bottom-right-radius: 4px;
-  border-top-right-radius: 4px; }
-  .domoForm label {
-    display: inline-block;
-    width: 120px;
-    margin-left: 10px;
-    font-size: 1.2em;
-    float: left;
-    color: white; }
-
-#powerLabel {
-  width: 150px; }
-
-.domoForm input[type=text] {
-  float: left; }
-
-.makeDomoSubmit {
-  transition: background-color 0.4s ease;
-  display: inline;
-  width: 90px;
-  background-color: #A06E32;
-  border-radius: 2px;
-  color: white;
-  text-decoration: none; }
-  .makeDomoSubmit:link, .makeDomoSubmit:visited, .makeDomoSubmit:hover, .makeDomoSubmit:active {
-    color: white; }
-  .makeDomoSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #BA7D2F; }
-
 .mainForm {
   height: 300px;
   width: 350px;
@@ -191,92 +153,59 @@ nav {
   font-weight: bold;
   color: red; }
 
-#domo {
+#terry {
   z-index: 225;
-  margin-top: -20px;
-  margin-left: 100px;
-  -ms-transform: rotate(10deg);
-  -webkit-transform: rotate(10deg);
-  transform: rotate(10deg); }
+  margin-left: 100px; }
 
-#domos, #userList {
+#userList {
   width: 40%;
   min-width: 400px;
-  border: 2px solid #A06E32;
+  border: 2px solid #422B12;
   border-radius: 4px;
   margin: 0 auto;
   margin-top: 100px; }
 
-.domo, .user {
+.user {
   width: 95%;
   margin: 0 auto;
   margin-top: 2px;
   margin-bottom: 2px;
-  border: 2px solid #A06E32;
+  border: 2px solid #422B12;
   border-radius: 4px;
-  background-color: #A06E32;
   padding: 10px;
   min-height: 60px;
   overflow: hidden; }
+  .user:nth-child(1) {
+    background-color: #BA7D2F; }
+  .user:nth-child(2) {
+    background-color: #915E2A; }
 
-.domo:hover {
-  transition: border-color 0.2s ease-out;
-  border-color: rgba(255, 255, 255, 0.8);
-  transition: background-color 2.6s ease-out;
-  background-color: #BA7D2F; }
-
-img.domoFace {
-  margin-left: 25px;
-  margin-right: 10px;
-  height: 50px;
-  width: 50px;
-  border-radius: 4px;
-  margin-top: 10px;
-  float: left; }
-
-h3.emptyDomo {
-  width: 400px;
-  font-size: 1.5em;
-  margin: 0 auto;
-  text-align: center;
-  margin-top: 18px; }
-
-h3.domoName {
-  float: left;
-  width: 150px;
-  font-weight: bold;
-  padding-left: 50px;
-  font-size: 1.5em; }
-
-h3.domoAge {
-  float: right;
-  text-align: left;
-  width: 100px;
-  font-weight: bold;
-  padding-right: 40px;
-  font-size: 1.5em; }
-
-h3.domoPower {
-  font-size: 1.5em;
-  font-weight: bold;
-  text-align: left; }
-
-.domo:first-child {
-  margin-top: 10px; }
-
-.domo:last-child {
-  margin-bottom: 10px; }
-
-.about {
+.content-box {
   margin: auto;
   margin-top: 50px;
   width: 800px;
   border-radius: 25px;
   border: 2px solid #422B12;
   background-color: #f0f0f0;
-  text-align: center;
   padding-top: 10px;
   padding-bottom: 10px; }
+  .content-box h3, .content-box h5 {
+    text-align: center; }
+  .content-box .input-label {
+    display: inline-block;
+    text-align: left;
+    margin-left: 200px; }
+  .content-box input[type="text"] {
+    display: inline-block;
+    float: right;
+    margin-right: 200px;
+    width: 250px; }
+
+.clipSubmit {
+  width: 20%;
+  margin-top: 15px;
+  margin-right: 40%;
+  margin-left: 40%; }
 
 #title {
   padding-bottom: 10px; }
@@ -294,7 +223,7 @@ h3.domoPower {
   border-radius: 10px;
   box-shadow: 7px 7px 4px grey;
   width: 450px;
-  padding: 5px;
+  padding: 8px;
   margin: 5px;
   margin-right: 20px;
   margin-bottom: 10px;
@@ -326,4 +255,11 @@ h3.domoPower {
     transform: rotate(360deg); } }
 
 .creator {
-  float: right; }
+  float: right;
+  font-size: 12pt; }
+
+.game, .description, .char1, .char2 {
+  margin-bottom: 0px; }
+
+.post-date {
+  margin-bottom: 8px; }
