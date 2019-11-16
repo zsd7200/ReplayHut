@@ -13,6 +13,9 @@ var makePost = function makePost(e) {
 
   sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), function (result) {
     handleError(result.message);
+  }, function (xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    handleError(messageObj.error);
   });
   return false;
 };

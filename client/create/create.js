@@ -6,7 +6,9 @@ const makePost = (e) =>{
         return false;
     }
 
-    sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), (result)=>{handleError(result.message);});
+    sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), (result)=>{handleError(result.message);}, 
+    (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
+        handleError(messageObj.error);});
     
 
     return false;
