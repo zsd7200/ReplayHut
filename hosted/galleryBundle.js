@@ -1,7 +1,7 @@
 "use strict";
 
-var ytWidth = 436;
-var ytHeight = 245;
+var ytWidth = 430;
+var ytHeight = 242;
 
 var formatDate = function formatDate(date) {
   // save a new date based on UTC date
@@ -49,21 +49,21 @@ var ClipList = function ClipList(props) {
       if (clip.character2 !== '') {
         return React.createElement("div", {
           className: "clip"
-        }, React.createElement("h3", {
+        }, React.createElement("h4", {
           className: "clip-title"
-        }, "Title: ", clip.title, React.createElement("h5", {
+        }, React.createElement("u", null, clip.title), React.createElement("span", {
           className: "creator"
-        }, "Creator: ", clip.creatorUN)), React.createElement("h5", {
+        }, "Creator: ", clip.creatorUN)), React.createElement("p", {
           className: "game"
-        }, "Game: ", clip.game), React.createElement("h5", {
+        }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
           className: "description"
-        }, "Description: ", clip.description), React.createElement("h5", {
+        }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
           className: "char1"
-        }, "Character 1: ", clip.character1), React.createElement("h5", {
+        }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
           className: "char2"
-        }, "Character 2: ", clip.character2), React.createElement("h5", {
+        }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
           className: "post-date"
-        }, "Posted: ", formatDate(clip.postDate)), React.createElement("iframe", {
+        }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
           width: ytWidth,
           height: ytHeight,
           src: clip.youtube,
@@ -74,19 +74,19 @@ var ClipList = function ClipList(props) {
       } else {
         return React.createElement("div", {
           className: "clip"
-        }, React.createElement("h3", {
+        }, React.createElement("h4", {
           className: "clip-title"
-        }, "Title: ", clip.title, React.createElement("h5", {
+        }, React.createElement("u", null, clip.title), React.createElement("span", {
           className: "creator"
-        }, "Creator: ", clip.creatorUN)), React.createElement("h5", {
+        }, "Creator: ", clip.creatorUN)), React.createElement("p", {
           className: "game"
-        }, "Game: ", clip.game), React.createElement("h5", {
+        }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
           className: "description"
-        }, "Description: ", clip.description), React.createElement("h5", {
+        }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
           className: "char1"
-        }, "Character 1: ", clip.character1), React.createElement("h5", {
+        }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
           className: "post-date"
-        }, "Posted: ", formatDate(clip.postDate)), React.createElement("iframe", {
+        }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
           width: ytWidth,
           height: ytHeight,
           src: clip.youtube,
@@ -98,19 +98,19 @@ var ClipList = function ClipList(props) {
     } else if (clip.character2 !== '') {
       return React.createElement("div", {
         className: "clip"
-      }, React.createElement("h3", {
+      }, React.createElement("h4", {
         className: "clip-title"
-      }, "Title: ", clip.title, React.createElement("h5", {
+      }, React.createElement("u", null, clip.title), React.createElement("span", {
         className: "creator"
-      }, "Creator: ", clip.creatorUN)), React.createElement("h5", {
+      }, "Creator: ", clip.creatorUN)), React.createElement("p", {
         className: "game"
-      }, "Game: ", clip.game), React.createElement("h5", {
+      }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
         className: "description"
-      }, "Description: ", clip.description), React.createElement("h5", {
+      }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
         className: "char2"
-      }, "Character 2: ", clip.character2), React.createElement("h5", {
+      }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
         className: "post-date"
-      }, "Posted: ", formatDate(clip.postDate)), React.createElement("iframe", {
+      }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
         width: ytWidth,
         height: ytHeight,
         src: clip.youtube,
@@ -121,17 +121,17 @@ var ClipList = function ClipList(props) {
     } else {
       return React.createElement("div", {
         className: "clip"
-      }, React.createElement("h3", {
+      }, React.createElement("h4", {
         className: "clip-title"
-      }, "Title: ", clip.title, React.createElement("h5", {
+      }, React.createElement("u", null, clip.title), React.createElement("span", {
         className: "creator"
-      }, "Creator: ", clip.creatorUN)), React.createElement("h5", {
+      }, "Creator: ", clip.creatorUN)), React.createElement("p", {
         className: "game"
-      }, "Game: ", clip.game), React.createElement("h5", {
+      }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
         className: "description"
-      }, "Description: ", clip.description), React.createElement("h5", {
+      }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
         className: "post-date"
-      }, "Posted: ", formatDate(clip.postDate)), React.createElement("iframe", {
+      }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
         width: ytWidth,
         height: ytHeight,
         src: clip.youtube,

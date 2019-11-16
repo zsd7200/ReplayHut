@@ -1,5 +1,5 @@
-const ytWidth = 436;
-const ytHeight = 245;
+const ytWidth = 430;
+const ytHeight = 242;
 
 const formatDate = (date) => {
     // save a new date based on UTC date
@@ -52,14 +52,14 @@ const ClipList = function(props)
             if(clip.character2 !== '') {
                 return(
                     <div className="clip">
-                        <h3 className="clip-title">Title: {clip.title}
-                            <h5 className="creator">Creator: {clip.creatorUN}</h5>
-                        </h3>
-                        <h5 className="game">Game: {clip.game}</h5>
-                        <h5 className="description">Description: {clip.description}</h5>
-                        <h5 className="char1">Character 1: {clip.character1}</h5>
-                        <h5 className="char2">Character 2: {clip.character2}</h5>
-                        <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
+                        <h4 className="clip-title"><u>{clip.title}</u>
+                            <span className="creator">Creator: {clip.creatorUN}</span>
+                        </h4>
+                        <p className="game"><b>Game:</b> {clip.game}</p>
+                        <p className="description"><b>Description:</b> {clip.description}</p>
+                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                         <iframe 
                             width={ytWidth} 
                             height={ytHeight} 
@@ -74,13 +74,13 @@ const ClipList = function(props)
             } else {
                 return(
                     <div className="clip">
-                        <h3 className="clip-title">Title: {clip.title}
-                            <h5 className="creator">Creator: {clip.creatorUN}</h5>
-                        </h3>
-                        <h5 className="game">Game: {clip.game}</h5>
-                        <h5 className="description">Description: {clip.description}</h5>
-                        <h5 className="char1">Character 1: {clip.character1}</h5>
-                        <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
+                        <h4 className="clip-title"><u>{clip.title}</u>
+                            <span className="creator">Creator: {clip.creatorUN}</span>
+                        </h4>
+                        <p className="game"><b>Game:</b> {clip.game}</p>
+                        <p className="description"><b>Description:</b> {clip.description}</p>
+                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                         <iframe 
                             width={ytWidth} 
                             height={ytHeight} 
@@ -95,13 +95,13 @@ const ClipList = function(props)
         } else if (clip.character2 !== ''){
             return(
                 <div className="clip">
-                    <h3 className="clip-title">Title: {clip.title}
-                        <h5 className="creator">Creator: {clip.creatorUN}</h5>
-                    </h3>
-                    <h5 className="game">Game: {clip.game}</h5>
-                    <h5 className="description">Description: {clip.description}</h5>
-                    <h5 className="char2">Character 2: {clip.character2}</h5>
-                    <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
+                    <h4 className="clip-title"><u>{clip.title}</u>
+                        <span className="creator">Creator: {clip.creatorUN}</span>
+                    </h4>
+                    <p className="game"><b>Game:</b> {clip.game}</p>
+                    <p className="description"><b>Description:</b> {clip.description}</p>
+                    <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                     <iframe 
                         width={ytWidth} 
                         height={ytHeight} 
@@ -116,12 +116,12 @@ const ClipList = function(props)
         } else {
             return(
                 <div className="clip">
-                    <h3 className="clip-title">Title: {clip.title}
-                        <h5 className="creator">Creator: {clip.creatorUN}</h5>
-                    </h3>
-                    <h5 className="game">Game: {clip.game}</h5>
-                    <h5 className="description">Description: {clip.description}</h5>
-                    <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
+                    <h4 className="clip-title"><u>{clip.title}</u>
+                        <span className="creator">Creator: {clip.creatorUN}</span>
+                    </h4>
+                    <p className="game"><b>Game:</b> {clip.game}</p>
+                    <p className="description"><b>Description:</b> {clip.description}</p>
+                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                     <iframe 
                         width={ytWidth} 
                         height={ytHeight} 
