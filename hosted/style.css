@@ -180,16 +180,32 @@ nav {
   .user:nth-child(2) {
     background-color: #915E2A; }
 
-.about {
+.content-box {
   margin: auto;
   margin-top: 50px;
   width: 800px;
   border-radius: 25px;
   border: 2px solid #422B12;
   background-color: #f0f0f0;
-  text-align: center;
   padding-top: 10px;
   padding-bottom: 10px; }
+  .content-box h3, .content-box h5 {
+    text-align: center; }
+  .content-box .input-label {
+    display: inline-block;
+    text-align: left;
+    margin-left: 200px; }
+  .content-box input[type="text"] {
+    display: inline-block;
+    float: right;
+    margin-right: 200px;
+    width: 250px; }
+
+.clipSubmit {
+  width: 20%;
+  margin-top: 15px;
+  margin-right: 40%;
+  margin-left: 40%; }
 
 #title {
   padding-bottom: 10px; }

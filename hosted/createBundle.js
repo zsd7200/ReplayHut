@@ -21,58 +21,68 @@ var makePost = function makePost(e) {
 };
 
 var CreateForm = function CreateForm(props) {
-  return React.createElement("form", {
+  return React.createElement("div", {
+    className: "content-box"
+  }, React.createElement("form", {
     id: "createForm",
     onSubmit: makePost,
     name: "createForm",
     action: "/createClip",
     method: "POST",
     classname: "createForm"
-  }, React.createElement("label", {
+  }, React.createElement("h3", {
+    id: "requiredHeader"
+  }, "Basic Clip Info (required): "), React.createElement("label", {
+    className: "input-label",
     htmlFor: "title"
   }, "Clip Title: "), React.createElement("input", {
     id: "clipTitle",
     type: "text",
     name: "title",
     placeholder: "Clip Title"
-  }), React.createElement("label", {
+  }), React.createElement("br", null), React.createElement("label", {
+    className: "input-label",
     htmlFor: "game"
   }, "Game: "), React.createElement("input", {
     id: "game",
     type: "text",
     name: "game",
-    placeholder: "Dragon Ball FighterZ"
-  }), React.createElement("label", {
+    placeholder: "Dragon Ball: FighterZ"
+  }), React.createElement("br", null), React.createElement("label", {
+    className: "input-label",
     htmlFor: "description"
   }, "Description: "), React.createElement("input", {
     id: "clipDesc",
     type: "text",
     name: "description",
     placeholder: "Talk about your clip!"
-  }), React.createElement("label", {
+  }), React.createElement("br", null), React.createElement("label", {
+    className: "input-label",
     htmlFor: "youtube"
   }, "YouTube Link: "), React.createElement("input", {
     id: "youtube",
     type: "text",
     name: "youtube",
     placeholder: "https://www.youtube.com/watch?v=lkbhsxLdiM8"
-  }), React.createElement("h3", {
+  }), React.createElement("br", null), React.createElement("h3", {
     id: "charHeader"
-  }, "Characters (optional)"), React.createElement("label", {
+  }, "Characters (optional): "), React.createElement("label", {
+    className: "input-label",
     htmlFor: "char1"
   }, "Character 1: "), React.createElement("input", {
     id: "char1",
     type: "text",
     name: "char1",
     placeholder: "Character 1"
-  }), React.createElement("label", {
+  }), React.createElement("br", null), React.createElement("label", {
+    className: "input-label",
     htmlFor: "char2"
   }, "Character 2: "), React.createElement("input", {
     id: "char2",
     type: "text",
     name: "char2",
     placeholder: "Character 2"
-  }), React.createElement("input", {
+  }), React.createElement("br", null), React.createElement("input", {
     type: "hidden",
     name: "_csrf",
     value: props.csrf
@@ -80,7 +90,7 @@ var CreateForm = function CreateForm(props) {
     className: "clipSubmit",
     type: "submit",
     value: "Submit Clip"
-  }));
+  })));
 };
 
 var setup = function setup(csrf) {

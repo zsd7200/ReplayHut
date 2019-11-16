@@ -233,16 +233,39 @@ nav {
   }
 }
 
-.about {
+.content-box {
   margin: auto;
   margin-top: 50px;
   width: 800px;
   border-radius: 25px;
   border: 2px solid $darkestBrown;
   background-color: #f0f0f0;
-  text-align: center;
   padding-top: 10px;
   padding-bottom: 10px;
+  
+  h3, h5 {
+    text-align: center;
+  }
+  
+  .input-label {
+    display: inline-block; 
+    text-align: left;
+    margin-left: 200px;
+  }
+  
+  input[type="text"] {
+    display: inline-block;
+    float: right;
+    margin-right: 200px;
+    width: 250px;
+  }
+}
+
+.clipSubmit {
+    width: 20%;
+    margin-top: 15px;
+    margin-right: 40%;
+    margin-left: 40%;
 }
 
 #title {
@@ -307,6 +330,10 @@ nav {
 
 .game, .description, .char1, .char2 {
     margin-bottom: 0px;
+}
+
+#title, #game, #description, #youtube, #char1, #char2 {
+    
 }
 
 .post-date {
