@@ -160,6 +160,29 @@ const signup = (request, response) => {
   });
 };
 
+const activatePremium = (request, response) => {
+  const req = request;
+  const res = response;
+
+  Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
+    // Error check
+    if (err) return res.json({ error: err });
+
+    // If no error, create a temp variable to store changes
+    const foundUser = doc;
+
+    // Increasing their amount of domos
+    foundUser.premiumStatus = true;
+
+    // Handling promise to reassign the user's info
+    const updatePromise = foundUser.save();
+
+    updatePromise.then(() => res.json({ message: 'You are now a premium member!' }));
+
+    updatePromise.catch((err2) => res.json({ err2 }));
+    return true;
+  });
+};
 const getToken = (request, response) => {
   const req = request;
   const res = response;
@@ -181,3 +204,4 @@ module.exports.userList = userList;
 module.exports.getMyAccount = getMyAccount;
 module.exports.myAccount = myAccount;
 module.exports.changePassword = changePassword;
+module.exports.activatePremium = activatePremium;
