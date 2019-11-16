@@ -51,7 +51,7 @@ const createClip = (req, res) => {
         return res.json({ message: 'Clip successfully created!' });
       });
       */
-    
+
     // Used to increment the amount of domos created by one person
     Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
       // Error check
@@ -66,12 +66,11 @@ const createClip = (req, res) => {
       // Handling promise to reassign the user's info
       const updatePromise = foundUser.save();
 
-      updatePromise.then(() => res.json({message: "Clip successfuly created!"}));
+      updatePromise.then(() => res.json({ message: 'Clip successfuly created!' }));
 
       updatePromise.catch((err2) => res.json({ err2 }));
       return true;
     });
-    
   });
 
   clipPromise.catch((err) => {
