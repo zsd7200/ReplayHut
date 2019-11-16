@@ -1,5 +1,8 @@
 "use strict";
 
+var ytWidth = 386;
+var ytHeight = 215;
+
 var formatDate = function formatDate(date) {
   // save a new date based on UTC date
   var localDate = new Date(date); // create variables to modify for 12-hour clock
@@ -10,12 +13,24 @@ var formatDate = function formatDate(date) {
   if (localDate.getHours() + 1 > 12) {
     hour = localDate.getHours() - 12;
     amPm = "PM";
+  } // create variables for modifying minutes/seconds
+
+
+  var minute = localDate.getMinutes();
+  var second = localDate.getSeconds();
+
+  if (minute < 10) {
+    minute = "0" + minute;
+  }
+
+  if (second < 10) {
+    second = "0" + second;
   } // create a new string based on localDate data and 12-hour clock modifications
 
 
   var newDate = localDate.getMonth() + 1 + "/" + localDate.getDate() + "/" + localDate.getFullYear() + " "; // date
 
-  newDate += hour + ":" + localDate.getMinutes() + ":" + localDate.getSeconds() + " " + amPm; // time
+  newDate += hour + ":" + minute + ":" + second + " " + amPm; // time
 
   return newDate;
 };
@@ -30,21 +45,101 @@ var ClipList = function ClipList(props) {
 
 
   var clipNodes = props.clips.map(function (clip) {
-    return React.createElement("div", {
-      className: "clip"
-    }, React.createElement("h3", {
-      className: "clip-title"
-    }, "Title: ", clip.title, React.createElement("h5", {
-      className: "creator"
-    }, "Creator: ", clip.creatorUN)), React.createElement("h5", {
-      className: "char1"
-    }, "Character 1: ", clip.character1), React.createElement("h5", {
-      className: "char2"
-    }, "Character 2: ", clip.character2), React.createElement("h5", {
-      className: "description"
-    }, "Description: ", clip.description), React.createElement("h5", {
-      className: "post-date"
-    }, "Posted: ", formatDate(clip.postDate)));
+    if (clip.character1 !== '') {
+      if (clip.character2 !== '') {
+        return React.createElement("div", {
+          className: "clip"
+        }, React.createElement("h3", {
+          className: "clip-title"
+        }, "Title: ", clip.title, React.createElement("h5", {
+          className: "creator"
+        }, "Creator: ", clip.creatorUN)), React.createElement("h5", {
+          className: "game"
+        }, "Game: ", clip.game), React.createElement("h5", {
+          className: "description"
+        }, "Description: ", clip.description), React.createElement("h5", {
+          className: "char1"
+        }, "Character 1: ", clip.character1), React.createElement("h5", {
+          className: "char2"
+        }, "Character 2: ", clip.character2), React.createElement("h5", {
+          className: "post-date"
+        }, "Posted: ", formatDate(clip.postDate)), React.createElement("iframe", {
+          width: ytWidth,
+          height: ytHeight,
+          src: clip.youtube,
+          frameborder: "0",
+          allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+          allowfullscreen: true
+        }));
+      } else {
+        return React.createElement("div", {
+          className: "clip"
+        }, React.createElement("h3", {
+          className: "clip-title"
+        }, "Title: ", clip.title, React.createElement("h5", {
+          className: "creator"
+        }, "Creator: ", clip.creatorUN)), React.createElement("h5", {
+          className: "game"
+        }, "Game: ", clip.game), React.createElement("h5", {
+          className: "description"
+        }, "Description: ", clip.description), React.createElement("h5", {
+          className: "char1"
+        }, "Character 1: ", clip.character1), React.createElement("h5", {
+          className: "post-date"
+        }, "Posted: ", formatDate(clip.postDate)), React.createElement("iframe", {
+          width: ytWidth,
+          height: ytHeight,
+          src: clip.youtube,
+          frameborder: "0",
+          allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+          allowfullscreen: true
+        }));
+      }
+    } else if (clip.character2 !== '') {
+      return React.createElement("div", {
+        className: "clip"
+      }, React.createElement("h3", {
+        className: "clip-title"
+      }, "Title: ", clip.title, React.createElement("h5", {
+        className: "creator"
+      }, "Creator: ", clip.creatorUN)), React.createElement("h5", {
+        className: "game"
+      }, "Game: ", clip.game), React.createElement("h5", {
+        className: "description"
+      }, "Description: ", clip.description), React.createElement("h5", {
+        className: "char2"
+      }, "Character 2: ", clip.character2), React.createElement("h5", {
+        className: "post-date"
+      }, "Posted: ", formatDate(clip.postDate)), React.createElement("iframe", {
+        width: ytWidth,
+        height: ytHeight,
+        src: clip.youtube,
+        frameborder: "0",
+        allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+        allowfullscreen: true
+      }));
+    } else {
+      return React.createElement("div", {
+        className: "clip"
+      }, React.createElement("h3", {
+        className: "clip-title"
+      }, "Title: ", clip.title, React.createElement("h5", {
+        className: "creator"
+      }, "Creator: ", clip.creatorUN)), React.createElement("h5", {
+        className: "game"
+      }, "Game: ", clip.game), React.createElement("h5", {
+        className: "description"
+      }, "Description: ", clip.description), React.createElement("h5", {
+        className: "post-date"
+      }, "Posted: ", formatDate(clip.postDate)), React.createElement("iframe", {
+        width: ytWidth,
+        height: ytHeight,
+        src: clip.youtube,
+        frameborder: "0",
+        allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+        allowfullscreen: true
+      }));
+    }
   });
   return React.createElement("div", {
     className: "clipList"

@@ -17,13 +17,19 @@ const CreateForm = (props) =>{
         <form id="createForm" onSubmit={makePost}name="createForm" action="/createClip" method="POST" classname="createForm">
             <label htmlFor="title">Clip Title: </label>
             <input id="clipTitle" type="text" name="title" placeholder="Clip Title"/>
+            <label htmlFor="game">Game: </label>
+            <input id="game" type="text" name="game" placeholder="Dragon Ball FighterZ"/>
+            <label htmlFor="description">Description: </label>
+            <input id="clipDesc" type="text" name="description" placeholder="Talk about your clip!"/>
+            <label htmlFor="youtube">YouTube Link: </label>
+            <input id="youtube" type="text" name="youtube" placeholder="https://www.youtube.com/watch?v=lkbhsxLdiM8"/>
+
             <h3 id="charHeader">Characters (optional)</h3>
             <label htmlFor="char1">Character 1: </label>
             <input id="char1" type="text" name ="char1" placeholder="Character 1"/>
             <label htmlFor="char2">Character 2: </label>
             <input id="char2" type="text" name ="char2" placeholder="Character 2"/>
-            <label htmlFor="description">Description: </label>
-            <input id="clipDesc" type="text" name="description" placeholder="Talk about your clip!"/>
+
             <input type="hidden" name="_csrf" value={props.csrf}/>
             <input className="clipSubmit" type="submit" value="Submit Clip"/>
         </form>

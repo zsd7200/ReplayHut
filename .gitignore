@@ -1,3 +1,6 @@
+# bundles
+hosted/*.js
+
 # Logs
 logs
 *.log

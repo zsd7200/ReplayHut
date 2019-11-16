@@ -2,7 +2,7 @@ $lightBrown: #BA7D2F;
 $mediumBrown: #A06E32;
 $darkBrown: #915E2A;
 $darkestBrown: #422B12;
-$clipWidth: 600px;
+$clipWidth: 400px;
 $loaderColor: #98cf61;
 
 html, body {
@@ -362,6 +362,7 @@ h3 {
     width: 100%;
     padding-right: calc((100% - ((#{$clipWidth} + 30px) * 3)) / 2);
     padding-left: calc((100% - ((#{$clipWidth} + 30px) * 3)) / 2);
+
 }
 
 .clip {

@@ -10,16 +10,26 @@ const galleryPage = (req, res) => {
 };
 
 const createClip = (req, res) => {
-  if (!req.body.title || !req.body.description) {
-    return res.status(400).json({ error: 'Hey! Make sure you fill out all the fields!' });
+  if (!req.body.title || !req.body.description || !req.body.youtube || !req.body.game) {
+    return res.status(400).json({ error: 'Hey! Make sure you fill out all required fields!' });
   }
+
+  // check for proper youtube link
+  if (req.body.youtube.split('=')[0] !== 'https://www.youtube.com/watch?v') {
+    return res.status(400).json({ error: 'Not a proper YouTube link!' });
+  }
+
+  // change link to an embedded link and remove & parameters from link
+  const ytEmbed = `https://www.youtube.com/embed/${req.body.youtube.split('=')[1].split('&')[0]}`;
 
   console.log(req.body);
   const clipData = {
     title: req.body.title,
+    game: req.body.game,
+    description: req.body.description,
+    youtube: ytEmbed,
     character1: req.body.char1,
     character2: req.body.char2,
-    description: req.body.description,
     creatorUN: req.session.account.username,
     creatorID: req.session.account._id,
   };

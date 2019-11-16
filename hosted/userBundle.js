@@ -8,7 +8,8 @@ var UserList = function UserList(props) {
     }, React.createElement("h3", {
       className: "noUsers"
     }, "No users found"));
-  }
+  } //Code for sorting taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+
 
   props.users.sort(function (a, b) {
     return b.createdClips - a.createdClips;

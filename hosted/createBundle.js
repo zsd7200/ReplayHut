@@ -11,7 +11,9 @@ var makePost = function makePost(e) {
     return false;
   }
 
-  sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize());
+  sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), function (result) {
+    handleError(result.message);
+  });
   return false;
 };
 
@@ -30,6 +32,27 @@ var CreateForm = function CreateForm(props) {
     type: "text",
     name: "title",
     placeholder: "Clip Title"
+  }), React.createElement("label", {
+    htmlFor: "game"
+  }, "Game: "), React.createElement("input", {
+    id: "game",
+    type: "text",
+    name: "game",
+    placeholder: "Dragon Ball FighterZ"
+  }), React.createElement("label", {
+    htmlFor: "description"
+  }, "Description: "), React.createElement("input", {
+    id: "clipDesc",
+    type: "text",
+    name: "description",
+    placeholder: "Talk about your clip!"
+  }), React.createElement("label", {
+    htmlFor: "youtube"
+  }, "YouTube Link: "), React.createElement("input", {
+    id: "youtube",
+    type: "text",
+    name: "youtube",
+    placeholder: "https://www.youtube.com/watch?v=lkbhsxLdiM8"
   }), React.createElement("h3", {
     id: "charHeader"
   }, "Characters (optional)"), React.createElement("label", {
@@ -46,13 +69,6 @@ var CreateForm = function CreateForm(props) {
     type: "text",
     name: "char2",
     placeholder: "Character 2"
-  }), React.createElement("label", {
-    htmlFor: "description"
-  }, "Description: "), React.createElement("input", {
-    id: "clipDesc",
-    type: "text",
-    name: "description",
-    placeholder: "Talk about your clip!"
   }), React.createElement("input", {
     type: "hidden",
     name: "_csrf",

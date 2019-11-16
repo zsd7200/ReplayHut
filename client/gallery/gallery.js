@@ -1,3 +1,6 @@
+const ytWidth = 386;
+const ytHeight = 215;
+
 const formatDate = (date) => {
     // save a new date based on UTC date
     const localDate = new Date(date);
@@ -12,9 +15,21 @@ const formatDate = (date) => {
         amPm = "PM";
     }
     
+    // create variables for modifying minutes/seconds
+    let minute = localDate.getMinutes();
+    let second = localDate.getSeconds();
+    
+    if(minute < 10) {
+        minute = "0" + minute;
+    }
+    
+    if(second < 10) {
+        second = "0" + second;
+    }
+    
     // create a new string based on localDate data and 12-hour clock modifications
     let newDate = (localDate.getMonth() + 1) + "/" + localDate.getDate() + "/" + localDate.getFullYear() + " ";      // date
-    newDate += hour + ":" + localDate.getMinutes() + ":" + localDate.getSeconds() + " " + amPm;                         // time
+    newDate += hour + ":" + minute + ":" + second + " " + amPm;                         // time
     return newDate;
 };
 
@@ -33,18 +48,61 @@ const ClipList = function(props)
     
     // Displaying each clip
     const clipNodes = props.clips.map(function(clip){
-        return(
-            <div className="clip">
-                <h3 className="clip-title">Title: {clip.title}
-                    <h5 className="creator">Creator: {clip.creatorUN}</h5>
-                </h3>
-                <h5 className="char1">Character 1: {clip.character1}</h5>
-                <h5 className="char2">Character 2: {clip.character2}</h5>
-                <h5 className="description">Description: {clip.description}</h5>
-                <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
-                <iframe width="560" height="315" src={clip.youtube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        );
+        if(clip.character1 !== '') {
+            if(clip.character2 !== '') {
+                return(
+                    <div className="clip">
+                        <h3 className="clip-title">Title: {clip.title}
+                            <h5 className="creator">Creator: {clip.creatorUN}</h5>
+                        </h3>
+                        <h5 className="game">Game: {clip.game}</h5>
+                        <h5 className="description">Description: {clip.description}</h5>
+                        <h5 className="char1">Character 1: {clip.character1}</h5>
+                        <h5 className="char2">Character 2: {clip.character2}</h5>
+                        <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
+                        <iframe width={ytWidth} height={ytHeight} src={clip.youtube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                );
+            } else {
+                return(
+                    <div className="clip">
+                        <h3 className="clip-title">Title: {clip.title}
+                            <h5 className="creator">Creator: {clip.creatorUN}</h5>
+                        </h3>
+                        <h5 className="game">Game: {clip.game}</h5>
+                        <h5 className="description">Description: {clip.description}</h5>
+                        <h5 className="char1">Character 1: {clip.character1}</h5>
+                        <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
+                        <iframe width={ytWidth} height={ytHeight} src={clip.youtube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                );
+            }
+        } else if (clip.character2 !== ''){
+            return(
+                <div className="clip">
+                    <h3 className="clip-title">Title: {clip.title}
+                        <h5 className="creator">Creator: {clip.creatorUN}</h5>
+                    </h3>
+                    <h5 className="game">Game: {clip.game}</h5>
+                    <h5 className="description">Description: {clip.description}</h5>
+                    <h5 className="char2">Character 2: {clip.character2}</h5>
+                    <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
+                    <iframe width={ytWidth} height={ytHeight} src={clip.youtube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            );
+        } else {
+            return(
+                <div className="clip">
+                    <h3 className="clip-title">Title: {clip.title}
+                        <h5 className="creator">Creator: {clip.creatorUN}</h5>
+                    </h3>
+                    <h5 className="game">Game: {clip.game}</h5>
+                    <h5 className="description">Description: {clip.description}</h5>
+                    <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
+                    <iframe width={ytWidth} height={ytHeight} src={clip.youtube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            );
+        }
     });
     
     return(
@@ -59,7 +117,7 @@ const setup = function()
     // Retrieving the accounts
     sendAjax('GET', '/getClips', null, (data) => {
         ReactDOM.render(<ClipList clips={data.clips} />, document.querySelector("#clips"));
-    });
+    },
     (xhr, status, error) =>{
         var messageObj = JSON.parse(xhr.responseText);
         handleError(messageObj.error);
