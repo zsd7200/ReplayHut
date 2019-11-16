@@ -21,6 +21,9 @@ const ReplaySchema = new mongoose.Schema({
   description: {
     type: String, required: true, trim: true, set: setName,
   },
+  youtube: {
+    type: String, required: true, trim: true
+  },
   creatorUN: {
     type: String, required: true, trim: true, set: setName,
   },

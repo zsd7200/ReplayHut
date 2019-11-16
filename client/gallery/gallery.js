@@ -33,7 +33,6 @@ const ClipList = function(props)
     
     // Displaying each clip
     const clipNodes = props.clips.map(function(clip){
-        
         return(
             <div className="clip">
                 <h3 className="clip-title">Title: {clip.title}
@@ -43,10 +42,11 @@ const ClipList = function(props)
                 <h5 className="char2">Character 2: {clip.character2}</h5>
                 <h5 className="description">Description: {clip.description}</h5>
                 <h5 className="post-date">Posted: {formatDate(clip.postDate)}</h5>
+                <iframe width="560" height="315" src={clip.youtube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         );
     });
-
+    
     return(
         <div className="clipList">
             {clipNodes}
@@ -55,11 +55,11 @@ const ClipList = function(props)
 }
 
 const setup = function()
-{
+{   
     // Retrieving the accounts
     sendAjax('GET', '/getClips', null, (data) => {
         ReactDOM.render(<ClipList clips={data.clips} />, document.querySelector("#clips"));
-    },
+    });
     (xhr, status, error) =>{
         var messageObj = JSON.parse(xhr.responseText);
         handleError(messageObj.error);
