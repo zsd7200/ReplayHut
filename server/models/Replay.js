@@ -10,22 +10,22 @@ const convertId = mongoose.Types.ObjectId;
 const setName = (name) => _.escape(name).trim();
 const ReplaySchema = new mongoose.Schema({
   title: {
-    type: String, required: true, trim: true, set: setName,
+    type: String, required: true, trim: true,
   },
   game: {
-    type: String, required: true, trim: true, set: setName,
+    type: String, required: true, trim: true,
   },
   description: {
-    type: String, required: true, trim: true, set: setName,
+    type: String, required: true, trim: true,
   },
   youtube: {
     type: String, required: true, trim: true,
   },
   character1: {
-    type: String, required: false, trim: true, set: setName,
+    type: String, required: false, trim: true,
   },
   character2: {
-    type: String, required: false, trim: true, set: setName,
+    type: String, required: false, trim: true,
   },
   creatorUN: {
     type: String, required: true, trim: true, set: setName,

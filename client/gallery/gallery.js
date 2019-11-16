@@ -1,5 +1,5 @@
-const ytWidth = 386;
-const ytHeight = 215;
+const ytWidth = 436;
+const ytHeight = 245;
 
 const formatDate = (date) => {
     // save a new date based on UTC date

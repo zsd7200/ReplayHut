@@ -1,7 +1,7 @@
 "use strict";
 
-var ytWidth = 386;
-var ytHeight = 215;
+var ytWidth = 436;
+var ytHeight = 245;
 
 var formatDate = function formatDate(date) {
   // save a new date based on UTC date
