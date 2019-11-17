@@ -75,15 +75,21 @@ var showCancelPremium = function showCancelPremium() {
 
 var CancelPremium = function CancelPremium(props) {
   return React.createElement("div", {
-    classname: "content"
+    className: "content-box"
   }, React.createElement("button", {
+    className: "back pointer",
     oncClick: showAccount
-  }, "Go back"), React.createElement("h1", null, "Woah there!"), React.createElement("h2", null, "Are you really sure you want to cancel your premium membership?"), React.createElement("h3", null, "If you cancel your subscription, you'll lose:"), React.createElement("ul", null, React.createElement("li", null, "Ad-free browsing"), React.createElement("li", null, "An icon next to your name across the site")), React.createElement("h3", null, "If you're really sure, click below to cancel your subscription."), React.createElement("p", null, "(Changes will take effect at the end of your subscription cycle)"), React.createElement("input", {
+  }, "Go back"), React.createElement("div", {
+    className: "center-content"
+  }, React.createElement("h1", null, "Woah there!"), React.createElement("h2", null, "Are you really sure you want to cancel your premium membership?")), React.createElement("br", null), React.createElement("h3", null, "If you cancel your subscription, you'll lose:"), React.createElement("ul", null, React.createElement("li", null, "Ad-free browsing"), React.createElement("li", null, "An icon next to your name across the site")), React.createElement("h3", null, "If you're really sure, click below to cancel your subscription."), React.createElement("p", {
+    className: "center-content"
+  }, "(Changes will take effect at the end of your subscription cycle)"), React.createElement("input", {
     type: "hidden",
     name: "_csrf",
     id: "csrf",
     value: props.csrf
   }), React.createElement("button", {
+    className: "formSubmit pointer",
     onClick: cancelPremium
   }, "Cancel Subscription"));
 };
@@ -92,10 +98,11 @@ var PremiumInfo = function PremiumInfo(props) {
   return React.createElement("div", {
     className: "content-box"
   }, React.createElement("button", {
+    className: "back pointer",
     onClick: showAccount
   }, "Go Back"), React.createElement("h1", {
     className: "center-content"
-  }, " Get Amazarn Prime today!"), React.createElement("br", null), React.createElement("h3", null, "Benefits of premium:"), React.createElement("ul", null, React.createElement("li", null, "Remove ads"), React.createElement("li", null, "Get an icon next to your name across the site"), React.createElement("li", null, "Help us continue providing updates to ReplayHut!")), React.createElement("br", null), React.createElement("h3", null, "If you want to help, get premium for just $3.99 a month!"), React.createElement("br", null), React.createElement("form", {
+  }, " Get Hut Prime\u2122 today!"), React.createElement("br", null), React.createElement("h3", null, "Benefits of Prime:"), React.createElement("ul", null, React.createElement("li", null, "Remove ads"), React.createElement("li", null, "Get a \u2B50 icon next to your name across the site"), React.createElement("li", null, "Help us continue providing updates to ReplayHut!")), React.createElement("br", null), React.createElement("h3", null, "If you want to help, get Prime for only $3.99 a month!"), React.createElement("br", null), React.createElement("form", {
     id: "premCardForm",
     name: "premCardForm",
     onSubmit: activatePremium,
@@ -254,9 +261,8 @@ var AccountInfo = function AccountInfo(props) {
       className: "formSubmit",
       type: "submit",
       value: "Change Password"
-    })), React.createElement("br", null), React.createElement("button", {
-      disabled: true
-    }, "Sign up for Prime!"), React.createElement("button", {
+    })), React.createElement("button", {
+      className: "formSubmit pointer",
       onClick: showCancelPremium
     }, "Cancel Premium"));
   }

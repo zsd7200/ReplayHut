@@ -69,19 +69,21 @@ const showCancelPremium = () =>{
 const CancelPremium = function(props) 
 {
     return(
-        <div classname="content">
-            <button oncClick={showAccount}>Go back</button>
-            <h1>Woah there!</h1>
-            <h2>Are you really sure you want to cancel your premium membership?</h2>
+        <div className="content-box">
+            <button className="back pointer" oncClick={showAccount}>Go back</button>
+            <div className="center-content">
+                <h1>Woah there!</h1>
+                <h2>Are you really sure you want to cancel your premium membership?</h2>
+            </div><br />
             <h3>If you cancel your subscription, you'll lose:</h3>
             <ul>
                 <li>Ad-free browsing</li>
                 <li>An icon next to your name across the site</li>
             </ul>
             <h3>If you're really sure, click below to cancel your subscription.</h3>
-            <p>(Changes will take effect at the end of your subscription cycle)</p>
+            <p className="center-content">(Changes will take effect at the end of your subscription cycle)</p>
             <input type="hidden" name="_csrf" id="csrf" value={props.csrf} />
-            <button onClick={cancelPremium}>Cancel Subscription</button>
+            <button className="formSubmit pointer" onClick={cancelPremium}>Cancel Subscription</button>
         </div>
     )
 }
@@ -89,18 +91,18 @@ const PremiumInfo = function(props)
 {
     return(
         <div className="content-box">
-            <button onClick={showAccount}>Go Back</button>
-            <h1 className="center-content"> Get Amazarn Prime today!</h1>
+            <button className="back pointer" onClick={showAccount}>Go Back</button>
+            <h1 className="center-content"> Get Hut Prime™ today!</h1>
             <br />
             
-            <h3>Benefits of premium:</h3>
+            <h3>Benefits of Prime:</h3>
             <ul>
                 <li>Remove ads</li>
-                <li>Get an icon next to your name across the site</li>
+                <li>Get a ⭐ icon next to your name across the site</li>
                 <li>Help us continue providing updates to ReplayHut!</li>
             </ul>
             <br />
-            <h3>If you want to help, get premium for just $3.99 a month!</h3>
+            <h3>If you want to help, get Prime for only $3.99 a month!</h3>
             <br />
             <form id="premCardForm" name="premCardForm" onSubmit={activatePremium} action="/activatePremium" method="POST">
                 <div className="input-item">
@@ -195,9 +197,7 @@ const AccountInfo = function(props)
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input className="formSubmit" type="submit" value="Change Password"/>
                 </form>
-                <br />
-                <button disabled>Sign up for Prime!</button>
-                <button onClick={showCancelPremium}>Cancel Premium</button>
+                <button className="formSubmit pointer" onClick={showCancelPremium}>Cancel Premium</button>
             </div>
         )
     }

@@ -15,10 +15,13 @@ html, body {
   overflow-x: hidden; }
 
 nav {
-  width: 100%;
-  height: 50px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 160px;
   background-color: #A06E32;
-  border-bottom: 2px solid #422B12; }
+  border-top: 2px solid #422B12; }
   nav:nth-child(1) {
     padding-left: 25px; }
 
@@ -56,8 +59,10 @@ li {
 
 .clipList {
   width: 100%;
-  padding-right: calc((100% - ((450px + 30px) * 3)) / 2);
-  padding-left: calc((100% - ((450px + 30px) * 3)) / 2); }
+  margin-left: 160px;
+  margin-top: 20px;
+  padding-right: calc(calc(100% - 960px)/2);
+  padding-left: calc(calc(100% - 960px)/2); }
 
 .clipSubmit {
   width: 20%;
@@ -67,7 +72,9 @@ li {
 
 .content-box {
   margin: auto;
-  margin-top: 50px;
+  margin-top: 200px;
+  position: relative;
+  left: 160px;
   width: 800px;
   border-radius: 25px;
   border: 2px solid #422B12;
@@ -84,7 +91,7 @@ li {
 .current-page {
   border: 2px solid #BA7D2F; }
 
-.formSubmit {
+.formSubmit, .back {
   transition: background-color 0.4s ease;
   display: block;
   text-align: center;
@@ -98,9 +105,9 @@ li {
   border-color: #915E2A;
   color: white;
   text-decoration: none; }
-  .formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
+  .formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active, .back:link, .back:visited, .back:hover, .back:active {
     color: white; }
-  .formSubmit:hover {
+  .formSubmit:hover, .back:hover {
     transition: background-color 0.4s ease;
     background-color: #A06E32; }
 
@@ -141,6 +148,8 @@ li {
   padding-top: 20%; }
 
 .mainForm {
+  position: relative;
+  left: 160px;
   height: 300px;
   width: 350px;
   margin: 0 auto;
@@ -159,7 +168,8 @@ li {
 
 .navlink {
   padding-top: 8px;
-  padding-left: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
   color: white;
   font-size: 1.3em;
   float: left; }
@@ -239,6 +249,9 @@ li {
     background-color: #915E2A; }
 
 /* Classes one-liners */
+.back {
+  margin: 0 0 0 10 !important; }
+
 .center-content {
   text-align: center; }
 
@@ -267,7 +280,7 @@ li {
   position: absolute;
   width: 350px;
   height: 350px;
-  left: calc(50% - 175px);
+  left: calc(50% - 15px);
   z-index: -999; }
 
 #logo {
@@ -308,7 +321,9 @@ li {
   border: 2px solid #422B12;
   border-radius: 4px;
   margin: 0 auto;
-  margin-top: 100px; }
+  margin-top: 100px;
+  position: relative;
+  left: 160px; }
 
 /* IDs one-liners */
 #title {

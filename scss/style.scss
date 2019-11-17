@@ -6,6 +6,7 @@ $darkestBrown: #422B12;
 $lightGreen: #cfe6b8;
 $clipWidth: 450px;
 $loaderColor: #98cf61;
+$sidebarSize: 160px;
 
 /* Spin animation for loading circle */
 @keyframes spin {
@@ -23,10 +24,13 @@ html, body {
 }
 
 nav {
-  width: 100%;
-  height: 50px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: $sidebarSize;
   background-color: $mediumBrown;
-  border-bottom: 2px solid $darkestBrown;
+  border-top: 2px solid $darkestBrown;
 
   &:nth-child(1) {
     padding-left: 25px;
@@ -54,16 +58,16 @@ li {
 
 /* Classes */
 .clip {
-    border: 2px solid black;
-    border-radius: 10px;
-    box-shadow: 7px 7px 4px grey;
-    width: $clipWidth;
-    padding: 8px;
-    margin: 5px;
-    margin-right: 20px;
-    margin-bottom: 10px;
-    display: inline-block;
-    transition: .5s;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 7px 7px 4px grey;
+  width: $clipWidth;
+  padding: 8px;
+  margin: 5px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  display: inline-block;
+  transition: .5s;
 }
 
 .clip:hover{
@@ -72,10 +76,11 @@ li {
 }
 
 .clipList {
-    width: 100%;
-    padding-right: calc((100% - ((#{$clipWidth} + 30px) * 3)) / 2);
-    padding-left: calc((100% - ((#{$clipWidth} + 30px) * 3)) / 2);
-
+  width: 100%;
+  margin-left: $sidebarSize;
+  margin-top: 20px;
+  padding-right: calc(calc(100% - 960px)/2);
+  padding-left: calc(calc(100% - 960px)/2);
 }
 
 .clipSubmit {
@@ -87,7 +92,9 @@ li {
 
 .content-box {
   margin: auto;
-  margin-top: 50px;
+  margin-top: 200px;
+  position: relative;
+  left: $sidebarSize;
   width: 800px;
   border-radius: 25px;
   border: 2px solid $darkestBrown;
@@ -109,7 +116,7 @@ li {
     border: 2px solid $lightBrown;
 }
 
-.formSubmit {
+.formSubmit, .back {
   transition: background-color 0.4s ease;
   display: block;
   text-align: center;
@@ -182,6 +189,8 @@ li {
 }
 
 .mainForm {
+  position: relative;
+  left: $sidebarSize;
   height: 300px;
   width: 350px;
   margin: 0 auto;
@@ -207,7 +216,8 @@ li {
 
 .navlink {
   padding-top: 8px;
-  padding-left: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
   color: white;
   font-size: 1.3em;
   float: left;
@@ -311,6 +321,7 @@ li {
 }
 
 /* Classes one-liners */
+.back { margin: 0 0 0 10 !important; }
 .center-content { text-align: center; }
 .fake-input { background-color: #d6d6d6 !important; }
 .help { cursor: help; }
@@ -329,7 +340,7 @@ li {
     position: absolute;
     width: 350px;
     height: 350px;
-    left: calc(50% - 175px);
+    left: calc(50% - 15px);
     z-index: -999;
 }
 
@@ -378,6 +389,8 @@ li {
   border-radius: 4px;
   margin: 0 auto;
   margin-top: 100px;
+  position: relative;
+  left: $sidebarSize;
 }
 
 
