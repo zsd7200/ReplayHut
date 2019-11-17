@@ -7,14 +7,14 @@ var handleLogin = function handleLogin(e) {
   }, 350);
 
   if ($("#user").val() == '' || $("#pass").val() == '') {
-    handleError("Hey! Username or password is empty!");
+    showMessage("Hey! Username or password is empty!");
     return false;
   }
 
   console.log($("input[name-_csrf]").val());
   sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), redirect, function (xhr, status, error) {
     var messageObj = JSON.parse(xhr.responseText);
-    handleError(messageObj.error);
+    showMessage(messageObj.error);
   });
   return false;
 };
@@ -26,24 +26,30 @@ var handleSignup = function handleSignup(e) {
   }, 350);
 
   if ($("#user").val() == '' || $("#pass").val() == '' || $("#pass2").val() == '') {
-    handleError("RAWR: All fields are required!");
+    showMessage("RAWR: All fields are required!");
     return false;
   }
 
   if ($("#pass").val() !== $("#pass2").val()) {
-    handleError("RAWR: Passwords do not match!");
+    showMessage("RAWR: Passwords do not match!");
     return false;
   }
 
   sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), redirect, function (xhr, status, error) {
     var messageObj = JSON.parse(xhr.responseText);
-    handleError(messageObj.error);
+    showMessage(messageObj.error);
   });
   return false;
 };
 
 var LoginWindow = function LoginWindow(props) {
-  return React.createElement("form", {
+  return React.createElement("div", {
+    id: "content"
+  }, React.createElement("img", {
+    id: "hut",
+    src: "/assets/img/hut_orig.png",
+    alt: "Hut"
+  }), React.createElement("form", {
     id: "loginForm",
     name: "loginForm",
     onSubmit: handleLogin,
@@ -72,11 +78,17 @@ var LoginWindow = function LoginWindow(props) {
     className: "formSubmit",
     type: "submit",
     value: "Sign In"
-  }));
+  })));
 };
 
 var SignupWindow = function SignupWindow(props) {
-  return React.createElement("form", {
+  return React.createElement("div", {
+    id: "content"
+  }, React.createElement("img", {
+    id: "hut",
+    src: "/assets/img/hut_orig.png",
+    alt: "Hut"
+  }), React.createElement("form", {
     id: "signupForm",
     name: "signupForm",
     onSubmit: handleSignup,
@@ -112,7 +124,7 @@ var SignupWindow = function SignupWindow(props) {
     className: "formSubmit",
     type: "submit",
     value: "Sign Up"
-  }));
+  })));
 };
 
 var createLoginWindow = function createLoginWindow(csrf) {
@@ -153,8 +165,8 @@ $(document).ready(function () {
   getToken();
 });
 
-var handleError = function handleError(message) {
-  $("#errorMessage").text(message);
+var showMessage = function showMessage(message) {
+  $("#innerMessage").text(message);
   $("#terryMessage").animate({
     width: 'toggle'
   }, 350);

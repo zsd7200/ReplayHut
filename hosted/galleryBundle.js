@@ -154,7 +154,7 @@ var setup = function setup() {
     }), document.querySelector("#clips"));
   }, function (xhr, status, error) {
     var messageObj = JSON.parse(xhr.responseText);
-    handleError(messageObj.error);
+    showMessage(messageObj.error);
   });
 };
 
@@ -162,8 +162,8 @@ $(document).ready(function () {
   setup();
 });
 
-var handleError = function handleError(message) {
-  $("#errorMessage").text(message);
+var showMessage = function showMessage(message) {
+  $("#innerMessage").text(message);
   $("#terryMessage").animate({
     width: 'toggle'
   }, 350);

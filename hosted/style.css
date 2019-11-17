@@ -263,6 +263,13 @@ li {
   font-weight: bold;
   color: red; }
 
+#hut {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  left: calc(50% - 175px);
+  z-index: -999; }
+
 #logo {
   height: 40px;
   width: 40px;

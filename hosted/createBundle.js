@@ -7,15 +7,15 @@ var makePost = function makePost(e) {
   }, 350);
 
   if ($("#clipTitle").val() == '' || $("#clipDesc").val() == '') {
-    handleError("Hey! Make sure you fill out all the fields!");
+    showMessage("Hey! Make sure you fill out all the fields!");
     return false;
   }
 
   sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), function (result) {
-    handleError(result.message);
+    showMessage(result.message);
   }, function (xhr, status, error) {
     var messageObj = JSON.parse(xhr.responseText);
-    handleError(messageObj.error);
+    showMessage(messageObj.error);
   });
   return false;
 };
@@ -121,8 +121,8 @@ $(document).ready(function () {
   getToken();
 });
 
-var handleError = function handleError(message) {
-  $("#errorMessage").text(message);
+var showMessage = function showMessage(message) {
+  $("#innerMessage").text(message);
   $("#terryMessage").animate({
     width: 'toggle'
   }, 350);

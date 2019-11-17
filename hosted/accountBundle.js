@@ -7,12 +7,12 @@ var passChange = function passChange(e) {
   }, 350);
 
   if ($("#pass").val() == '' || $("#pass2").val() == '' || $("#currentPass").val() == '') {
-    handleError("Hey, make sure you fill out all fields!");
+    showMessage("Hey, make sure you fill out all fields!");
     return false;
   }
 
   if ($("#pass").val() !== $("#pass2").val()) {
-    handleError("Woah, those new passwords don't match!");
+    showMessage("Woah, those new passwords don't match!");
     return false;
   }
 
@@ -20,9 +20,9 @@ var passChange = function passChange(e) {
     $("#pass").val() == '';
     $("#pass2").val() == '';
     $("#currentPass").val() == '';
-    handleError(result.message);
+    showMessage(result.message);
   }, function (xhr, status, error) {
-    if (error === 'Unauthorized') handleError("Current password is not correct");
+    if (error === 'Unauthorized') showMessage("Current password is not correct");
   });
   return false;
 };
@@ -31,7 +31,18 @@ var activatePremium = function activatePremium(e) {
   e.preventDefault();
   sendAjax('POST', $("#premCardForm").attr("action"), $("#premCardForm").serialize(), function (result) {
     showAccount();
-    handleError(result.message);
+    showMessage(result.message);
+  });
+};
+
+var cancelPremium = function cancelPremium(e) {
+  e.preventDefault();
+  sendAjax('POST', "/cancelPremium", $("#csrf").serialize(), function (result) {
+    showAccount();
+    showMessage(result.message);
+  }, function (xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    showMessage(messageObj.error);
   });
 };
 
@@ -54,10 +65,35 @@ var showAccount = function showAccount() {
   });
 };
 
+var showCancelPremium = function showCancelPremium() {
+  sendAjax('GET', '/getToken', null, function (result) {
+    ReactDOM.render(React.createElement(CancelPremium, {
+      csrf: result.csrfToken
+    }), document.querySelector("#content"));
+  });
+};
+
+var CancelPremium = function CancelPremium(props) {
+  return React.createElement("div", {
+    classname: "content"
+  }, React.createElement("button", {
+    oncClick: showAccount
+  }, "Go back"), React.createElement("h1", null, "Woah there!"), React.createElement("h2", null, "Are you really sure you want to cancel your premium membership?"), React.createElement("h3", null, "If you cancel your subscription, you'll lose:"), React.createElement("ul", null, React.createElement("li", null, "Ad-free browsing"), React.createElement("li", null, "An icon next to your name across the site")), React.createElement("h3", null, "If you're really sure, click below to cancel your subscription."), React.createElement("p", null, "(Changes will take effect at the end of your subscription cycle)"), React.createElement("input", {
+    type: "hidden",
+    name: "_csrf",
+    id: "csrf",
+    value: props.csrf
+  }), React.createElement("button", {
+    onClick: cancelPremium
+  }, "Cancel Subscription"));
+};
+
 var PremiumInfo = function PremiumInfo(props) {
   return React.createElement("div", {
     className: "content-box"
-  }, React.createElement("h1", {
+  }, React.createElement("button", {
+    onClick: showAccount
+  }, "Go Back"), React.createElement("h1", {
     className: "center-content"
   }, " Get Amazarn Prime today!"), React.createElement("br", null), React.createElement("h3", null, "Benefits of premium:"), React.createElement("ul", null, React.createElement("li", null, "Remove ads"), React.createElement("li", null, "Get an icon next to your name across the site"), React.createElement("li", null, "Help us continue providing updates to ReplayHut!")), React.createElement("br", null), React.createElement("h3", null, "If you want to help, get premium for just $3.99 a month!"), React.createElement("br", null), React.createElement("form", {
     id: "premCardForm",
@@ -218,7 +254,11 @@ var AccountInfo = function AccountInfo(props) {
       className: "formSubmit",
       type: "submit",
       value: "Change Password"
-    })), React.createElement("br", null));
+    })), React.createElement("br", null), React.createElement("button", {
+      disabled: true
+    }, "Sign up for Prime!"), React.createElement("button", {
+      onClick: showCancelPremium
+    }, "Cancel Premium"));
   }
 };
 /*const setup = function(csrf)
@@ -241,8 +281,8 @@ $(document).ready(function () {
   showAccount();
 });
 
-var handleError = function handleError(message) {
-  $("#errorMessage").text(message);
+var showMessage = function showMessage(message) {
+  $("#innerMessage").text(message);
   $("#terryMessage").animate({
     width: 'toggle'
   }, 350);

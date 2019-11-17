@@ -31,8 +31,8 @@ $(document).ready(function () {
   getToken();
 });
 
-var handleError = function handleError(message) {
-  $("#errorMessage").text(message);
+var showMessage = function showMessage(message) {
+  $("#innerMessage").text(message);
   $("#terryMessage").animate({
     width: 'toggle'
   }, 350);
