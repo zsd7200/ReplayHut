@@ -169,6 +169,11 @@ input[type="text"]:focus, input[type="password"]:focus {
   display: inline-block;
 }
 
+.loader-container {
+    text-align: center;
+    padding-top: 20%;
+}
+
 .mainForm {
   height: 300px;
   width: 350px;
@@ -218,11 +223,6 @@ input[type="text"]:focus, input[type="password"]:focus {
       background-color: $lightBrown;
     }
   }
-}
-
-.loader-container {
-    text-align: center;
-    padding-top: 20%;
 }
 
 /* Speech Bubble CSS from */
