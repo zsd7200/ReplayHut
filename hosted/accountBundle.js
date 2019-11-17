@@ -101,35 +101,46 @@ var PremiumInfo = function PremiumInfo(props) {
 var AccountInfo = function AccountInfo(props) {
   if (props.account.premiumStatus === false) {
     return React.createElement("div", {
-      classname: "content"
-    }, React.createElement("h1", null, "Hello ", props.account.username, "!"), React.createElement("p", null, "You've made ", props.account.createdClips, " Clips"), React.createElement("h3", null, "Change password"), React.createElement("form", {
+      className: "content-box"
+    }, React.createElement("div", {
+      className: "center-content"
+    }, React.createElement("h1", null, "Hello ", props.account.username, "!"), React.createElement("p", null, "You've made ", props.account.createdClips, " clips.")), React.createElement("h3", null, "Change Password:"), React.createElement("form", {
       id: "changePassForm",
       name: "changePassForm",
       onSubmit: passChange,
       action: "/changePassword",
       method: "POST"
-    }, React.createElement("label", {
-      htmlFor: "currentPass"
-    }, "New Password: "), React.createElement("input", {
+    }, React.createElement("div", {
+      className: "input-item"
+    }, React.createElement("input", {
       id: "currentPass",
       type: "password",
       name: "currentPass",
       placeholder: "Current password"
     }), React.createElement("label", {
-      htmlFor: "pass"
-    }, "New Password: "), React.createElement("input", {
+      className: "input-label",
+      htmlFor: "currentPass"
+    }, "Current Password: ")), React.createElement("div", {
+      className: "input-item"
+    }, React.createElement("input", {
       id: "pass",
       type: "password",
       name: "pass",
       placeholder: "New password"
     }), React.createElement("label", {
-      htmlFor: "pass2"
-    }, "Retype New Password: "), React.createElement("input", {
+      className: "input-label",
+      htmlFor: "pass"
+    }, "New Password: ")), React.createElement("div", {
+      className: "input-item"
+    }, React.createElement("input", {
       id: "pass2",
       type: "password",
       name: "pass2",
       placeholder: "Retype password"
-    }), React.createElement("input", {
+    }), React.createElement("label", {
+      className: "input-label",
+      htmlFor: "pass2"
+    }, "Retype New Password: ")), React.createElement("br", null), React.createElement("input", {
       type: "hidden",
       name: "_csrf",
       value: props.csrf

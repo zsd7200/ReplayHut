@@ -39,7 +39,7 @@ var ClipList = function ClipList(props) {
   // If no clip have been made, show error
   if (props.clips.length === 0) {
     return React.createElement("div", {
-      className: "noClips"
+      className: "loader-container"
     }, React.createElement("h3", null, "No clips found!"));
   } // Displaying each clip
 

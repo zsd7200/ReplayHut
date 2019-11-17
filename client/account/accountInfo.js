@@ -81,17 +81,31 @@ const AccountInfo = function(props)
     if(props.account.premiumStatus === false)
     {
         return(
-            <div classname="content">
-                <h1>Hello {props.account.username}!</h1>
-                <p>You've made {props.account.createdClips} Clips</p>
-                <h3>Change password</h3>
+            <div className="content-box">
+                <div className="center-content">
+                    <h1>Hello {props.account.username}!</h1>
+                    <p>You've made {props.account.createdClips} clips.</p>
+                </div>
+                <h3>Change Password:</h3>
                 <form id="changePassForm" name="changePassForm" onSubmit={passChange} action="/changePassword" method="POST">
-                    <label htmlFor="currentPass">New Password: </label>
-                    <input id="currentPass" type="password" name ="currentPass" placeholder="Current password"/>
-                    <label htmlFor="pass">New Password: </label>
-                    <input id="pass" type="password" name ="pass" placeholder="New password"/>
-                    <label htmlFor="pass2">Retype New Password: </label>
-                    <input id="pass2" type="password" name ="pass2" placeholder="Retype password"/>
+                    
+                    <div className="input-item">
+                        <input id="currentPass" type="password" name ="currentPass" placeholder="Current password"/>
+                        <label className="input-label" htmlFor="currentPass">Current Password: </label>
+                    </div>
+                    
+                    <div className="input-item">
+                        <input id="pass" type="password" name ="pass" placeholder="New password"/>
+                        <label className="input-label" htmlFor="pass">New Password: </label>
+                    </div>
+                    
+                    <div className="input-item">
+                        <input id="pass2" type="password" name ="pass2" placeholder="Retype password"/>
+                        <label className="input-label" htmlFor="pass2">Retype New Password: </label>
+                    </div>
+                    
+                    <br />
+                    
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input className="formSubmit" type="submit" value="Change Password"/>
                 </form>

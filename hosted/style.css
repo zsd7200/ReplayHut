@@ -1,17 +1,18 @@
+/* SASS Variables */
+/* Spin animation for loading circle */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+/* CSS applied to elements of x-type */
 html, body {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden; }
-
-#logo {
-  height: 40px;
-  width: 40px;
-  margin-top: 4px;
-  margin-left: 13px;
-  float: left;
-  border-radius: 8px; }
 
 nav {
   width: 100%;
@@ -20,6 +21,130 @@ nav {
   border-bottom: 2px solid #422B12; }
   nav:nth-child(1) {
     padding-left: 25px; }
+
+input[type="text"], input[type="password"] {
+  text-align: center;
+  font-size: 12pt;
+  width: 250px;
+  border-radius: 6px; }
+
+input[type="text"]:focus, input[type="password"]:focus {
+  outline: none;
+  box-shadow: 0px 0px 1px 1px #55acee; }
+
+/* Classes */
+.clip {
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 7px 7px 4px grey;
+  width: 450px;
+  padding: 8px;
+  margin: 5px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  display: inline-block;
+  transition: .5s; }
+
+.clip:hover {
+  box-shadow: 7px 7px 4px #73c9e6;
+  transition: .5s; }
+
+.clipList {
+  width: 100%;
+  padding-right: calc((100% - ((450px + 30px) * 3)) / 2);
+  padding-left: calc((100% - ((450px + 30px) * 3)) / 2); }
+
+.clipSubmit {
+  width: 20%;
+  margin-top: 15px;
+  margin-right: 40%;
+  margin-left: 40%; }
+
+.content-box {
+  margin: auto;
+  margin-top: 50px;
+  width: 800px;
+  border-radius: 25px;
+  border: 2px solid #422B12;
+  background-color: #f0f0f0;
+  padding-top: 10px;
+  padding-bottom: 10px; }
+  .content-box h3, .content-box h5 {
+    text-align: center; }
+
+.creator {
+  float: right;
+  font-size: 12pt; }
+
+.current-page {
+  border: 2px solid #BA7D2F; }
+
+.formSubmit {
+  transition: background-color 0.4s ease;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: -3;
+  font-size: 1.2em;
+  width: 120px;
+  background-color: #BA7D2F;
+  border-radius: 2px;
+  border-color: #915E2A;
+  padding: 3px 0px;
+  color: white;
+  text-decoration: none; }
+  .formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
+    color: white; }
+  .formSubmit:hover {
+    transition: background-color 0.4s ease;
+    background-color: #A06E32; }
+
+.input-item {
+  display: flex;
+  padding: 0px;
+  margin: 0px; }
+  .input-item .input-label {
+    order: -1;
+    text-align: left;
+    margin-left: 180px;
+    font-weight: normal;
+    transition: .2s; }
+  .input-item input[type="text"], .input-item input[type="password"] {
+    margin: auto;
+    margin-right: 180px;
+    width: 250px;
+    background-color: white;
+    transition: .2s; }
+    .input-item input[type="text"]:focus, .input-item input[type="password"]:focus {
+      background-color: #cfe6b8;
+      transition: .2s; }
+      .input-item input[type="text"]:focus ~ label, .input-item input[type="password"]:focus ~ label {
+        font-weight: bold; }
+
+/* Loader CSS modified from https://www.w3schools.com/howto/howto_css_loader.asp */
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #98cf61;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  display: inline-block; }
+
+.mainForm {
+  height: 300px;
+  width: 350px;
+  margin: 0 auto;
+  padding-top: 350px;
+  font-size: 1.2em; }
+  .mainForm h3 {
+    text-align: center; }
+  .mainForm label {
+    display: inline-block;
+    width: 100px;
+    margin-right: 10px;
+    text-align: right;
+    font-size: 1.2em; }
 
 .navlink {
   padding-top: 8px;
@@ -45,66 +170,9 @@ nav {
       transition: background-color 0.8s ease;
       background-color: #BA7D2F; }
 
-.mainForm {
-  height: 300px;
-  width: 350px;
-  margin: 0 auto;
-  padding-top: 350px;
-  font-size: 1.2em; }
-  .mainForm h3 {
-    text-align: center; }
-  .mainForm label {
-    display: inline-block;
-    width: 100px;
-    margin-right: 10px;
-    text-align: right;
-    font-size: 1.2em; }
-
-.formSubmit {
-  transition: background-color 0.4s ease;
-  display: block;
+.loader-container {
   text-align: center;
-  margin: 0 auto;
-  margin-top: -3;
-  font-size: 1.2em;
-  width: 120px;
-  background-color: #BA7D2F;
-  border-radius: 2px;
-  border-color: #915E2A;
-  padding: 3px 0px;
-  color: white;
-  text-decoration: none; }
-  .formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
-    color: white; }
-  .formSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #A06E32; }
-
-#user, #pass, #pass2 {
-  text-align: center;
-  font-size: 1.1em;
-  width: 180px;
-  border-radius: 6px; }
-
-#user:focus, #pass:focus, #pass2:focus {
-  outline: none;
-  box-shadow: 0px 0px 1px 1px #55acee; }
-
-#domoMessage {
-  display: none;
-  top: 250px;
-  width: 250px;
-  height: 650px;
-  position: absolute;
-  z-index: 200;
-  right: 0px;
-  overflow: hidden;
-  padding-right: 20px; }
-  #domoMessage h3 {
-    width: 200px;
-    position: absolute;
-    top: 0px;
-    left: 20px; }
+  padding-top: 20%; }
 
 /* Speech Bubble CSS from */
 /* https://auralinna.blog/post/2017/how-to-make-a-css-speech-bubble-with-borders-and-drop-shadow */
@@ -148,23 +216,6 @@ nav {
     position: absolute;
     right: 6px; }
 
-#errorMessage {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: red; }
-
-#terry {
-  z-index: 225;
-  margin-left: 100px; }
-
-#userList {
-  width: 40%;
-  min-width: 400px;
-  border: 2px solid #422B12;
-  border-radius: 4px;
-  margin: 0 auto;
-  margin-top: 100px; }
-
 .user {
   width: 95%;
   margin: 0 auto;
@@ -180,99 +231,58 @@ nav {
   .user:nth-child(odd) {
     background-color: #915E2A; }
 
-.content-box {
-  margin: auto;
-  margin-top: 50px;
-  width: 800px;
-  border-radius: 25px;
-  border: 2px solid #422B12;
-  background-color: #f0f0f0;
-  padding-top: 10px;
-  padding-bottom: 10px; }
-  .content-box h3, .content-box h5 {
-    text-align: center; }
-
-.input-item {
-  display: flex;
-  padding: 0px;
-  margin: 0px; }
-  .input-item .input-label {
-    order: -1;
-    text-align: left;
-    margin-left: 200px;
-    font-weight: normal;
-    transition: .2s; }
-  .input-item input[type="text"] {
-    margin: auto;
-    margin-right: 200px;
-    width: 250px;
-    background-color: white;
-    transition: .2s; }
-    .input-item input[type="text"]:focus {
-      background-color: #cfe6b8;
-      transition: .2s; }
-      .input-item input[type="text"]:focus ~ label {
-        font-weight: bold; }
-
-.clipSubmit {
-  width: 20%;
-  margin-top: 15px;
-  margin-right: 40%;
-  margin-left: 40%; }
-
-#title {
-  padding-bottom: 10px; }
-
-.current-page {
-  border: 2px solid #BA7D2F; }
-
-.clipList {
-  width: 100%;
-  padding-right: calc((100% - ((450px + 30px) * 3)) / 2);
-  padding-left: calc((100% - ((450px + 30px) * 3)) / 2); }
-
-.clip {
-  border: 2px solid black;
-  border-radius: 10px;
-  box-shadow: 7px 7px 4px grey;
-  width: 450px;
-  padding: 8px;
-  margin: 5px;
-  margin-right: 20px;
-  margin-bottom: 10px;
-  display: inline-block;
-  transition: .5s; }
-
-.clip:hover {
-  box-shadow: 7px 7px 4px #73c9e6;
-  transition: .5s; }
-
-.noClips {
-  text-align: center;
-  padding-top: 20%; }
-
-/* https://www.w3schools.com/howto/howto_css_loader.asp */
-.loader {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #98cf61;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 2s linear infinite;
-  display: inline-block; }
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg); }
-  100% {
-    transform: rotate(360deg); } }
-
-.creator {
-  float: right;
-  font-size: 12pt; }
+/* Classes one-liners */
+.center-content {
+  text-align: center; }
 
 .game, .description, .char1, .char2 {
   margin-bottom: 0px; }
 
 .post-date {
   margin-bottom: 8px; }
+
+/* IDs */
+#errorMessage {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: red; }
+
+#logo {
+  height: 40px;
+  width: 40px;
+  margin-top: 4px;
+  margin-left: 13px;
+  float: left;
+  border-radius: 8px; }
+
+#terry {
+  z-index: 225;
+  margin-left: 100px; }
+
+#terryMessage {
+  display: none;
+  top: 250px;
+  width: 250px;
+  height: 650px;
+  position: absolute;
+  z-index: 200;
+  right: 0px;
+  overflow: hidden;
+  padding-right: 20px; }
+  #terryMessage h3 {
+    width: 200px;
+    position: absolute;
+    top: 0px;
+    left: 20px; }
+
+#userList {
+  width: 40%;
+  min-width: 400px;
+  border: 2px solid #422B12;
+  border-radius: 4px;
+  margin: 0 auto;
+  margin-top: 100px; }
+
+/* IDs one-liners */
+#title {
+  padding-bottom: 10px; }

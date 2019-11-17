@@ -40,7 +40,7 @@ const ClipList = function(props)
     if(props.clips.length === 0)
     {
         return(
-            <div className="noClips">
+            <div className="loader-container">
                 <h3>No clips found!</h3>
             </div>
         )
