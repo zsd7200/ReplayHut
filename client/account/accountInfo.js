@@ -1,6 +1,6 @@
 const passChange = (e) =>{
     e.preventDefault();
-    $("#domoMessage").animate({width:'hide'}, 350);
+    $("#terryMessage").animate({width:'hide'}, 350);
 
     if( $("#pass").val() == '' || $("#pass2").val() == '' || $("#currentPass").val() == '') {
         handleError("Hey, make sure you fill out all fields!");

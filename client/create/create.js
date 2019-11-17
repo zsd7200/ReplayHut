@@ -1,6 +1,6 @@
 const makePost = (e) =>{
     e.preventDefault();
-    $("#domoMessage").animate({width:'hide'}, 350);
+    $("#terryMessage").animate({width:'hide'}, 350);
     if($("#clipTitle").val() == '' || $("#clipDesc").val() == '') {
         handleError("Hey! Make sure you fill out all the fields!");
         return false;
