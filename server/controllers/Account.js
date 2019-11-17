@@ -171,7 +171,7 @@ const activatePremium = (request, response) => {
     // If no error, create a temp variable to store changes
     const foundUser = doc;
 
-    // Increasing their amount of domos
+    // Changing their premium status
     foundUser.premiumStatus = true;
 
     // Handling promise to reassign the user's info
@@ -183,6 +183,32 @@ const activatePremium = (request, response) => {
     return true;
   });
 };
+
+const cancelPremium = (request, response) => {
+  const req = request;
+  const res = response;
+
+  Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
+    // Error check
+    if (err) return res.json({ error: err });
+
+    // If no error, create a temp variable to store changes
+    const foundUser = doc;
+
+    // Changing their premium status
+    foundUser.premiumStatus = false;
+
+    // Handling promise to reassign the user's info
+    const updatePromise = foundUser.save();
+
+    updatePromise.then(() => res.json({ message: 'Your premium membership has been cancelled.' }));
+
+    updatePromise.catch((err2) => res.json({ err2 }));
+    return true;
+  });
+};
+
+
 const getToken = (request, response) => {
   const req = request;
   const res = response;
@@ -205,3 +231,4 @@ module.exports.getMyAccount = getMyAccount;
 module.exports.myAccount = myAccount;
 module.exports.changePassword = changePassword;
 module.exports.activatePremium = activatePremium;
+module.exports.cancelPremium = cancelPremium;

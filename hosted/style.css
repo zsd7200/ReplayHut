@@ -131,6 +131,10 @@ input[type="text"]:focus, input[type="password"]:focus {
   animation: spin 2s linear infinite;
   display: inline-block; }
 
+.loader-container {
+  text-align: center;
+  padding-top: 20%; }
+
 .mainForm {
   height: 300px;
   width: 350px;
@@ -169,10 +173,6 @@ input[type="text"]:focus, input[type="password"]:focus {
     .navlink a:hover {
       transition: background-color 0.8s ease;
       background-color: #BA7D2F; }
-
-.loader-container {
-  text-align: center;
-  padding-top: 20%; }
 
 /* Speech Bubble CSS from */
 /* https://auralinna.blog/post/2017/how-to-make-a-css-speech-bubble-with-borders-and-drop-shadow */

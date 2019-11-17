@@ -1,5 +1,5 @@
 const InfoData = function(props) {
-    $("#domoMessage").animate({width:'toggle'}, 350);
+    $("#terryMessage").animate({width:'toggle'}, 350);
 
     return (    
         <div className="content-box">

@@ -1,14 +1,14 @@
 const makePost = (e) =>{
     e.preventDefault();
-    $("#domoMessage").animate({width:'hide'}, 350);
+    $("#terryMessage").animate({width:'hide'}, 350);
     if($("#clipTitle").val() == '' || $("#clipDesc").val() == '') {
-        handleError("Hey! Make sure you fill out all the fields!");
+        showMessage("Hey! Make sure you fill out all the fields!");
         return false;
     }
 
-    sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), (result)=>{handleError(result.message);}, 
+    sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), (result)=>{showMessage(result.message);}, 
     (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
-        handleError(messageObj.error);});
+        showMessage(messageObj.error);});
     
 
     return false;

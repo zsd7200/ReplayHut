@@ -52,7 +52,7 @@ const createClip = (req, res) => {
       });
       */
 
-    // Used to increment the amount of domos created by one person
+    // Used to increment the amount of clips created by a person
     Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
       // Error check
       if (err) return res.json({ error: err });
@@ -60,7 +60,7 @@ const createClip = (req, res) => {
       // If no error, create a temp variable to store changes
       const foundUser = doc;
 
-      // Increasing their amount of domos
+      // Increasing their amount of clips
       foundUser.createdClips++;
 
       // Handling promise to reassign the user's info

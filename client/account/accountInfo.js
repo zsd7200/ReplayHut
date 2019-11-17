@@ -1,14 +1,14 @@
 const passChange = (e) =>{
     e.preventDefault();
-    $("#domoMessage").animate({width:'hide'}, 350);
+    $("#terryMessage").animate({width:'hide'}, 350);
 
     if( $("#pass").val() == '' || $("#pass2").val() == '' || $("#currentPass").val() == '') {
-        handleError("Hey, make sure you fill out all fields!");
+        showMessage("Hey, make sure you fill out all fields!");
         return false;
     }
 
     if($("#pass").val() !== $("#pass2").val()) {
-        handleError("Woah, those new passwords don't match!");
+        showMessage("Woah, those new passwords don't match!");
         return false;
     }
     
@@ -18,11 +18,11 @@ const passChange = (e) =>{
         $("#pass").val() == '';
         $("#pass2").val() == '';
         $("#currentPass").val() == ''; 
-        handleError(result.message);
+        showMessage(result.message);
     }, 
     (xhr, status, error) =>{
         if(error === 'Unauthorized')
-            handleError("Current password is not correct");
+        showMessage("Current password is not correct");
     });
     
     return false;
@@ -32,7 +32,18 @@ const activatePremium = (e) =>{
     e.preventDefault();
     sendAjax('POST', $("#premCardForm").attr("action"), $("#premCardForm").serialize(), (result) => {
         showAccount();
-        handleError(result.message)}
+        showMessage(result.message)}
+    );
+}
+
+const cancelPremium = (e) =>{
+    e.preventDefault();
+
+    sendAjax('POST', "/cancelPremium", $("#csrf").serialize(), (result) => {
+        showAccount();
+        showMessage(result.message)},
+    (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
+        showMessage(messageObj.error);}
     );
 }
 const showPremium = () =>{
@@ -47,12 +58,38 @@ const showAccount = () =>{
             ReactDOM.render(<AccountInfo account={data.account} csrf={result.csrfToken} />, document.querySelector("#content"));
         });
     });
-}
+};
 
+const showCancelPremium = () =>{
+    sendAjax('GET', '/getToken', null, (result) => {
+        ReactDOM.render(<CancelPremium csrf={result.csrfToken} />, document.querySelector("#content"));
+    });
+};
+
+const CancelPremium = function(props) 
+{
+    return(
+        <div classname="content">
+            <button oncClick={showAccount}>Go back</button>
+            <h1>Woah there!</h1>
+            <h2>Are you really sure you want to cancel your premium membership?</h2>
+            <h3>If you cancel your subscription, you'll lose:</h3>
+            <ul>
+                <li>Ad-free browsing</li>
+                <li>An icon next to your name across the site</li>
+            </ul>
+            <h3>If you're really sure, click below to cancel your subscription.</h3>
+            <p>(Changes will take effect at the end of your subscription cycle)</p>
+            <input type="hidden" name="_csrf" id="csrf" value={props.csrf} />
+            <button onClick={cancelPremium}>Cancel Subscription</button>
+        </div>
+    )
+}
 const PremiumInfo = function(props)
 {
     return(
         <div classname="content">
+            <button onClick={showAccount}>Go Back</button>
             <h1> Get Amazarn Prime today!</h1>
             <h3>Benefits of premium:</h3>
             <ul>
@@ -147,6 +184,7 @@ const AccountInfo = function(props)
                 </form>
                 <br />
                 <button disabled>Sign up for Prime!</button>
+                <button onClick={showCancelPremium}>Cancel Premium</button>
             </div>
         )
     }

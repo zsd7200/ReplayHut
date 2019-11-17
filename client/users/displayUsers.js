@@ -38,7 +38,7 @@ const setup = function()
     },
     (xhr, status, error) =>{
         var messageObj = JSON.parse(xhr.responseText);
-        handleError(messageObj.error);
+        showMessage(messageObj.error);
     });
 }
 

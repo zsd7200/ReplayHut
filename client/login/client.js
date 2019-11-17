@@ -1,10 +1,10 @@
 const handleLogin = (e) => {
     e.preventDefault();
     
-    $("#domoMessage").animate({width:'hide'}, 350);
+    $("#terryMessage").animate({width:'hide'}, 350);
     
     if($("#user").val() == '' || $("#pass").val() == '') {
-        handleError("Hey! Username or password is empty!");
+        showMessage("Hey! Username or password is empty!");
         return false;
     }
     
@@ -12,7 +12,7 @@ const handleLogin = (e) => {
     
     sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), redirect, (xhr, status, error) =>{
         var messageObj = JSON.parse(xhr.responseText);
-        handleError(messageObj.error);
+        showMessage(messageObj.error);
     });
     
     return false;
@@ -21,21 +21,21 @@ const handleLogin = (e) => {
 const handleSignup = (e) => {
     e.preventDefault();
     
-    $("#domoMessage").animate({width:'hide'}, 350);
+    $("#terryMessage").animate({width:'hide'}, 350);
     
     if($("#user").val() == '' || $("#pass").val() == '' || $("#pass2").val() == '') {
-        handleError("RAWR: All fields are required!");
+        showMessage("RAWR: All fields are required!");
         return false;
     }
     
     if($("#pass").val() !== $("#pass2").val()) {
-        handleError("RAWR: Passwords do not match!");
+        showMessage("RAWR: Passwords do not match!");
         return false;
     }
     
     sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), redirect, (xhr, status, error) =>{
         var messageObj = JSON.parse(xhr.responseText);
-        handleError(messageObj.error);
+        showMessage(messageObj.error);
     });
     
     return false;
