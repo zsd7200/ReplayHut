@@ -23,63 +23,48 @@ const createClip = (req, res) => {
   // change link to an embedded link and remove & parameters from link
   const ytEmbed = `https://www.youtube.com/embed/${req.body.youtube.split('=')[1].split('&')[0]}`;
 
+  let currentPremStatus = false;
+  // Used to increment the amount of clips created by a person
+  Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
+    // Error check
+    if (err) return res.json({ error: err });
 
-  const clipData = {
-    title: req.body.title,
-    game: req.body.game,
-    description: req.body.description,
-    youtube: ytEmbed,
-    character1: req.body.char1,
-    character2: req.body.char2,
-    creatorUN: req.session.account.username,
-    creatorID: req.session.account._id,
-  };
+    // If no error, create a temp variable to store changes
+    const foundUser = doc;
 
-  const newClip = new Replays.ReplayModel(clipData);
+    // Increasing their amount of clips
+    foundUser.createdClips++;
+    currentPremStatus = foundUser.premiumStatus;
 
-  const clipPromise = newClip.save();
+    // console.log(currentPremStatus);
+    const clipData = {
+      title: req.body.title,
+      game: req.body.game,
+      description: req.body.description,
+      youtube: ytEmbed,
+      character1: req.body.char1,
+      character2: req.body.char2,
+      creatorUN: req.session.account.username,
+      creatorPremStatus: currentPremStatus,
+    };
+    const newClip = new Replays.ReplayModel(clipData);
 
-  clipPromise.then(() => {
-    // res.json({ redirect: '/create' });
+    const clipPromise = newClip.save();
+    // Handling promise to reassign the user's info
+    const updatePromise = foundUser.save();
 
-    /*
-    Account.AccountModel.updateOne({ username: req.session.account.username },
-      {$set:{ createdClips: numClips} },
-      (err) => {
-        if (err) return res.status(400).json({ message: err });
-        console.log(req.session.account.createdClips);
-        return res.json({ message: 'Clip successfully created!' });
-      });
-      */
+    updatePromise.catch((err2) => res.json({ err2 }));
+    clipPromise.then(() => { res.json({ message: 'Clip successfully created!' }); });
 
-    // Used to increment the amount of clips created by a person
-    Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
-      // Error check
-      if (err) return res.json({ error: err });
 
-      // If no error, create a temp variable to store changes
-      const foundUser = doc;
+    clipPromise.catch((err2) => {
+      console.log(err2);
 
-      // Increasing their amount of clips
-      foundUser.createdClips++;
-
-      // Handling promise to reassign the user's info
-      const updatePromise = foundUser.save();
-
-      updatePromise.then(() => res.json({ message: 'Clip successfuly created!' }));
-
-      updatePromise.catch((err2) => res.json({ err2 }));
-      return true;
+      return res.status(400).json({ error: 'An error occured!' });
     });
+    return true;
   });
-
-  clipPromise.catch((err) => {
-    console.log(err);
-
-    return res.status(400).json({ error: 'An error occured!' });
-  });
-
-  return clipPromise;
+  return true;
 };
 
 // Retrieves all clips

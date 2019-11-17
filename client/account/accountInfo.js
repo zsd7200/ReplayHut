@@ -53,6 +53,7 @@ const showPremium = () =>{
 };
 
 const showAccount = () =>{
+    console.log("here");
     sendAjax('GET', '/getToken', null, (result) => {
         sendAjax('GET', '/getMyAccount', null, (data) =>{
             ReactDOM.render(<AccountInfo account={data.account} csrf={result.csrfToken} />, document.querySelector("#content"));
@@ -70,7 +71,7 @@ const CancelPremium = function(props)
 {
     return(
         <div className="content-box">
-            <button className="back pointer" oncClick={showAccount}>Go back</button>
+            <button className="back pointer" onClick={showAccount}>Go back</button>
             <div className="center-content">
                 <h1>Woah there!</h1>
                 <h2>Are you really sure you want to cancel your premium membership?</h2>

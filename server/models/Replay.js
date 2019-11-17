@@ -30,7 +30,9 @@ const ReplaySchema = new mongoose.Schema({
   creatorUN: {
     type: String, required: true, trim: true, set: setName,
   },
-  creatorID: { type: mongoose.Schema.ObjectId, required: true, ref: 'Account' },
+  creatorPremStatus: {
+    type: Boolean, required: true, default: false,
+  },
   postDate: { type: Date, default: Date.now },
 });
 

@@ -13,9 +13,12 @@ var UserList = function UserList(props) {
 
   props.users.sort(function (a, b) {
     return b.createdClips - a.createdClips;
-  }); //Displaying each user
+  });
+  var count = 0; //Displaying each user
 
   var userNodes = props.users.map(function (user) {
+    count++;
+    console.log(count);
     return React.createElement("div", {
       className: "user"
     }, React.createElement("h3", {
