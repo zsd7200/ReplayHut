@@ -128,12 +128,16 @@ var SignupWindow = function SignupWindow(props) {
 };
 
 var createLoginWindow = function createLoginWindow(csrf) {
+  $("#loginButton").attr('class', 'current-page');
+  $("#signupButton").attr('class', '');
   ReactDOM.render(React.createElement(LoginWindow, {
     csrf: csrf
   }), document.querySelector("#content"));
 };
 
 var createSignupWindow = function createSignupWindow(csrf) {
+  $("#loginButton").attr('class', '');
+  $("#signupButton").attr('class', 'current-page');
   ReactDOM.render(React.createElement(SignupWindow, {
     csrf: csrf
   }), document.querySelector("#content"));
