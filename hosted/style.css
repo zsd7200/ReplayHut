@@ -175,9 +175,9 @@ nav {
   padding: 10px;
   min-height: 60px;
   overflow: hidden; }
-  .user:nth-child(1) {
+  .user:nth-child(even) {
     background-color: #BA7D2F; }
-  .user:nth-child(2) {
+  .user:nth-child(odd) {
     background-color: #915E2A; }
 
 .content-box {
@@ -191,15 +191,28 @@ nav {
   padding-bottom: 10px; }
   .content-box h3, .content-box h5 {
     text-align: center; }
-  .content-box .input-label {
-    display: inline-block;
+
+.input-item {
+  display: flex;
+  padding: 0px;
+  margin: 0px; }
+  .input-item .input-label {
+    order: -1;
     text-align: left;
-    margin-left: 200px; }
-  .content-box input[type="text"] {
-    display: inline-block;
-    float: right;
+    margin-left: 200px;
+    font-weight: normal;
+    transition: .2s; }
+  .input-item input[type="text"] {
+    margin: auto;
     margin-right: 200px;
-    width: 250px; }
+    width: 250px;
+    background-color: white;
+    transition: .2s; }
+    .input-item input[type="text"]:focus {
+      background-color: #cfe6b8;
+      transition: .2s; }
+      .input-item input[type="text"]:focus ~ label {
+        font-weight: bold; }
 
 .clipSubmit {
   width: 20%;

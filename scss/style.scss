@@ -2,6 +2,7 @@ $lightBrown: #BA7D2F;
 $mediumBrown: #A06E32;
 $darkBrown: #915E2A;
 $darkestBrown: #422B12;
+$lightGreen: #cfe6b8;
 $clipWidth: 450px;
 $loaderColor: #98cf61;
 
@@ -224,11 +225,11 @@ nav {
   min-height: 60px;
   overflow: hidden;
   
-  &:nth-child(1) {
+  &:nth-child(even) {
     background-color: $lightBrown;
   }
   
-  &:nth-child(2) {
+  &:nth-child(odd) {
     background-color: $darkBrown;  
   }
 }
@@ -246,18 +247,36 @@ nav {
   h3, h5 {
     text-align: center;
   }
-  
+}
+
+.input-item {
+  display: flex;
+  padding: 0px;
+  margin: 0px;
+    
   .input-label {
-    display: inline-block; 
+    order: -1;
     text-align: left;
     margin-left: 200px;
+    font-weight: normal;
+    transition: .2s;
   }
   
   input[type="text"] {
-    display: inline-block;
-    float: right;
+    margin: auto;
     margin-right: 200px;
     width: 250px;
+    background-color: white;
+    transition: .2s;
+    
+    &:focus {
+      background-color: $lightGreen;
+      transition: .2s;
+      
+      ~ label {
+        font-weight: bold;
+      }
+    }
   }
 }
 
