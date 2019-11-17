@@ -99,7 +99,7 @@ var CreateForm = function CreateForm(props) {
     name: "_csrf",
     value: props.csrf
   }), React.createElement("input", {
-    className: "clipSubmit",
+    className: "formSubmit",
     type: "submit",
     value: "Submit Clip"
   })));
