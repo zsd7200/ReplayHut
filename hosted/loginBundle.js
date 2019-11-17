@@ -7,7 +7,7 @@ var handleLogin = function handleLogin(e) {
   }, 350);
 
   if ($("#user").val() == '' || $("#pass").val() == '') {
-    showMessage("Hey! Username or password is empty!");
+    showMessage("HEY! Username or password is empty!");
     return false;
   }
 
@@ -26,12 +26,12 @@ var handleSignup = function handleSignup(e) {
   }, 350);
 
   if ($("#user").val() == '' || $("#pass").val() == '' || $("#pass2").val() == '') {
-    showMessage("RAWR: All fields are required!");
+    showMessage("HEY! All fields are required!");
     return false;
   }
 
   if ($("#pass").val() !== $("#pass2").val()) {
-    showMessage("RAWR: Passwords do not match!");
+    showMessage("HEY! Passwords do not match!");
     return false;
   }
 
@@ -166,10 +166,38 @@ $(document).ready(function () {
 });
 
 var showMessage = function showMessage(message) {
+  var terry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "bad";
+
+  // switch terry pic based on param
+  switch (terry) {
+    case "bad":
+      $("#terry").attr("src", "/assets/img/terry_bad.png");
+      break;
+
+    case "good":
+      $("#terry").attr("src", "/assets/img/terry_good.png");
+      break;
+
+    case "wait":
+      $("#terry").attr("src", "/assets/img/terry_wait.png");
+      break;
+
+    default:
+      $("#terry").attr("src", "/assets/img/terry_bad.png");
+      break;
+  } // change message
+
+
   $("#innerMessage").text(message);
   $("#terryMessage").animate({
     width: 'toggle'
-  }, 350);
+  }, 350); // disappear terry after 4s
+
+  setTimeout(function () {
+    $("#terryMessage").animate({
+      width: 'hide'
+    }, 350);
+  }, 4000);
 };
 
 var redirect = function redirect(response) {

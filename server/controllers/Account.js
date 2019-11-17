@@ -125,11 +125,11 @@ const signup = (request, response) => {
   req.body.pass2 = `${req.body.pass2}`;
 
   if (!req.body.username || !req.body.pass || !req.body.pass2) {
-    return res.status(400).json({ error: 'RAWR! All fields are required!' });
+    return res.status(400).json({ error: 'HEY! All fields are required!' });
   }
 
   if (req.body.pass !== req.body.pass2) {
-    return res.status(400).json({ error: 'RAWR! Passwords do not match!' });
+    return res.status(400).json({ error: 'HEY! Passwords do not match!' });
   }
 
   return Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
@@ -177,7 +177,7 @@ const activatePremium = (request, response) => {
     // Handling promise to reassign the user's info
     const updatePromise = foundUser.save();
 
-    updatePromise.then(() => res.json({ message: 'You are now a premium member!' }));
+    updatePromise.then(() => res.json({ message: 'You are now a Prime member!' }));
 
     updatePromise.catch((err2) => res.json({ err2 }));
     return true;
@@ -201,7 +201,7 @@ const cancelPremium = (request, response) => {
     // Handling promise to reassign the user's info
     const updatePromise = foundUser.save();
 
-    updatePromise.then(() => res.json({ message: 'Your premium membership has been cancelled.' }));
+    updatePromise.then(() => res.json({ message: 'Your Prime membership has been cancelled.' }));
 
     updatePromise.catch((err2) => res.json({ err2 }));
     return true;

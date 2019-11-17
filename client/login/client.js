@@ -4,7 +4,7 @@ const handleLogin = (e) => {
     $("#terryMessage").animate({width:'hide'}, 350);
     
     if($("#user").val() == '' || $("#pass").val() == '') {
-        showMessage("Hey! Username or password is empty!");
+        showMessage("HEY! Username or password is empty!");
         return false;
     }
     
@@ -24,12 +24,12 @@ const handleSignup = (e) => {
     $("#terryMessage").animate({width:'hide'}, 350);
     
     if($("#user").val() == '' || $("#pass").val() == '' || $("#pass2").val() == '') {
-        showMessage("RAWR: All fields are required!");
+        showMessage("HEY! All fields are required!");
         return false;
     }
     
     if($("#pass").val() !== $("#pass2").val()) {
-        showMessage("RAWR: Passwords do not match!");
+        showMessage("HEY! Passwords do not match!");
         return false;
     }
     

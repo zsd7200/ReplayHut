@@ -32,7 +32,7 @@ const activatePremium = (e) =>{
     e.preventDefault();
     sendAjax('POST', $("#premCardForm").attr("action"), $("#premCardForm").serialize(), (result) => {
         showAccount();
-        showMessage(result.message)}
+        showMessage(result.message, "good")}
     );
 }
 
@@ -41,7 +41,7 @@ const cancelPremium = (e) =>{
 
     sendAjax('POST', "/cancelPremium", $("#csrf").serialize(), (result) => {
         showAccount();
-        showMessage(result.message)},
+        showMessage(result.message, "wait")},
     (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
         showMessage(messageObj.error);}
     );
