@@ -2,7 +2,7 @@
 
 var passChange = function passChange(e) {
   e.preventDefault();
-  $("#domoMessage").animate({
+  $("#terryMessage").animate({
     width: 'hide'
   }, 350);
 
@@ -56,38 +56,53 @@ var showAccount = function showAccount() {
 
 var PremiumInfo = function PremiumInfo(props) {
   return React.createElement("div", {
-    classname: "content"
-  }, React.createElement("h1", null, " Get Amazarn Prime today!"), React.createElement("h3", null, "Benefits of premium:"), React.createElement("ul", null, React.createElement("li", null, "Remove ads"), React.createElement("li", null, "Get an icon next to your name across the site"), React.createElement("li", null, "Help us continue providing updates to ReplayHut!")), React.createElement("h3", null, "If you want to help, get premium for just $3.99 a month!"), React.createElement("br", null), React.createElement("form", {
+    className: "content-box"
+  }, React.createElement("h1", {
+    className: "center-content"
+  }, " Get Amazarn Prime today!"), React.createElement("br", null), React.createElement("h3", null, "Benefits of premium:"), React.createElement("ul", null, React.createElement("li", null, "Remove ads"), React.createElement("li", null, "Get an icon next to your name across the site"), React.createElement("li", null, "Help us continue providing updates to ReplayHut!")), React.createElement("br", null), React.createElement("h3", null, "If you want to help, get premium for just $3.99 a month!"), React.createElement("br", null), React.createElement("form", {
     id: "premCardForm",
     name: "premCardForm",
     onSubmit: activatePremium,
     action: "/activatePremium",
     method: "POST"
-  }, React.createElement("label", {
-    htmlFor: "name"
-  }, "Name on Card: "), React.createElement("input", {
+  }, React.createElement("div", {
+    className: "input-item"
+  }, React.createElement("input", {
+    className: "fake-input",
     id: "name",
     type: "text",
     name: "name",
     placeholder: "Name on Card",
     disabled: true
   }), React.createElement("label", {
-    htmlFor: "cardNum"
-  }, "Card Number: "), React.createElement("input", {
+    className: "input-label",
+    htmlFor: "name"
+  }, "Name on Card: ")), React.createElement("div", {
+    className: "input-item"
+  }, React.createElement("input", {
+    className: "fake-input",
     id: "cardNum",
     type: "text",
     name: "cardNum",
     placeholder: "Card Number",
     disabled: true
   }), React.createElement("label", {
-    htmlFor: "cvv"
-  }, "Wacky numbers on the back: "), React.createElement("input", {
+    className: "input-label",
+    htmlFor: "cardNum"
+  }, "Card Number: ")), React.createElement("div", {
+    className: "input-item"
+  }, React.createElement("input", {
+    className: "fake-input",
     id: "cvv",
     type: "text",
     name: "cvv",
     placeholder: "CVV",
     disabled: true
-  }), React.createElement("input", {
+  }), React.createElement("label", {
+    className: "input-label help",
+    title: "The CVV code is also known as \"the wacky numbers on the back\".",
+    htmlFor: "cvv"
+  }, "CVV: ")), React.createElement("input", {
     type: "hidden",
     name: "_csrf",
     value: props.csrf
@@ -102,7 +117,7 @@ var AccountInfo = function AccountInfo(props) {
   if (props.account.premiumStatus === false) {
     return React.createElement("div", {
       className: "content-box"
-    }, React.createElement("div", {
+    }, React.createElement("p", null), React.createElement("div", {
       className: "center-content"
     }, React.createElement("h1", null, "Hello ", props.account.username, "!"), React.createElement("p", null, "You've made ", props.account.createdClips, " clips.")), React.createElement("h3", null, "Change Password:"), React.createElement("form", {
       id: "changePassForm",
@@ -148,13 +163,16 @@ var AccountInfo = function AccountInfo(props) {
       className: "formSubmit",
       type: "submit",
       value: "Change Password"
-    })), React.createElement("br", null), React.createElement("button", {
+    })), React.createElement("button", {
+      className: "formSubmit pointer",
       onClick: showPremium
     }, "Sign up for Prime!"));
   } else {
     return React.createElement("div", {
       className: "content-box"
-    }, React.createElement("div", {
+    }, React.createElement("p", {
+      id: "premium-indicator"
+    }, "\u2B50 Premium Member"), React.createElement("div", {
       className: "center-content"
     }, React.createElement("h1", null, "Hello ", props.account.username, "!"), React.createElement("p", null, "You've made ", props.account.createdClips, " clips.")), React.createElement("h3", null, "Change Password:"), React.createElement("form", {
       id: "changePassForm",
@@ -192,7 +210,7 @@ var AccountInfo = function AccountInfo(props) {
     }), React.createElement("label", {
       className: "input-label",
       htmlFor: "pass2"
-    }, "Retype New Password: ")), React.createElement("br", null), React.createElement("input", {
+    }, "Retype New Password: ")), React.createElement("input", {
       type: "hidden",
       name: "_csrf",
       value: props.csrf
@@ -200,9 +218,7 @@ var AccountInfo = function AccountInfo(props) {
       className: "formSubmit",
       type: "submit",
       value: "Change Password"
-    })), React.createElement("br", null), React.createElement("button", {
-      disabled: true
-    }, "Sign up for Prime!"));
+    })), React.createElement("br", null));
   }
 };
 /*const setup = function(csrf)
@@ -227,13 +243,13 @@ $(document).ready(function () {
 
 var handleError = function handleError(message) {
   $("#errorMessage").text(message);
-  $("#domoMessage").animate({
+  $("#terryMessage").animate({
     width: 'toggle'
   }, 350);
 };
 
 var redirect = function redirect(response) {
-  $("#domoMessage").animate({
+  $("#terryMessage").animate({
     width: 'hide'
   }, 350);
   window.location = response.redirect;

@@ -23,7 +23,8 @@ nav {
     padding-left: 25px; }
 
 input[type="text"], input[type="password"] {
-  text-align: center;
+  padding-left: 4px;
+  padding-right: 4px;
   font-size: 12pt;
   width: 250px;
   border-radius: 6px; }
@@ -31,6 +32,10 @@ input[type="text"], input[type="password"] {
 input[type="text"]:focus, input[type="password"]:focus {
   outline: none;
   box-shadow: 0px 0px 1px 1px #55acee; }
+
+li {
+  margin-left: 25%;
+  margin-right: 25%; }
 
 /* Classes */
 .clip {
@@ -84,13 +89,13 @@ input[type="text"]:focus, input[type="password"]:focus {
   display: block;
   text-align: center;
   margin: 0 auto;
-  margin-top: -3;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   font-size: 1.2em;
-  width: 120px;
   background-color: #BA7D2F;
   border-radius: 2px;
   border-color: #915E2A;
-  padding: 3px 0px;
   color: white;
   text-decoration: none; }
   .formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
@@ -145,10 +150,12 @@ input[type="text"]:focus, input[type="password"]:focus {
     text-align: center; }
   .mainForm label {
     display: inline-block;
+    margin-left: 50px;
     width: 100px;
-    margin-right: 10px;
     text-align: right;
     font-size: 1.2em; }
+  .mainForm input[type="text"], .mainForm input[type="password"] {
+    margin-left: 50px; }
 
 .navlink {
   padding-top: 8px;
@@ -235,8 +242,17 @@ input[type="text"]:focus, input[type="password"]:focus {
 .center-content {
   text-align: center; }
 
+.fake-input {
+  background-color: #d6d6d6 !important; }
+
+.help {
+  cursor: help; }
+
 .game, .description, .char1, .char2 {
   margin-bottom: 0px; }
+
+.pointer {
+  cursor: pointer; }
 
 .post-date {
   margin-bottom: 8px; }
@@ -254,6 +270,10 @@ input[type="text"]:focus, input[type="password"]:focus {
   margin-left: 13px;
   float: left;
   border-radius: 8px; }
+
+#premium-indicator {
+  text-align: right;
+  padding-right: 20px; }
 
 #terry {
   z-index: 225;

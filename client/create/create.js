@@ -53,7 +53,7 @@ const CreateForm = (props) =>{
             </div>
 
             <input type="hidden" name="_csrf" value={props.csrf}/>
-            <input className="clipSubmit" type="submit" value="Submit Clip"/>
+            <input className="formSubmit" type="submit" value="Submit Clip"/>
         </form>
     </div>
     );

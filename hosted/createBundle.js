@@ -2,7 +2,7 @@
 
 var makePost = function makePost(e) {
   e.preventDefault();
-  $("#domoMessage").animate({
+  $("#terryMessage").animate({
     width: 'hide'
   }, 350);
 
@@ -99,7 +99,7 @@ var CreateForm = function CreateForm(props) {
     name: "_csrf",
     value: props.csrf
   }), React.createElement("input", {
-    className: "clipSubmit",
+    className: "formSubmit",
     type: "submit",
     value: "Submit Clip"
   })));
@@ -123,13 +123,13 @@ $(document).ready(function () {
 
 var handleError = function handleError(message) {
   $("#errorMessage").text(message);
-  $("#domoMessage").animate({
+  $("#terryMessage").animate({
     width: 'toggle'
   }, 350);
 };
 
 var redirect = function redirect(response) {
-  $("#domoMessage").animate({
+  $("#terryMessage").animate({
     width: 'hide'
   }, 350);
   window.location = response.redirect;

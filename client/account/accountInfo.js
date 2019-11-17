@@ -88,24 +88,36 @@ const CancelPremium = function(props)
 const PremiumInfo = function(props)
 {
     return(
-        <div classname="content">
+        <div className="content-box">
             <button onClick={showAccount}>Go Back</button>
-            <h1> Get Amazarn Prime today!</h1>
+            <h1 className="center-content"> Get Amazarn Prime today!</h1>
+            <br />
+            
             <h3>Benefits of premium:</h3>
             <ul>
                 <li>Remove ads</li>
                 <li>Get an icon next to your name across the site</li>
                 <li>Help us continue providing updates to ReplayHut!</li>
             </ul>
+            <br />
             <h3>If you want to help, get premium for just $3.99 a month!</h3>
             <br />
             <form id="premCardForm" name="premCardForm" onSubmit={activatePremium} action="/activatePremium" method="POST">
-                <label htmlFor="name">Name on Card: </label>
-                <input id="name" type="text" name="name" placeholder="Name on Card" disabled/>
-                <label htmlFor="cardNum">Card Number: </label>
-                <input id="cardNum" type="text" name="cardNum" placeholder="Card Number" disabled/>
-                <label htmlFor="cvv">Wacky numbers on the back: </label>
-                <input id="cvv" type="text" name="cvv" placeholder="CVV" disabled/>
+                <div className="input-item">
+                    <input className="fake-input" id="name" type="text" name="name" placeholder="Name on Card" disabled/>
+                    <label className="input-label" htmlFor="name">Name on Card: </label>
+                </div>
+                
+                <div className="input-item">
+                    <input className="fake-input" id="cardNum" type="text" name="cardNum" placeholder="Card Number" disabled/>
+                    <label className="input-label" htmlFor="cardNum">Card Number: </label>
+                </div>
+                
+                <div className="input-item">
+                    <input className="fake-input" id="cvv" type="text" name="cvv" placeholder="CVV" disabled/>
+                    <label className="input-label help" title='The CVV code is also known as "the wacky numbers on the back".' htmlFor="cvv">CVV: </label>
+                </div>
+                
                 <input type="hidden" name="_csrf" value={props.csrf} />
                 <input className="formSubmit" type="submit" value="Activate Premium"/>
             </form>
@@ -119,6 +131,8 @@ const AccountInfo = function(props)
     {
         return(
             <div className="content-box">
+                <p></p>
+            
                 <div className="center-content">
                     <h1>Hello {props.account.username}!</h1>
                     <p>You've made {props.account.createdClips} clips.</p>
@@ -146,8 +160,7 @@ const AccountInfo = function(props)
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input className="formSubmit" type="submit" value="Change Password"/>
                 </form>
-                <br />
-                <button onClick={showPremium}>Sign up for Prime!</button>
+                <button className="formSubmit pointer" onClick={showPremium}>Sign up for Prime!</button>
             </div>
         )
     }
@@ -155,6 +168,8 @@ const AccountInfo = function(props)
     {
         return(
             <div className="content-box">
+                <p id="premium-indicator">⭐ Premium Member</p>
+                
                 <div className="center-content">
                     <h1>Hello {props.account.username}!</h1>
                     <p>You've made {props.account.createdClips} clips.</p>
@@ -176,8 +191,6 @@ const AccountInfo = function(props)
                         <input id="pass2" type="password" name ="pass2" placeholder="Retype password"/>
                         <label className="input-label" htmlFor="pass2">Retype New Password: </label>
                     </div>
-                    
-                    <br />
                     
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input className="formSubmit" type="submit" value="Change Password"/>
