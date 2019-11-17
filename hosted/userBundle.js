@@ -16,17 +16,34 @@ var UserList = function UserList(props) {
   }); //Displaying each user
 
   var userNodes = props.users.map(function (user) {
-    return React.createElement("div", {
-      className: "user"
-    }, React.createElement("h3", {
-      className: "userName"
-    }, "Username: ", user.username), React.createElement("h3", {
-      className: "clipsMade"
-    }, "Clips Posted: ", user.createdClips));
+    if (user.premiumStatus === false) {
+      return React.createElement("div", {
+        className: "user"
+      }, React.createElement("h3", {
+        className: "userName"
+      }, "Username: ", user.username), React.createElement("h3", {
+        className: "clipsMade"
+      }, "Clips Posted: ", user.createdClips));
+    } else {
+      return React.createElement("div", {
+        className: "user"
+      }, React.createElement("h3", {
+        className: "userName"
+      }, "Username: ", user.username, " ", React.createElement("span", {
+        className: "float-right"
+      }, "\u2B50")), React.createElement("h3", {
+        className: "clipsMade"
+      }, "Clips Posted: ", user.createdClips));
+    }
   });
   return React.createElement("div", {
+    className: "content"
+  }, React.createElement("h2", {
+    id: "user-leaderboard",
+    className: "center-content"
+  }, "Clip Leaderboard"), React.createElement("div", {
     className: "userList"
-  }, userNodes);
+  }, userNodes));
 };
 
 var setup = function setup() {

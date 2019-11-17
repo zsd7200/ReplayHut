@@ -186,6 +186,8 @@ li {
 .loader-container {
     text-align: center;
     padding-top: 20%;
+    position: relative;
+    left: $sidebarSize;
 }
 
 .mainForm {
@@ -310,7 +312,7 @@ li {
   padding: 10px;
   min-height: 60px;
   overflow: hidden;
-  
+   
   &:nth-child(even) {
     background-color: $lightBrown;
   }
@@ -318,12 +320,25 @@ li {
   &:nth-child(odd) {
     background-color: $darkBrown;  
   }
+  
+  &:nth-child(1) {
+    background-color: #e3c922;
+  }
+  
+  &:nth-child(2) {
+    background-color: #c4c4c4;
+  }
+  
+  &:nth-child(3) {
+    background-color: #5c4b1c;
+  }
 }
 
 /* Classes one-liners */
 .back { margin: 0 0 0 10 !important; }
 .center-content { text-align: center; }
 .fake-input { background-color: #d6d6d6 !important; }
+.float-right { float: right; }
 .help { cursor: help; }
 .game, .description, .char1, .char2 { margin-bottom: 0px; }
 .pointer { cursor: pointer; }
@@ -382,15 +397,23 @@ li {
   }
 }
 
+#user-leaderboard {
+    padding-bottom: 30px;
+    text-decoration: underline;
+}
+
 #userList {
   width: 40%;
   min-width: 400px;
-  border: 2px solid $darkestBrown;
   border-radius: 4px;
   margin: 0 auto;
   margin-top: 100px;
   position: relative;
   left: $sidebarSize;
+  
+  div {
+    left: 0;
+  }
 }
 
 

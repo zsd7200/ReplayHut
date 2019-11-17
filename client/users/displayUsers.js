@@ -14,17 +14,29 @@ const UserList = function(props)
     
     //Displaying each user
     const userNodes = props.users.map(function(user){
-        return(
-            <div className="user">
-                <h3 className="userName">Username: {user.username}</h3>
-                <h3 className="clipsMade">Clips Posted: {user.createdClips}</h3>
-            </div>
-        );
+        if(user.premiumStatus === false) {
+            return(
+                <div className="user">
+                    <h3 className="userName">Username: {user.username}</h3>
+                    <h3 className="clipsMade">Clips Posted: {user.createdClips}</h3>
+                </div>
+            );
+        } else {
+            return(
+                <div className="user">
+                    <h3 className="userName">Username: {user.username} <span className="float-right">⭐</span></h3>
+                    <h3 className="clipsMade">Clips Posted: {user.createdClips}</h3>
+                </div>
+            );
+        }
     });
 
     return(
-        <div className="userList">
-            {userNodes}
+        <div className="content">
+        <h2 id="user-leaderboard" className="center-content">Clip Leaderboard</h2>
+            <div className="userList">
+                {userNodes}
+            </div>
         </div>
     )
 }
