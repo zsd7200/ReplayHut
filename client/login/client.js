@@ -89,6 +89,8 @@ const SignupWindow = (props) => {
 };
 
 const createLoginWindow = (csrf) => {
+    $("#loginButton").attr('class', 'current-page');
+    $("#signupButton").attr('class', '');
     ReactDOM.render(
         <LoginWindow csrf={csrf} />,
         document.querySelector("#content")
@@ -96,6 +98,8 @@ const createLoginWindow = (csrf) => {
 };
 
 const createSignupWindow = (csrf) => {
+    $("#loginButton").attr('class', '');
+    $("#signupButton").attr('class', 'current-page');
     ReactDOM.render(
         <SignupWindow csrf={csrf} />,
         document.querySelector("#content")
