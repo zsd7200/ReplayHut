@@ -99,9 +99,5 @@ var sendAjax = function sendAjax(type, action, data, success, error) {
     dataType: "json",
     success: success,
     error: error
-    /*function(xhr, status, error) {
-    var messageObj = JSON.parse(xhr.responseText);
-    handleError(messageObj.error);}*/
-
   });
 };

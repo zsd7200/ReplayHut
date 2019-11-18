@@ -57,10 +57,16 @@ const ClipList = function(props)
             </div>
         )
     }
+    // Getting the values from the input fields
     let userSearch = $("#userSearch").val();
     let gameSearch = $("#gameSearch").val();
     let charSearch = $("#charSearch").val();
 
+    // Trimming the values
+    if(userSearch !== '')
+    {
+        userSearch = userSearch.trim();
+    }
     if(gameSearch !== '')
     {
         gameSearch = gameSearch.toLowerCase();
@@ -68,7 +74,10 @@ const ClipList = function(props)
     }
     if(charSearch !== '')
     {
+        // Make the character search into an array, split on commas
         charSearch = charSearch.split(',');
+
+        // Trimming and making them lowercase
         for (let index = 0; index < charSearch.length; index++) 
         {
             charSearch[index] = charSearch[index].trim();
@@ -78,10 +87,13 @@ const ClipList = function(props)
     
     // Displaying each clip
     const clipNodes = props.clips.map(function(clip){
+        // Checks to see if a clip should be posted based on search parameters 
         let userCheck = true;
         let gameCheck = true;
         let charCheck = true;
 
+        // Check if the search field is empty
+        // If not empty, check against the search parameter
         if(userSearch !== '' && userSearch !== clip.creatorUN)
             userCheck = false;
         
@@ -90,6 +102,7 @@ const ClipList = function(props)
 
         if(charSearch !== '')
         {
+            // Looping through the character search index to see if one of the characters matches the search term
             for (let index = 0; index < charSearch.length; index++) 
             {
                 let notFirst = true;
@@ -107,6 +120,7 @@ const ClipList = function(props)
             }
         }
 
+        // If all the checks pass, display that clip
         if(userCheck && gameCheck && charCheck)
         {
             if(clip.creatorPremStatus)

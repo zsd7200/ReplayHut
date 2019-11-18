@@ -13,7 +13,7 @@ const UserList = function(props)
     }
     //Code for sorting taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
     props.users.sort(function(a,b) {return b.createdClips-a.createdClips});
-    let count = 0;
+    
     //Displaying each user
     const userNodes = props.users.map(function(user){
         if(user.premiumStatus === false) {

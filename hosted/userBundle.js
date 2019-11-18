@@ -15,8 +15,7 @@ var UserList = function UserList(props) {
 
   props.users.sort(function (a, b) {
     return b.createdClips - a.createdClips;
-  });
-  var count = 0; //Displaying each user
+  }); //Displaying each user
 
   var userNodes = props.users.map(function (user) {
     if (user.premiumStatus === false) {
@@ -130,9 +129,5 @@ var sendAjax = function sendAjax(type, action, data, success, error) {
     dataType: "json",
     success: success,
     error: error
-    /*function(xhr, status, error) {
-    var messageObj = JSON.parse(xhr.responseText);
-    handleError(messageObj.error);}*/
-
   });
 };

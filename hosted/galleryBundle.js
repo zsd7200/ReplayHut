@@ -54,11 +54,16 @@ var ClipList = function ClipList(props) {
     return React.createElement("div", {
       className: "loader-container"
     }, React.createElement("h3", null, "No clips found!"));
-  }
+  } // Getting the values from the input fields
+
 
   var userSearch = $("#userSearch").val();
   var gameSearch = $("#gameSearch").val();
-  var charSearch = $("#charSearch").val();
+  var charSearch = $("#charSearch").val(); // Trimming the values
+
+  if (userSearch !== '') {
+    userSearch = userSearch.trim();
+  }
 
   if (gameSearch !== '') {
     gameSearch = gameSearch.toLowerCase();
@@ -66,7 +71,8 @@ var ClipList = function ClipList(props) {
   }
 
   if (charSearch !== '') {
-    charSearch = charSearch.split(',');
+    // Make the character search into an array, split on commas
+    charSearch = charSearch.split(','); // Trimming and making them lowercase
 
     for (var index = 0; index < charSearch.length; index++) {
       charSearch[index] = charSearch[index].trim();
@@ -76,13 +82,17 @@ var ClipList = function ClipList(props) {
 
 
   var clipNodes = props.clips.map(function (clip) {
+    // Checks to see if a clip should be posted based on search parameters 
     var userCheck = true;
     var gameCheck = true;
-    var charCheck = true;
+    var charCheck = true; // Check if the search field is empty
+    // If not empty, check against the search parameter
+
     if (userSearch !== '' && userSearch !== clip.creatorUN) userCheck = false;
     if (gameSearch !== '' && gameSearch !== clip.game.toLowerCase()) gameCheck = false;
 
     if (charSearch !== '') {
+      // Looping through the character search index to see if one of the characters matches the search term
       for (var _index = 0; _index < charSearch.length; _index++) {
         var notFirst = true;
         if (clip.character1 !== '') if (charSearch[_index] === clip.character1.toLowerCase()) notFirst = false;
@@ -90,7 +100,8 @@ var ClipList = function ClipList(props) {
         if (clip.character2 !== '') if (charSearch[_index] === clip.character2.toLowerCase()) notFirst = false;
         if (notFirst && notSecond) charCheck = false;
       }
-    }
+    } // If all the checks pass, display that clip
+
 
     if (userCheck && gameCheck && charCheck) {
       if (clip.creatorPremStatus) {
@@ -407,9 +418,5 @@ var sendAjax = function sendAjax(type, action, data, success, error) {
     dataType: "json",
     success: success,
     error: error
-    /*function(xhr, status, error) {
-    var messageObj = JSON.parse(xhr.responseText);
-    handleError(messageObj.error);}*/
-
   });
 };
