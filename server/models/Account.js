@@ -8,6 +8,7 @@ const iterations = 10000;
 const saltLength = 64;
 const keyLength = 64;
 
+// mongoose schema for account
 const AccountSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -38,6 +39,7 @@ AccountSchema.statics.toAPI = (doc) => ({
   _id: doc._id,
 });
 
+// validate password using pbkdf2
 const validatePassword = (doc, password, callback) => {
   const pass = doc.password;
 
@@ -49,6 +51,7 @@ const validatePassword = (doc, password, callback) => {
   });
 };
 
+
 AccountSchema.statics.findByUsername = (name, callback) => {
   const search = {
     username: name,
@@ -57,12 +60,14 @@ AccountSchema.statics.findByUsername = (name, callback) => {
   return AccountModel.findOne(search, callback);
 };
 
+
 AccountSchema.statics.generateHash = (password, callback) => {
   const salt = crypto.randomBytes(saltLength);
 
   crypto.pbkdf2(password, salt, iterations, keyLength, 'RSA-SHA512', (err, hash) => callback(salt, hash.toString('hex')));
 };
 
+// 
 AccountSchema.statics.authenticate = (username, password, callback) => {
   AccountModel.findByUsername(username, (err, doc) => {
     if (err) {
@@ -85,5 +90,6 @@ AccountSchema.statics.authenticate = (username, password, callback) => {
 
 AccountModel = mongoose.model('Account', AccountSchema);
 
+// exports to be used in router
 module.exports.AccountModel = AccountModel;
 module.exports.AccountSchema = AccountSchema;

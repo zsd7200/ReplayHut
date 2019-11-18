@@ -1,3 +1,4 @@
+// InfoData to be rendered
 const InfoData = function(props) {
     $("#terryMessage").animate({width:'toggle'}, 350);
     checkPremium();
@@ -10,12 +11,14 @@ const InfoData = function(props) {
     );
 };
 
+// render infodata with react
 const setup = function(csrf) {   
     ReactDOM.render(
         <InfoData csrf={csrf} />, document.querySelector("#content")
     );
 }
 
+// get csrf token
 const getToken = () => {
     sendAjax('GET', '/getToken', null, (result) => {
         setup(result.csrfToken);

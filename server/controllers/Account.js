@@ -9,15 +9,18 @@ const loginPage = (req, res) => {
   res.render('login', { csrfToken: req.csrfToken() });
 };
 
+// logout and redirect user to login page
 const logout = (req, res) => {
   req.session.destroy();
   res.redirect('/');
 };
 
+// render users page
 const userList = (req, res) => {
   res.render('users');
 };
 
+// render account page
 const myAccount = (req, res) => {
   res.render('account');
 };
@@ -187,7 +190,7 @@ const signup = (request, response) => {
   });
 };
 
-//Adds premium status to the user's account
+// handle changing premium status to true and displaying a message
 const activatePremium = (request, response) => {
   //Setting up the request and response
   const req = request;
@@ -216,7 +219,7 @@ const activatePremium = (request, response) => {
   });
 };
 
-//Disabling the premium membership for a user's account
+// handle changing premium status to false and displaying a message
 const cancelPremium = (request, response) => {
   //Setting up the request and response
   const req = request;
