@@ -1,3 +1,4 @@
+// NotFoundData to be rendered
 const NotFoundData = function(props) {
     checkPremium();
     return (
@@ -10,12 +11,14 @@ const NotFoundData = function(props) {
     );
 };
 
+// render notfounddata with react
 const setup = function(csrf) {   
     ReactDOM.render(
         <NotFoundData csrf={csrf} />, document.querySelector("#content")
     );
 }
 
+// get csrf token
 const getToken = () => {
     sendAjax('GET', '/getToken', null, (result) => {
         setup(result.csrfToken);

@@ -1,3 +1,4 @@
+// checks for issues with logging in, then sends ajax request if everything is good
 const handleLogin = (e) => {
     e.preventDefault();
     
@@ -18,6 +19,7 @@ const handleLogin = (e) => {
     return false;
 };
 
+// checks for issues with signing up, then sends ajax request if everything is good
 const handleSignup = (e) => {
     e.preventDefault();
     
@@ -41,6 +43,7 @@ const handleSignup = (e) => {
     return false;
 };
 
+// LoginWindow to be rendered
 const LoginWindow = (props) => {
     return (
     <div id="content">
@@ -63,6 +66,7 @@ const LoginWindow = (props) => {
     );
 };
 
+// SignupWindow to be rendered
 const SignupWindow = (props) => {
     return (
     <div id="content">
@@ -88,6 +92,7 @@ const SignupWindow = (props) => {
     );
 };
 
+// modify current-page and render loginwindow
 const createLoginWindow = (csrf) => {
     $("#loginButton").attr('class', 'current-page');
     $("#signupButton").attr('class', '');
@@ -97,6 +102,7 @@ const createLoginWindow = (csrf) => {
     );
 };
 
+// modify current-page and render signupwindow
 const createSignupWindow = (csrf) => {
     $("#loginButton").attr('class', '');
     $("#signupButton").attr('class', 'current-page');
@@ -106,6 +112,7 @@ const createSignupWindow = (csrf) => {
     );
 };
 
+// add event listeners to buttons to have them create the correct window
 const setup = (csrf) => {
     const loginButton = document.querySelector("#loginButton");
     const signupButton = document.querySelector("#signupButton");
@@ -125,6 +132,7 @@ const setup = (csrf) => {
     createLoginWindow(csrf);
 };
 
+// get csrf token
 const getToken = () => {
     sendAjax('GET', '/getToken', null, (result) => {
         setup(result.csrfToken);

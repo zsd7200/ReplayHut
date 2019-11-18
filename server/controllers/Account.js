@@ -2,19 +2,23 @@ const models = require('../models');
 
 const { Account } = models;
 
+// render login page
 const loginPage = (req, res) => {
   res.render('login', { csrfToken: req.csrfToken() });
 };
 
+// logout and redirect user to login page
 const logout = (req, res) => {
   req.session.destroy();
   res.redirect('/');
 };
 
+// render users page
 const userList = (req, res) => {
   res.render('users');
 };
 
+// render account page
 const myAccount = (req, res) => {
   res.render('account');
 };
@@ -31,6 +35,7 @@ const getAccounts = (request, response) => {
   });
 };
 
+// get account data
 const getMyAccount = (request, response) => {
   const res = response;
   const req = request;
@@ -42,6 +47,7 @@ const getMyAccount = (request, response) => {
   });
 };
 
+// log user in if the fields are filled in and correct
 const login = (request, response) => {
   const req = request;
   const res = response;
@@ -64,6 +70,7 @@ const login = (request, response) => {
   });
 };
 
+// handle changing password
 const changePassword = (request, response) => {
   // Set up the request and response
   const req = request;
@@ -160,6 +167,7 @@ const signup = (request, response) => {
   });
 };
 
+// handle changing premium status to true and displaying a message
 const activatePremium = (request, response) => {
   const req = request;
   const res = response;
@@ -184,6 +192,7 @@ const activatePremium = (request, response) => {
   });
 };
 
+// handle changing premium status to false and displaying a message
 const cancelPremium = (request, response) => {
   const req = request;
   const res = response;
@@ -208,7 +217,7 @@ const cancelPremium = (request, response) => {
   });
 };
 
-
+// get csrf token
 const getToken = (request, response) => {
   const req = request;
   const res = response;
@@ -220,6 +229,7 @@ const getToken = (request, response) => {
   res.json(csrfJSON);
 };
 
+// exports to be used in router
 module.exports.loginPage = loginPage;
 module.exports.login = login;
 module.exports.logout = logout;

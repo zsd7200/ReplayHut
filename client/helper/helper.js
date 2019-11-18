@@ -1,3 +1,4 @@
+// show error message
 const showMessage = (message, terry = "bad") => {
     
     // switch terry pic based on param
@@ -26,6 +27,7 @@ const showMessage = (message, terry = "bad") => {
     }, 4000);
 };
 
+// redirect user to a page
 const redirect = (response) => {
     $("#terryMessage").animate({width:'hide'}, 350);
     window.location = response.redirect;
@@ -42,6 +44,7 @@ const checkPremium = () => {
     });  
 };
 
+// send ajax request
 const sendAjax = (type, action, data, success, error) => {
     $.ajax({
         cache: false,

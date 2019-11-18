@@ -1,3 +1,4 @@
+// UserList to be rendered
 const UserList = function(props) 
 {
     checkPremium();
@@ -42,6 +43,7 @@ const UserList = function(props)
     )
 }
 
+// sendAjax request to render UserList
 const setup = function()
 {
     //Retrieving the accounts

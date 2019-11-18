@@ -1,3 +1,4 @@
+// check for issues with post; send ajax request if everything is all good
 const makePost = (e) =>{
     e.preventDefault();
     $("#terryMessage").animate({width:'hide'}, 350);
@@ -14,6 +15,7 @@ const makePost = (e) =>{
     return false;
 };
 
+// CreateForm to be rendered
 const CreateForm = (props) =>{
     checkPremium();
     return(
@@ -61,11 +63,12 @@ const CreateForm = (props) =>{
     );
 }
 
-const setup = function(csrf)
-{
+// render createform with react
+const setup = function(csrf) {
     ReactDOM.render( <CreateForm csrf={csrf} />, document.querySelector("#createArea"));
 }
 
+// get csrf token
 const getToken = () => {
     sendAjax('GET', '/getToken', null, (result) => {
         setup(result.csrfToken);

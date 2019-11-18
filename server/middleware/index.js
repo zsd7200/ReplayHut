@@ -1,3 +1,4 @@
+// page requires viewer to be logged in to view
 const requiresLogin = (req, res, next) => {
   if (!req.session.account) {
     return res.redirect('/');
@@ -5,6 +6,7 @@ const requiresLogin = (req, res, next) => {
   return next();
 };
 
+// page requires user to be logged out to view
 const requiresLogout = (req, res, next) => {
   if (req.session.account) {
     return res.redirect('/create');
@@ -13,6 +15,7 @@ const requiresLogout = (req, res, next) => {
   return next();
 };
 
+// make sure user is connected securely
 const requiresSecure = (req, res, next) => {
   if (req.headers['x-forwarded-proto'] !== 'https') {
     return res.redirect(`https://${req.hostname}${req.url}`);
@@ -20,10 +23,12 @@ const requiresSecure = (req, res, next) => {
   return next();
 };
 
+// skip secure check
 const bypassSecure = (req, res, next) => {
   next();
 };
 
+// exports to be used in router
 module.exports.requiresLogin = requiresLogin;
 module.exports.requiresLogout = requiresLogout;
 
