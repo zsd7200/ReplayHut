@@ -33,6 +33,17 @@ const formatDate = (date) => {
     return newDate;
 };
 
+const showClips = () =>{
+    // Retrieving the clips
+    sendAjax('GET', '/getClips', null, (data) => {
+        ReactDOM.render(<ClipList clips={data.clips} />, document.querySelector("#clips"));
+    },
+    (xhr, status, error) =>{
+        var messageObj = JSON.parse(xhr.responseText);
+        showMessage(messageObj.error);
+    });
+};
+
 const ClipList = function(props) 
 {
     
@@ -45,103 +56,194 @@ const ClipList = function(props)
             </div>
         )
     }
+    let userSearch = $("#userSearch").val();
+    let gameSearch = $("#gameSearch").val();
+    let charSearch = $("#charSearch").val();
+
+    if(gameSearch !== '')
+    {
+        gameSearch = gameSearch.toLowerCase();
+        gameSearch = gameSearch.trim();
+    }
+    if(charSearch !== '')
+    {
+        charSearch = charSearch.split(',');
+        for (let index = 0; index < charSearch.length; index++) 
+        {
+            charSearch[index] = charSearch[index].trim();
+            charSearch[index] = charSearch[index].toLowerCase();
+        }
+    }
     
     // Displaying each clip
     const clipNodes = props.clips.map(function(clip){
-        console.log(clip.creatorPremStatus);
-        if(clip.creatorPremStatus)
+        let userCheck = true;
+        let gameCheck = true;
+        let charCheck = true;
+
+        if(userSearch !== '' && userSearch !== clip.creatorUN)
+            userCheck = false;
+        
+        if(gameSearch !== '' && gameSearch !== clip.game.toLowerCase())
+            gameCheck = false;
+
+        if(charSearch !== '')
         {
-            if(clip.character1 !== '') {
-                if(clip.character2 !== '') {
-                    return(
-                        <div className="clip">
-                            <h4 className="clip-title"><u>{clip.title}</u>
-                                <span className="creator">Creator: {clip.creatorUN} ⭐</span>
-                            </h4>
-                            <p className="game"><b>Game:</b> {clip.game}</p>
-                            <p className="description"><b>Description:</b> {clip.description}</p>
-                            <p className="char1"><b>Character 1:</b> {clip.character1}</p>
-                            <p className="char2"><b>Character 2:</b> {clip.character2}</p>
-                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                            <iframe 
-                                width={ytWidth} 
-                                height={ytHeight} 
-                                src={clip.youtube} 
-                                frameBorder="0" 
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                allowFullScreen
-                                >
-                            </iframe>
-                        </div>
-                    );
-                } else {
-                    return(
-                        <div className="clip">
-                            <h4 className="clip-title"><u>{clip.title}</u>
-                                <span className="creator">Creator: {clip.creatorUN} ⭐</span>
-                            </h4>
-                            <p className="game"><b>Game:</b> {clip.game}</p>
-                            <p className="description"><b>Description:</b> {clip.description}</p>
-                            <p className="char1"><b>Character 1:</b> {clip.character1}</p>
-                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                            <iframe 
-                                width={ytWidth} 
-                                height={ytHeight} 
-                                src={clip.youtube} 
-                                frameBorder="0" 
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                allowFullScreen
-                                >
-                            </iframe>                    </div>
-                    );
-                }
-            } else if (clip.character2 !== ''){
-                return(
-                    <div className="clip">
-                        <h4 className="clip-title"><u>{clip.title}</u>
-                            <span className="creator">Creator: {clip.creatorUN} ⭐</span>
-                        </h4>
-                        <p className="game"><b>Game:</b> {clip.game}</p>
-                        <p className="description"><b>Description:</b> {clip.description}</p>
-                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
-                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                        <iframe 
-                            width={ytWidth} 
-                            height={ytHeight} 
-                            src={clip.youtube} 
-                            frameBorder="0" 
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                            allowFullScreen
-                            >
-                        </iframe>
-                    </div>
-                );
-            } else {
-                return(
-                    <div className="clip">
-                        <h4 className="clip-title"><u>{clip.title}</u>
-                            <span className="creator">Creator: {clip.creatorUN} ⭐</span>
-                        </h4>
-                        <p className="game"><b>Game:</b> {clip.game}</p>
-                        <p className="description"><b>Description:</b> {clip.description}</p>
-                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                        <iframe 
-                            width={ytWidth} 
-                            height={ytHeight} 
-                            src={clip.youtube} 
-                            frameBorder="0" 
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                            allowFullScreen
-                            >
-                        </iframe>
-                    </div>
-                );
+            for (let index = 0; index < charSearch.length; index++) 
+            {
+                let notFirst = true;
+                if(clip.character1 !== '')
+                    if(charSearch[index] === clip.character1.toLowerCase())
+                        notFirst = false;
+                
+                let notSecond = true;
+                if(clip.character2 !== '')
+                    if(charSearch[index] === clip.character2.toLowerCase())
+                        notFirst = false;
+
+                if(notFirst && notSecond)
+                    charCheck = false;
             }
         }
-        else
+
+        if(userCheck && gameCheck && charCheck)
         {
-            if(clip.character1 !== '') {
-                if(clip.character2 !== '') {
+            if(clip.creatorPremStatus)
+            {
+                if(clip.character1 !== '') {
+                    if(clip.character2 !== '') {
+                        return(
+                            <div className="clip">
+                                <h4 className="clip-title"><u>{clip.title}</u>
+                                    <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                </h4>
+                                <p className="game"><b>Game:</b> {clip.game}</p>
+                                <p className="description"><b>Description:</b> {clip.description}</p>
+                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                <iframe 
+                                    width={ytWidth} 
+                                    height={ytHeight} 
+                                    src={clip.youtube} 
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                    >
+                                </iframe>
+                            </div>
+                        );
+                    } else {
+                        return(
+                            <div className="clip">
+                                <h4 className="clip-title"><u>{clip.title}</u>
+                                    <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                </h4>
+                                <p className="game"><b>Game:</b> {clip.game}</p>
+                                <p className="description"><b>Description:</b> {clip.description}</p>
+                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                <iframe 
+                                    width={ytWidth} 
+                                    height={ytHeight} 
+                                    src={clip.youtube} 
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                    >
+                                </iframe>                    </div>
+                        );
+                    }
+                } else if (clip.character2 !== ''){
+                    return(
+                        <div className="clip">
+                            <h4 className="clip-title"><u>{clip.title}</u>
+                                <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                            </h4>
+                            <p className="game"><b>Game:</b> {clip.game}</p>
+                            <p className="description"><b>Description:</b> {clip.description}</p>
+                            <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                            <iframe 
+                                width={ytWidth} 
+                                height={ytHeight} 
+                                src={clip.youtube} 
+                                frameBorder="0" 
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                allowFullScreen
+                                >
+                            </iframe>
+                        </div>
+                    );
+                } else {
+                    return(
+                        <div className="clip">
+                            <h4 className="clip-title"><u>{clip.title}</u>
+                                <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                            </h4>
+                            <p className="game"><b>Game:</b> {clip.game}</p>
+                            <p className="description"><b>Description:</b> {clip.description}</p>
+                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                            <iframe 
+                                width={ytWidth} 
+                                height={ytHeight} 
+                                src={clip.youtube} 
+                                frameBorder="0" 
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                allowFullScreen
+                                >
+                            </iframe>
+                        </div>
+                    );
+                }
+            }
+            else
+            {
+                if(clip.character1 !== '') {
+                    if(clip.character2 !== '') {
+                        return(
+                            <div className="clip">
+                                <h4 className="clip-title"><u>{clip.title}</u>
+                                    <span className="creator">Creator: {clip.creatorUN}</span>
+                                </h4>
+                                <p className="game"><b>Game:</b> {clip.game}</p>
+                                <p className="description"><b>Description:</b> {clip.description}</p>
+                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                <iframe 
+                                    width={ytWidth} 
+                                    height={ytHeight} 
+                                    src={clip.youtube} 
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                    >
+                                </iframe>
+                            </div>
+                        );
+                    } else {
+                        return(
+                            <div className="clip">
+                                <h4 className="clip-title"><u>{clip.title}</u>
+                                    <span className="creator">Creator: {clip.creatorUN}</span>
+                                </h4>
+                                <p className="game"><b>Game:</b> {clip.game}</p>
+                                <p className="description"><b>Description:</b> {clip.description}</p>
+                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                <iframe 
+                                    width={ytWidth} 
+                                    height={ytHeight} 
+                                    src={clip.youtube} 
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                    >
+                                </iframe>                    </div>
+                        );
+                    }
+                } else if (clip.character2 !== ''){
                     return(
                         <div className="clip">
                             <h4 className="clip-title"><u>{clip.title}</u>
@@ -149,7 +251,6 @@ const ClipList = function(props)
                             </h4>
                             <p className="game"><b>Game:</b> {clip.game}</p>
                             <p className="description"><b>Description:</b> {clip.description}</p>
-                            <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                             <p className="char2"><b>Character 2:</b> {clip.character2}</p>
                             <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                             <iframe 
@@ -171,7 +272,6 @@ const ClipList = function(props)
                             </h4>
                             <p className="game"><b>Game:</b> {clip.game}</p>
                             <p className="description"><b>Description:</b> {clip.description}</p>
-                            <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                             <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                             <iframe 
                                 width={ytWidth} 
@@ -181,50 +281,10 @@ const ClipList = function(props)
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                                 allowFullScreen
                                 >
-                            </iframe>                    </div>
+                            </iframe>
+                        </div>
                     );
                 }
-            } else if (clip.character2 !== ''){
-                return(
-                    <div className="clip">
-                        <h4 className="clip-title"><u>{clip.title}</u>
-                            <span className="creator">Creator: {clip.creatorUN}</span>
-                        </h4>
-                        <p className="game"><b>Game:</b> {clip.game}</p>
-                        <p className="description"><b>Description:</b> {clip.description}</p>
-                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
-                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                        <iframe 
-                            width={ytWidth} 
-                            height={ytHeight} 
-                            src={clip.youtube} 
-                            frameBorder="0" 
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                            allowFullScreen
-                            >
-                        </iframe>
-                    </div>
-                );
-            } else {
-                return(
-                    <div className="clip">
-                        <h4 className="clip-title"><u>{clip.title}</u>
-                            <span className="creator">Creator: {clip.creatorUN}</span>
-                        </h4>
-                        <p className="game"><b>Game:</b> {clip.game}</p>
-                        <p className="description"><b>Description:</b> {clip.description}</p>
-                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                        <iframe 
-                            width={ytWidth} 
-                            height={ytHeight} 
-                            src={clip.youtube} 
-                            frameBorder="0" 
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                            allowFullScreen
-                            >
-                        </iframe>
-                    </div>
-                );
             }
         }
     });
@@ -237,16 +297,24 @@ const ClipList = function(props)
     )
 }
 
+const SearchBar = function(props)
+{
+    return(
+        <section id="search">
+            <input id="userSearch" type="text" name="userSearch" placeholder="User to search for..." />
+            <input id="gameSearch" type="text" name="gameSearch" placeholder="Game to search for..." />
+            <input id="charSearch" type="text" name="charSearch" placeholder="Character(s) to search for... (Seperate by commas)" />
+
+            <button onClick={showClips}>Search</button>
+        </section>
+    );
+}
+
 const setup = function()
 {   
-    // Retrieving the accounts
-    sendAjax('GET', '/getClips', null, (data) => {
-        ReactDOM.render(<ClipList clips={data.clips} />, document.querySelector("#clips"));
-    },
-    (xhr, status, error) =>{
-        var messageObj = JSON.parse(xhr.responseText);
-        showMessage(messageObj.error);
-    });
+    showClips();
+
+    ReactDOM.render(<SearchBar />, document.querySelector("#search"));
 }
 
 $(document).ready(function(){setup();});
