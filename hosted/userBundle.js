@@ -1,5 +1,6 @@
 "use strict";
 
+// UserList to be rendered
 var UserList = function UserList(props) {
   checkPremium(); //If no users have been made (Should not happen becuase need to be logged in), show error
 
@@ -46,7 +47,8 @@ var UserList = function UserList(props) {
   }, "Clip Leaderboard"), React.createElement("div", {
     className: "userList"
   }, userNodes));
-};
+}; // sendAjax request to render UserList
+
 
 var setup = function setup() {
   //Retrieving the accounts
@@ -62,7 +64,7 @@ var setup = function setup() {
 
 $(document).ready(function () {
   setup();
-});
+}); // show error message
 
 var showMessage = function showMessage(message) {
   var terry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "bad";
@@ -97,7 +99,8 @@ var showMessage = function showMessage(message) {
       width: 'hide'
     }, 350);
   }, 4000);
-};
+}; // redirect user to a page
+
 
 var redirect = function redirect(response) {
   $("#terryMessage").animate({
@@ -115,7 +118,8 @@ var checkPremium = function checkPremium() {
       $(".ad-sidebar").show();
     }
   });
-};
+}; // send ajax request
+
 
 var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({

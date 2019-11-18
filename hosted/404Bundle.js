@@ -1,5 +1,6 @@
 "use strict";
 
+// NotFoundData to be rendered
 var NotFoundData = function NotFoundData(props) {
   checkPremium();
   return React.createElement("div", {
@@ -11,13 +12,15 @@ var NotFoundData = function NotFoundData(props) {
   }), React.createElement("div", {
     className: "content-box center-content"
   }, React.createElement("h3", null, "404 - Page Not Found")));
-};
+}; // render notfounddata with react
+
 
 var setup = function setup(csrf) {
   ReactDOM.render(React.createElement(NotFoundData, {
     csrf: csrf
   }), document.querySelector("#content"));
-};
+}; // get csrf token
+
 
 var getToken = function getToken() {
   sendAjax('GET', '/getToken', null, function (result) {
@@ -27,7 +30,7 @@ var getToken = function getToken() {
 
 $(document).ready(function () {
   getToken();
-});
+}); // show error message
 
 var showMessage = function showMessage(message) {
   var terry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "bad";
@@ -62,7 +65,8 @@ var showMessage = function showMessage(message) {
       width: 'hide'
     }, 350);
   }, 4000);
-};
+}; // redirect user to a page
+
 
 var redirect = function redirect(response) {
   $("#terryMessage").animate({
@@ -80,7 +84,8 @@ var checkPremium = function checkPremium() {
       $(".ad-sidebar").show();
     }
   });
-};
+}; // send ajax request
+
 
 var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({

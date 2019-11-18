@@ -1,50 +1,61 @@
 "use strict";
 
+//Handles the changing of users passwords
 var passChange = function passChange(e) {
-  e.preventDefault();
+  e.preventDefault(); //Hiding the sidebar message which may have popped up
+
   $("#terryMessage").animate({
     width: 'hide'
-  }, 350);
+  }, 350); //Error checks
+  //Making sure all values are filled in
 
   if ($("#pass").val() == '' || $("#pass2").val() == '' || $("#currentPass").val() == '') {
     showMessage("Hey, make sure you fill out all fields!");
     return false;
-  }
+  } //Checking if the new passwords match each other
+
 
   if ($("#pass").val() !== $("#pass2").val()) {
     showMessage("Woah, those new passwords don't match!");
     return false;
-  }
+  } //Sending the request to the router to change the password
+
 
   sendAjax('POST', $("#changePassForm").attr("action"), $("#changePassForm").serialize(), function (result) {
-    $("#pass").val() == '';
-    $("#pass2").val() == '';
-    $("#currentPass").val() == '';
+    //Displaying the results
     showMessage(result.message);
   }, function (xhr, status, error) {
+    //Catching an error in filling out the form
     if (error === 'Unauthorized') showMessage("Current password is not correct");
   });
   return false;
-};
+}; //Used to send a request to activate premium for the user
+
 
 var activatePremium = function activatePremium(e) {
   e.preventDefault();
   sendAjax('POST', $("#premCardForm").attr("action"), $("#premCardForm").serialize(), function (result) {
-    showAccount();
+    //Goes back to the account page upon completion
+    showAccount(); //Writing out a success message
+
     showMessage(result.message, "good");
   });
-};
+}; //Sending a request to cancel the premium membership
+
 
 var cancelPremium = function cancelPremium(e) {
   e.preventDefault();
   sendAjax('POST', "/cancelPremium", $("#csrf").serialize(), function (result) {
-    showAccount();
+    //Returning to the account page
+    showAccount(); //Writing out a success message
+
     showMessage(result.message, "wait");
   }, function (xhr, status, error) {
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);
   });
-};
+}; //Gets a csrf token and then displays the page with information about the premium membership
+
 
 var showPremium = function showPremium() {
   sendAjax('GET', '/getToken', null, function (result) {
@@ -52,7 +63,8 @@ var showPremium = function showPremium() {
       csrf: result.csrfToken
     }), document.querySelector("#content"));
   });
-};
+}; //Gets a csrf token and then displays the account page
+
 
 var showAccount = function showAccount() {
   sendAjax('GET', '/getToken', null, function (result) {
@@ -63,7 +75,8 @@ var showAccount = function showAccount() {
       }), document.querySelector("#content"));
     });
   });
-};
+}; //Gets a csrf token and then displays the page with information about cancelling the premiuum membership
+
 
 var showCancelPremium = function showCancelPremium() {
   sendAjax('GET', '/getToken', null, function (result) {
@@ -71,7 +84,8 @@ var showCancelPremium = function showCancelPremium() {
       csrf: result.csrfToken
     }), document.querySelector("#content"));
   });
-};
+}; //Returns the content for the page regarding cancelling premium
+
 
 var CancelPremium = function CancelPremium(props) {
   return React.createElement("div", {
@@ -92,7 +106,8 @@ var CancelPremium = function CancelPremium(props) {
     className: "formSubmit pointer premium-button",
     onClick: cancelPremium
   }, "Cancel Subscription"));
-};
+}; //Returns the content for the page regarding the premium membership
+
 
 var PremiumInfo = function PremiumInfo(props) {
   return React.createElement("div", {
@@ -154,7 +169,8 @@ var PremiumInfo = function PremiumInfo(props) {
     type: "submit",
     value: "Activate Premium"
   })));
-};
+}; //Returns the page with the account information
+
 
 var AccountInfo = function AccountInfo(props) {
   checkPremium();
@@ -268,26 +284,12 @@ var AccountInfo = function AccountInfo(props) {
       onClick: showCancelPremium
     }, "Cancel Premium"));
   }
-};
-/*const setup = function(csrf)
-{
-    sendAjax('GET', '/getMyAccount', null, (data) =>{
-        ReactDOM.render(<AccountInfo account={data.account} csrf={csrf} />, document.querySelector("#content"));
-    });
-}
-
-const getToken = () =>{
-    sendAjax('GET', '/getToken', null, (result) => {
-        setup(result.csrfToken);
-    });
-};
-*/
+}; //Showing the account page upon loading
 
 
 $(document).ready(function () {
-  //getToken();
   showAccount();
-});
+}); // show error message
 
 var showMessage = function showMessage(message) {
   var terry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "bad";
@@ -322,7 +324,8 @@ var showMessage = function showMessage(message) {
       width: 'hide'
     }, 350);
   }, 4000);
-};
+}; // redirect user to a page
+
 
 var redirect = function redirect(response) {
   $("#terryMessage").animate({
@@ -340,7 +343,8 @@ var checkPremium = function checkPremium() {
       $(".ad-sidebar").show();
     }
   });
-};
+}; // send ajax request
+
 
 var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({

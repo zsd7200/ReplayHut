@@ -1,5 +1,6 @@
 "use strict";
 
+// check for issues with post; send ajax request if everything is all good
 var makePost = function makePost(e) {
   e.preventDefault();
   $("#terryMessage").animate({
@@ -18,7 +19,8 @@ var makePost = function makePost(e) {
     showMessage(messageObj.error);
   });
   return false;
-};
+}; // CreateForm to be rendered
+
 
 var CreateForm = function CreateForm(props) {
   checkPremium();
@@ -104,13 +106,15 @@ var CreateForm = function CreateForm(props) {
     type: "submit",
     value: "Submit Clip"
   })));
-};
+}; // render createform with react
+
 
 var setup = function setup(csrf) {
   ReactDOM.render(React.createElement(CreateForm, {
     csrf: csrf
   }), document.querySelector("#createArea"));
-};
+}; // get csrf token
+
 
 var getToken = function getToken() {
   sendAjax('GET', '/getToken', null, function (result) {
@@ -120,7 +124,7 @@ var getToken = function getToken() {
 
 $(document).ready(function () {
   getToken();
-});
+}); // show error message
 
 var showMessage = function showMessage(message) {
   var terry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "bad";
@@ -155,7 +159,8 @@ var showMessage = function showMessage(message) {
       width: 'hide'
     }, 350);
   }, 4000);
-};
+}; // redirect user to a page
+
 
 var redirect = function redirect(response) {
   $("#terryMessage").animate({
@@ -173,7 +178,8 @@ var checkPremium = function checkPremium() {
       $(".ad-sidebar").show();
     }
   });
-};
+}; // send ajax request
+
 
 var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({

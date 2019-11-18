@@ -1,5 +1,6 @@
 "use strict";
 
+// checks for issues with logging in, then sends ajax request if everything is good
 var handleLogin = function handleLogin(e) {
   e.preventDefault();
   $("#terryMessage").animate({
@@ -17,7 +18,8 @@ var handleLogin = function handleLogin(e) {
     showMessage(messageObj.error);
   });
   return false;
-};
+}; // checks for issues with signing up, then sends ajax request if everything is good
+
 
 var handleSignup = function handleSignup(e) {
   e.preventDefault();
@@ -40,7 +42,8 @@ var handleSignup = function handleSignup(e) {
     showMessage(messageObj.error);
   });
   return false;
-};
+}; // LoginWindow to be rendered
+
 
 var LoginWindow = function LoginWindow(props) {
   return React.createElement("div", {
@@ -79,7 +82,8 @@ var LoginWindow = function LoginWindow(props) {
     type: "submit",
     value: "Sign In"
   })));
-};
+}; // SignupWindow to be rendered
+
 
 var SignupWindow = function SignupWindow(props) {
   return React.createElement("div", {
@@ -125,7 +129,8 @@ var SignupWindow = function SignupWindow(props) {
     type: "submit",
     value: "Sign Up"
   })));
-};
+}; // modify current-page and render loginwindow
+
 
 var createLoginWindow = function createLoginWindow(csrf) {
   $("#loginButton").attr('class', 'current-page');
@@ -133,7 +138,8 @@ var createLoginWindow = function createLoginWindow(csrf) {
   ReactDOM.render(React.createElement(LoginWindow, {
     csrf: csrf
   }), document.querySelector("#content"));
-};
+}; // modify current-page and render signupwindow
+
 
 var createSignupWindow = function createSignupWindow(csrf) {
   $("#loginButton").attr('class', '');
@@ -141,7 +147,8 @@ var createSignupWindow = function createSignupWindow(csrf) {
   ReactDOM.render(React.createElement(SignupWindow, {
     csrf: csrf
   }), document.querySelector("#content"));
-};
+}; // add event listeners to buttons to have them create the correct window
+
 
 var setup = function setup(csrf) {
   var loginButton = document.querySelector("#loginButton");
@@ -157,7 +164,8 @@ var setup = function setup(csrf) {
     return false;
   });
   createLoginWindow(csrf);
-};
+}; // get csrf token
+
 
 var getToken = function getToken() {
   sendAjax('GET', '/getToken', null, function (result) {
@@ -167,7 +175,7 @@ var getToken = function getToken() {
 
 $(document).ready(function () {
   getToken();
-});
+}); // show error message
 
 var showMessage = function showMessage(message) {
   var terry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "bad";
@@ -202,7 +210,8 @@ var showMessage = function showMessage(message) {
       width: 'hide'
     }, 350);
   }, 4000);
-};
+}; // redirect user to a page
+
 
 var redirect = function redirect(response) {
   $("#terryMessage").animate({
@@ -220,7 +229,8 @@ var checkPremium = function checkPremium() {
       $(".ad-sidebar").show();
     }
   });
-};
+}; // send ajax request
+
 
 var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({

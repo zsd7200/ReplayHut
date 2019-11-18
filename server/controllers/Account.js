@@ -1,10 +1,10 @@
-//Getting the models
+// Getting the models
 const models = require('../models');
 
-//Setting up the account specific model
+// Setting up the account specific model
 const { Account } = models;
 
-//Rendering specific pages
+// Rendering specific pages
 const loginPage = (req, res) => {
   res.render('login', { csrfToken: req.csrfToken() });
 };
@@ -37,7 +37,7 @@ const getAccounts = (request, response) => {
   });
 };
 
-//Retrieving one specific account and sending it back
+// Retrieving one specific account and sending it back
 const getMyAccount = (request, response) => {
   const res = response;
   const req = request;
@@ -49,37 +49,36 @@ const getMyAccount = (request, response) => {
   });
 };
 
-//Method which logs into a specific user's account, if they have the correct credentials
+// Method which logs into a specific user's account, if they have the correct credentials
 const login = (request, response) => {
-
-  //Setting up the requst and response
+  // Setting up the requst and response
   const req = request;
   const res = response;
 
-  //Grabbing the username and password from the request
+  // Grabbing the username and password from the request
   const username = `${req.body.username}`;
   const password = `${req.body.pass}`;
 
-  //Error check to make sure both the password and username were inputted
+  // Error check to make sure both the password and username were inputted
   if (!username || !password) {
     return res.status(400).json({ error: 'HEY! All fields are required!' });
   }
 
-  //Authenticating that the user has the correct password for their username
+  // Authenticating that the user has the correct password for their username
   return Account.AccountModel.authenticate(username, password, (err, account) => {
     if (err || !account) {
       return res.status(401).json({ error: 'Wrong username or password!' });
     }
 
-    //Setting up the account that will be used throughout the session
+    // Setting up the account that will be used throughout the session
     req.session.account = Account.AccountModel.toAPI(account);
 
-    //Redirecting to the clip creation page
+    // Redirecting to the clip creation page
     return res.json({ redirect: '/create' });
   });
 };
 
-//Changing the password for the specified user
+// Changing the password for the specified user
 const changePassword = (request, response) => {
   // Set up the request and response
   const req = request;
@@ -124,7 +123,7 @@ const changePassword = (request, response) => {
             return res.json({ message: 'Password successfully changed' });
           });
 
-          //Must return something to satisfy ESlint
+        // Must return something to satisfy ESlint
         return true;
       });
       return true;
@@ -135,49 +134,49 @@ const changePassword = (request, response) => {
 
 // Used to sign a user up the first time
 const signup = (request, response) => {
-  //Setting up the request and response
+  // Setting up the request and response
   const req = request;
   const res = response;
 
-  //Set the calues to strings
+  // Set the calues to strings
   req.body.username = `${req.body.username}`;
   req.body.pass = `${req.body.pass}`;
   req.body.pass2 = `${req.body.pass2}`;
 
-  //Error checks
-  //Making sure all the necessary fields have input in them
+  // Error checks
+  // Making sure all the necessary fields have input in them
   if (!req.body.username || !req.body.pass || !req.body.pass2) {
     return res.status(400).json({ error: 'HEY! All fields are required!' });
   }
 
-  //Making sure that both of the user's new passwords match
+  // Making sure that both of the user's new passwords match
   if (req.body.pass !== req.body.pass2) {
     return res.status(400).json({ error: 'HEY! Passwords do not match!' });
   }
 
-  //Generating a new account
-  //Starting by encrypting the password
+  // Generating a new account
+  // Starting by encrypting the password
   return Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
-    //Setting up the data necessary for the account
+    // Setting up the data necessary for the account
     const accountData = {
       username: req.body.username,
       salt,
       password: hash,
     };
 
-    //Creating a new account with the new information
+    // Creating a new account with the new information
     const newAccount = new Account.AccountModel(accountData);
 
-    //Saving that data to the database
+    // Saving that data to the database
     const savePromise = newAccount.save();
 
-    //Once the saving is complete, set the new account as the active one, and go to clip creation
+    // Once the saving is complete, set the new account as the active one, and go to clip creation
     savePromise.then(() => {
       req.session.account = Account.AccountModel.toAPI(newAccount);
       res.json({ redirect: '/create' });
     });
 
-    //In case of an error, log it out and send it back to the user
+    // In case of an error, log it out and send it back to the user
     savePromise.catch((err) => {
       console.log(err);
 
@@ -192,11 +191,11 @@ const signup = (request, response) => {
 
 // handle changing premium status to true and displaying a message
 const activatePremium = (request, response) => {
-  //Setting up the request and response
+  // Setting up the request and response
   const req = request;
   const res = response;
 
-  //Finding the specific user so that they can be updated
+  // Finding the specific user so that they can be updated
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
@@ -210,10 +209,10 @@ const activatePremium = (request, response) => {
     // Handling promise to reassign the user's info
     const updatePromise = foundUser.save();
 
-    //Send a message back to the user once it is finished saving
+    // Send a message back to the user once it is finished saving
     updatePromise.then(() => res.json({ message: 'You are now a Prime member!' }));
 
-    //Return an error back if one is found
+    // Return an error back if one is found
     updatePromise.catch((err2) => res.json({ err2 }));
     return true;
   });
@@ -221,11 +220,11 @@ const activatePremium = (request, response) => {
 
 // handle changing premium status to false and displaying a message
 const cancelPremium = (request, response) => {
-  //Setting up the request and response
+  // Setting up the request and response
   const req = request;
   const res = response;
 
-  //Finding the specific user so that they can be updated
+  // Finding the specific user so that they can be updated
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
@@ -239,32 +238,32 @@ const cancelPremium = (request, response) => {
     // Handling promise to reassign the user's info
     const updatePromise = foundUser.save();
 
-    //Send back a message to the user once it is finished saving
+    // Send back a message to the user once it is finished saving
     updatePromise.then(() => res.json({ message: 'Your Prime membership has been cancelled.' }));
 
-    //Return an error if one is found
+    // Return an error if one is found
     updatePromise.catch((err2) => res.json({ err2 }));
     return true;
   });
 };
 
 
-//Getting a CSRF token for the user
+// Getting a CSRF token for the user
 const getToken = (request, response) => {
-  //Setting up the request and response
+  // Setting up the request and response
   const req = request;
   const res = response;
 
-  //Retrieving the token
+  // Retrieving the token
   const csrfJSON = {
     csrfToken: req.csrfToken(),
   };
 
-  //Sending back the token to the user
+  // Sending back the token to the user
   res.json(csrfJSON);
 };
 
-//Exports for use in the router
+// Exports for use in the router
 module.exports.loginPage = loginPage;
 module.exports.login = login;
 module.exports.logout = logout;

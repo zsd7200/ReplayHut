@@ -1,5 +1,6 @@
 "use strict";
 
+// InfoData to be rendered
 var InfoData = function InfoData(props) {
   $("#terryMessage").animate({
     width: 'toggle'
@@ -14,13 +15,15 @@ var InfoData = function InfoData(props) {
   }, "Zack Dunham"), " and ", React.createElement("a", {
     href: "https://github.com/tam8217"
   }, "Tristan Marshall"), " from DomoMaker"));
-};
+}; // render infodata with react
+
 
 var setup = function setup(csrf) {
   ReactDOM.render(React.createElement(InfoData, {
     csrf: csrf
   }), document.querySelector("#content"));
-};
+}; // get csrf token
+
 
 var getToken = function getToken() {
   sendAjax('GET', '/getToken', null, function (result) {
@@ -30,7 +33,7 @@ var getToken = function getToken() {
 
 $(document).ready(function () {
   getToken();
-});
+}); // show error message
 
 var showMessage = function showMessage(message) {
   var terry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "bad";
@@ -65,7 +68,8 @@ var showMessage = function showMessage(message) {
       width: 'hide'
     }, 350);
   }, 4000);
-};
+}; // redirect user to a page
+
 
 var redirect = function redirect(response) {
   $("#terryMessage").animate({
@@ -83,7 +87,8 @@ var checkPremium = function checkPremium() {
       $(".ad-sidebar").show();
     }
   });
-};
+}; // send ajax request
+
 
 var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({
