@@ -39,7 +39,8 @@ const CreateForm = (props) =>{
                 <input id="youtube" type="text" name="youtube" placeholder="https://www.youtube.com/watch?v=lkbhsxLdiM8"/><br />
                 <label className="input-label" htmlFor="youtube">YouTube Link: </label>
             </div>
-
+            
+            <br />
             <h3 id="charHeader">Characters (optional): </h3>
             
             <div className="input-item">

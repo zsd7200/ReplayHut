@@ -72,7 +72,7 @@ var CreateForm = function CreateForm(props) {
   }), React.createElement("br", null), React.createElement("label", {
     className: "input-label",
     htmlFor: "youtube"
-  }, "YouTube Link: ")), React.createElement("h3", {
+  }, "YouTube Link: ")), React.createElement("br", null), React.createElement("h3", {
     id: "charHeader"
   }, "Characters (optional): "), React.createElement("div", {
     className: "input-item"
@@ -161,6 +161,14 @@ var redirect = function redirect(response) {
     width: 'hide'
   }, 350);
   window.location = response.redirect;
+};
+
+var hideAds = function hideAds(premiumStatus) {
+  if (premiumStatus === true) {
+    $(".ad-sidebar").hide();
+  } else {
+    $(".ad-sidebar").show();
+  }
 };
 
 var sendAjax = function sendAjax(type, action, data, success, error) {

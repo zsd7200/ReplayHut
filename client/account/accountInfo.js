@@ -53,7 +53,6 @@ const showPremium = () =>{
 };
 
 const showAccount = () =>{
-    console.log("here");
     sendAjax('GET', '/getToken', null, (result) => {
         sendAjax('GET', '/getMyAccount', null, (data) =>{
             ReactDOM.render(<AccountInfo account={data.account} csrf={result.csrfToken} />, document.querySelector("#content"));
@@ -84,7 +83,7 @@ const CancelPremium = function(props)
             <h3>If you're really sure, click below to cancel your subscription.</h3>
             <p className="center-content">(Changes will take effect at the end of your subscription cycle)</p>
             <input type="hidden" name="_csrf" id="csrf" value={props.csrf} />
-            <button className="formSubmit pointer" onClick={cancelPremium}>Cancel Subscription</button>
+            <button className="formSubmit pointer premium-button" onClick={cancelPremium}>Cancel Subscription</button>
         </div>
     )
 }
@@ -93,7 +92,7 @@ const PremiumInfo = function(props)
     return(
         <div className="content-box">
             <button className="back pointer" onClick={showAccount}>Go Back</button>
-            <h1 className="center-content"> Get Hut Prime™ today!</h1>
+            <h1 className="center-content">Get Hut Prime™ today!</h1>
             <br />
             
             <h3>Benefits of Prime:</h3>
@@ -122,7 +121,7 @@ const PremiumInfo = function(props)
                 </div>
                 
                 <input type="hidden" name="_csrf" value={props.csrf} />
-                <input className="formSubmit" type="submit" value="Activate Premium"/>
+                <input className="formSubmit premium-button" type="submit" value="Activate Premium"/>
             </form>
         </div>
     )
@@ -130,6 +129,7 @@ const PremiumInfo = function(props)
 
 const AccountInfo = function(props)
 {
+    hideAds(props.account.premiumStatus);
     if(props.account.premiumStatus === false)
     {
         return(
@@ -163,7 +163,7 @@ const AccountInfo = function(props)
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input className="formSubmit" type="submit" value="Change Password"/>
                 </form>
-                <button className="formSubmit pointer" onClick={showPremium}>Sign up for Prime!</button>
+                <button className="formSubmit pointer premium-button" onClick={showPremium}>Sign up for Prime!</button>
             </div>
         )
     }
@@ -198,7 +198,7 @@ const AccountInfo = function(props)
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input className="formSubmit" type="submit" value="Change Password"/>
                 </form>
-                <button className="formSubmit pointer" onClick={showCancelPremium}>Cancel Premium</button>
+                <button className="formSubmit pointer premium-button" onClick={showCancelPremium}>Cancel Premium</button>
             </div>
         )
     }

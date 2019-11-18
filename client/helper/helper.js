@@ -31,6 +31,14 @@ const redirect = (response) => {
     window.location = response.redirect;
 };
 
+const hideAds = (premiumStatus) => {
+    if(premiumStatus === true) {
+        $(".ad-sidebar").hide();
+    } else {
+        $(".ad-sidebar").show();
+    }
+};
+
 const sendAjax = (type, action, data, success, error) => {
     $.ajax({
         cache: false,

@@ -13,29 +13,25 @@
   <link rel="shortcut icon" href="/assets/img/favicon.png"/>
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
-<body> 
+<body>
   <nav><a href="/login"><img id="logo" src="/assets/img/hut.png" alt="hut logo"/></a><br><br>
-    <div class="navlink"><a id="loginButton" class="current-page" href="/login">Login</a></div><br>
-    <div class="navlink"><a id="signupButton" href="/signup">Sign up</a></div>
+    <div class="navlink"><a href="/logout">Log out</a></div><br>
+    <div class="navlink"><a href="/create">Create a Clip</a></div><br>
+    <div class="navlink"><a href="/gallery">Clip Gallery</a></div><br>
+    <div class="navlink"><a href="/users">User List</a></div><br>
+    <div class="navlink"><a href="/info">About</a></div><br>
+    <div class="navlink"><a href="/myAccount">Account</a></div>
   </nav>
   
-  <section id="content">
+  <div id="content">
     <div class="loader-container">
       <h3>Loading...</h3>
       <div class="loader"></div>
     </div>
-  </section>
-  
-  <div id="terryMessage">
-    <div class="speech-bubble-ds" alt="speech box">
-      <h4><span id="innerMessage">Wrong username or password.</span></h4>
-      <div class="speech-bubble-ds-arrow"></div>
-    </div>
-    <img id="terry" src="assets/img/terry_bad.png" alt="errorMessage"/>
   </div>
   
   <img src="/assets/img/ad.png" class="ad-sidebar" alt="Advertisement" />
   
-  <script src="/assets/loginBundle.js"></script>
+  <script src="/assets/404Bundle.js"></script>
 </body>
 </html>

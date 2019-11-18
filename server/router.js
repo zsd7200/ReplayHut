@@ -24,6 +24,8 @@ const router = (app) => {
   app.get('/getClips', mid.requiresLogin, controllers.Replay.getClips);
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
+  
+  app.get('*', mid.requiresLogin, controllers.Info.notFoundPage);
 };
 
 module.exports = router;

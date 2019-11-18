@@ -41,6 +41,12 @@ li {
   margin-right: 25%; }
 
 /* Classes */
+.ad-sidebar {
+  position: absolute;
+  z-index: 999;
+  padding-left: 10px;
+  top: 600px; }
+
 .clip {
   border: 2px solid black;
   border-radius: 10px;
@@ -282,6 +288,9 @@ li {
 .post-date {
   margin-bottom: 8px; }
 
+.premium-button {
+  margin-bottom: 30px; }
+
 /* IDs */
 #errorMessage {
   font-size: 1.2em;
@@ -306,6 +315,10 @@ li {
 #premium-indicator {
   text-align: right;
   padding-right: 20px; }
+
+#search {
+  margin-top: 15px;
+  margin-left: 208px; }
 
 #terry {
   z-index: 225;
@@ -341,6 +354,15 @@ li {
   left: 160px; }
   #userList div {
     left: 0; }
+
+#userSearch, #gameSearch, #charSearch {
+  margin-bottom: 5px;
+  width: 250px;
+  background-color: white;
+  transition: .2s; }
+  #userSearch:focus, #gameSearch:focus, #charSearch:focus {
+    background-color: #cfe6b8;
+    transition: .2s; }
 
 /* IDs one-liners */
 #title {

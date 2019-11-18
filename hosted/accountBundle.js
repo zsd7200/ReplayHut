@@ -78,7 +78,7 @@ var CancelPremium = function CancelPremium(props) {
     className: "content-box"
   }, React.createElement("button", {
     className: "back pointer",
-    oncClick: showAccount
+    onClick: showAccount
   }, "Go back"), React.createElement("div", {
     className: "center-content"
   }, React.createElement("h1", null, "Woah there!"), React.createElement("h2", null, "Are you really sure you want to cancel your premium membership?")), React.createElement("br", null), React.createElement("h3", null, "If you cancel your subscription, you'll lose:"), React.createElement("ul", null, React.createElement("li", null, "Ad-free browsing"), React.createElement("li", null, "An icon next to your name across the site")), React.createElement("h3", null, "If you're really sure, click below to cancel your subscription."), React.createElement("p", {
@@ -89,7 +89,7 @@ var CancelPremium = function CancelPremium(props) {
     id: "csrf",
     value: props.csrf
   }), React.createElement("button", {
-    className: "formSubmit pointer",
+    className: "formSubmit pointer premium-button",
     onClick: cancelPremium
   }, "Cancel Subscription"));
 };
@@ -102,7 +102,7 @@ var PremiumInfo = function PremiumInfo(props) {
     onClick: showAccount
   }, "Go Back"), React.createElement("h1", {
     className: "center-content"
-  }, " Get Hut Prime\u2122 today!"), React.createElement("br", null), React.createElement("h3", null, "Benefits of Prime:"), React.createElement("ul", null, React.createElement("li", null, "Remove ads"), React.createElement("li", null, "Get a \u2B50 icon next to your name across the site"), React.createElement("li", null, "Help us continue providing updates to ReplayHut!")), React.createElement("br", null), React.createElement("h3", null, "If you want to help, get Prime for only $3.99 a month!"), React.createElement("br", null), React.createElement("form", {
+  }, "Get Hut Prime\u2122 today!"), React.createElement("br", null), React.createElement("h3", null, "Benefits of Prime:"), React.createElement("ul", null, React.createElement("li", null, "Remove ads"), React.createElement("li", null, "Get a \u2B50 icon next to your name across the site"), React.createElement("li", null, "Help us continue providing updates to ReplayHut!")), React.createElement("br", null), React.createElement("h3", null, "If you want to help, get Prime for only $3.99 a month!"), React.createElement("br", null), React.createElement("form", {
     id: "premCardForm",
     name: "premCardForm",
     onSubmit: activatePremium,
@@ -150,13 +150,15 @@ var PremiumInfo = function PremiumInfo(props) {
     name: "_csrf",
     value: props.csrf
   }), React.createElement("input", {
-    className: "formSubmit",
+    className: "formSubmit premium-button",
     type: "submit",
     value: "Activate Premium"
   })));
 };
 
 var AccountInfo = function AccountInfo(props) {
+  hideAds(props.account.premiumStatus);
+
   if (props.account.premiumStatus === false) {
     return React.createElement("div", {
       className: "content-box"
@@ -207,7 +209,7 @@ var AccountInfo = function AccountInfo(props) {
       type: "submit",
       value: "Change Password"
     })), React.createElement("button", {
-      className: "formSubmit pointer",
+      className: "formSubmit pointer premium-button",
       onClick: showPremium
     }, "Sign up for Prime!"));
   } else {
@@ -262,7 +264,7 @@ var AccountInfo = function AccountInfo(props) {
       type: "submit",
       value: "Change Password"
     })), React.createElement("button", {
-      className: "formSubmit pointer",
+      className: "formSubmit pointer premium-button",
       onClick: showCancelPremium
     }, "Cancel Premium"));
   }
@@ -327,6 +329,14 @@ var redirect = function redirect(response) {
     width: 'hide'
   }, 350);
   window.location = response.redirect;
+};
+
+var hideAds = function hideAds(premiumStatus) {
+  if (premiumStatus === true) {
+    $(".ad-sidebar").hide();
+  } else {
+    $(".ad-sidebar").show();
+  }
 };
 
 var sendAjax = function sendAjax(type, action, data, success, error) {

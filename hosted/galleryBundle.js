@@ -35,119 +35,8 @@ var formatDate = function formatDate(date) {
   return newDate;
 };
 
-var ClipList = function ClipList(props) {
-  // If no clip have been made, show error
-  if (props.clips.length === 0) {
-    return React.createElement("div", {
-      className: "loader-container"
-    }, React.createElement("h3", null, "No clips found!"));
-  } // Displaying each clip
-
-
-  var clipNodes = props.clips.map(function (clip) {
-    if (clip.character1 !== '') {
-      if (clip.character2 !== '') {
-        return React.createElement("div", {
-          className: "clip"
-        }, React.createElement("h4", {
-          className: "clip-title"
-        }, React.createElement("u", null, clip.title), React.createElement("span", {
-          className: "creator"
-        }, "Creator: ", clip.creatorUN)), React.createElement("p", {
-          className: "game"
-        }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-          className: "description"
-        }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-          className: "char1"
-        }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
-          className: "char2"
-        }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
-          className: "post-date"
-        }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-          width: ytWidth,
-          height: ytHeight,
-          src: clip.youtube,
-          frameBorder: "0",
-          allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-          allowFullScreen: true
-        }));
-      } else {
-        return React.createElement("div", {
-          className: "clip"
-        }, React.createElement("h4", {
-          className: "clip-title"
-        }, React.createElement("u", null, clip.title), React.createElement("span", {
-          className: "creator"
-        }, "Creator: ", clip.creatorUN)), React.createElement("p", {
-          className: "game"
-        }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-          className: "description"
-        }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-          className: "char1"
-        }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
-          className: "post-date"
-        }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-          width: ytWidth,
-          height: ytHeight,
-          src: clip.youtube,
-          frameBorder: "0",
-          allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-          allowFullScreen: true
-        }), "                    ");
-      }
-    } else if (clip.character2 !== '') {
-      return React.createElement("div", {
-        className: "clip"
-      }, React.createElement("h4", {
-        className: "clip-title"
-      }, React.createElement("u", null, clip.title), React.createElement("span", {
-        className: "creator"
-      }, "Creator: ", clip.creatorUN)), React.createElement("p", {
-        className: "game"
-      }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-        className: "description"
-      }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-        className: "char2"
-      }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
-        className: "post-date"
-      }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-        width: ytWidth,
-        height: ytHeight,
-        src: clip.youtube,
-        frameBorder: "0",
-        allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-        allowFullScreen: true
-      }));
-    } else {
-      return React.createElement("div", {
-        className: "clip"
-      }, React.createElement("h4", {
-        className: "clip-title"
-      }, React.createElement("u", null, clip.title), React.createElement("span", {
-        className: "creator"
-      }, "Creator: ", clip.creatorUN)), React.createElement("p", {
-        className: "game"
-      }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-        className: "description"
-      }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-        className: "post-date"
-      }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-        width: ytWidth,
-        height: ytHeight,
-        src: clip.youtube,
-        frameBorder: "0",
-        allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-        allowFullScreen: true
-      }));
-    }
-  });
-  return React.createElement("div", {
-    className: "clipList"
-  }, clipNodes);
-};
-
-var setup = function setup() {
-  // Retrieving the accounts
+var showClips = function showClips() {
+  // Retrieving the clips
   sendAjax('GET', '/getClips', null, function (data) {
     ReactDOM.render(React.createElement(ClipList, {
       clips: data.clips
@@ -156,6 +45,297 @@ var setup = function setup() {
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);
   });
+};
+
+var ClipList = function ClipList(props) {
+  // If no clip have been made, show error
+  if (props.clips.length === 0) {
+    return React.createElement("div", {
+      className: "loader-container"
+    }, React.createElement("h3", null, "No clips found!"));
+  }
+
+  var userSearch = $("#userSearch").val();
+  var gameSearch = $("#gameSearch").val();
+  var charSearch = $("#charSearch").val();
+
+  if (gameSearch !== '') {
+    gameSearch = gameSearch.toLowerCase();
+    gameSearch = gameSearch.trim();
+  }
+
+  if (charSearch !== '') {
+    charSearch = charSearch.split(',');
+
+    for (var index = 0; index < charSearch.length; index++) {
+      charSearch[index] = charSearch[index].trim();
+      charSearch[index] = charSearch[index].toLowerCase();
+    }
+  } // Displaying each clip
+
+
+  var clipNodes = props.clips.map(function (clip) {
+    var userCheck = true;
+    var gameCheck = true;
+    var charCheck = true;
+    if (userSearch !== '' && userSearch !== clip.creatorUN) userCheck = false;
+    if (gameSearch !== '' && gameSearch !== clip.game.toLowerCase()) gameCheck = false;
+
+    if (charSearch !== '') {
+      for (var _index = 0; _index < charSearch.length; _index++) {
+        var notFirst = true;
+        if (clip.character1 !== '') if (charSearch[_index] === clip.character1.toLowerCase()) notFirst = false;
+        var notSecond = true;
+        if (clip.character2 !== '') if (charSearch[_index] === clip.character2.toLowerCase()) notFirst = false;
+        if (notFirst && notSecond) charCheck = false;
+      }
+    }
+
+    if (userCheck && gameCheck && charCheck) {
+      if (clip.creatorPremStatus) {
+        if (clip.character1 !== '') {
+          if (clip.character2 !== '') {
+            return React.createElement("div", {
+              className: "clip"
+            }, React.createElement("h4", {
+              className: "clip-title"
+            }, React.createElement("u", null, clip.title), React.createElement("span", {
+              className: "creator"
+            }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "description"
+            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+              className: "char1"
+            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+              className: "char2"
+            }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+              className: "post-date"
+            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+              width: ytWidth,
+              height: ytHeight,
+              src: clip.youtube,
+              frameBorder: "0",
+              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+              allowFullScreen: true
+            }));
+          } else {
+            return React.createElement("div", {
+              className: "clip"
+            }, React.createElement("h4", {
+              className: "clip-title"
+            }, React.createElement("u", null, clip.title), React.createElement("span", {
+              className: "creator"
+            }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "description"
+            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+              className: "char1"
+            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+              className: "post-date"
+            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+              width: ytWidth,
+              height: ytHeight,
+              src: clip.youtube,
+              frameBorder: "0",
+              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+              allowFullScreen: true
+            }), "                    ");
+          }
+        } else if (clip.character2 !== '') {
+          return React.createElement("div", {
+            className: "clip"
+          }, React.createElement("h4", {
+            className: "clip-title"
+          }, React.createElement("u", null, clip.title), React.createElement("span", {
+            className: "creator"
+          }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "description"
+          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+            className: "char2"
+          }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+            className: "post-date"
+          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+            width: ytWidth,
+            height: ytHeight,
+            src: clip.youtube,
+            frameBorder: "0",
+            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+            allowFullScreen: true
+          }));
+        } else {
+          return React.createElement("div", {
+            className: "clip"
+          }, React.createElement("h4", {
+            className: "clip-title"
+          }, React.createElement("u", null, clip.title), React.createElement("span", {
+            className: "creator"
+          }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "description"
+          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+            className: "post-date"
+          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+            width: ytWidth,
+            height: ytHeight,
+            src: clip.youtube,
+            frameBorder: "0",
+            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+            allowFullScreen: true
+          }));
+        }
+      } else {
+        if (clip.character1 !== '') {
+          if (clip.character2 !== '') {
+            return React.createElement("div", {
+              className: "clip"
+            }, React.createElement("h4", {
+              className: "clip-title"
+            }, React.createElement("u", null, clip.title), React.createElement("span", {
+              className: "creator"
+            }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "description"
+            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+              className: "char1"
+            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+              className: "char2"
+            }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+              className: "post-date"
+            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+              width: ytWidth,
+              height: ytHeight,
+              src: clip.youtube,
+              frameBorder: "0",
+              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+              allowFullScreen: true
+            }));
+          } else {
+            return React.createElement("div", {
+              className: "clip"
+            }, React.createElement("h4", {
+              className: "clip-title"
+            }, React.createElement("u", null, clip.title), React.createElement("span", {
+              className: "creator"
+            }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "description"
+            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+              className: "char1"
+            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+              className: "post-date"
+            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+              width: ytWidth,
+              height: ytHeight,
+              src: clip.youtube,
+              frameBorder: "0",
+              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+              allowFullScreen: true
+            }), "                    ");
+          }
+        } else if (clip.character2 !== '') {
+          return React.createElement("div", {
+            className: "clip"
+          }, React.createElement("h4", {
+            className: "clip-title"
+          }, React.createElement("u", null, clip.title), React.createElement("span", {
+            className: "creator"
+          }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "description"
+          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+            className: "char2"
+          }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+            className: "post-date"
+          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+            width: ytWidth,
+            height: ytHeight,
+            src: clip.youtube,
+            frameBorder: "0",
+            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+            allowFullScreen: true
+          }));
+        } else {
+          return React.createElement("div", {
+            className: "clip"
+          }, React.createElement("h4", {
+            className: "clip-title"
+          }, React.createElement("u", null, clip.title), React.createElement("span", {
+            className: "creator"
+          }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "description"
+          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+            className: "post-date"
+          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+            width: ytWidth,
+            height: ytHeight,
+            src: clip.youtube,
+            frameBorder: "0",
+            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+            allowFullScreen: true
+          }));
+        }
+      }
+    }
+  });
+  return React.createElement("div", {
+    className: "clipList"
+  }, clipNodes);
+};
+
+var SearchBar = function SearchBar(props) {
+  return React.createElement("div", {
+    id: "search",
+    className: "content-box"
+  }, React.createElement("h5", null, "Search: "), React.createElement("div", {
+    className: "input-item"
+  }, React.createElement("input", {
+    id: "userSearch",
+    type: "text",
+    name: "userSearch",
+    placeholder: "MKLeo"
+  }), React.createElement("br", null), React.createElement("label", {
+    className: "input-label",
+    htmlFor: "userSearch"
+  }, "User: ")), React.createElement("div", {
+    className: "input-item"
+  }, React.createElement("input", {
+    id: "gameSearch",
+    type: "text",
+    name: "gameSearch",
+    placeholder: "Super Smash Bros. Ultimate"
+  }), React.createElement("br", null), React.createElement("label", {
+    className: "input-label",
+    htmlFor: "gameSearch"
+  }, "Game: ")), React.createElement("div", {
+    className: "input-item"
+  }, React.createElement("input", {
+    id: "charSearch",
+    type: "text",
+    name: "charSearch",
+    placeholder: "marth, zelda"
+  }), React.createElement("label", {
+    className: "input-label help",
+    title: "Seperate characters by commas!",
+    htmlFor: "charSearch"
+  }, "Characters: ")), React.createElement("button", {
+    className: "formSubmit",
+    onClick: showClips
+  }, "Search"));
+};
+
+var setup = function setup() {
+  showClips();
+  ReactDOM.render(React.createElement(SearchBar, null), document.querySelector("#search"));
 };
 
 $(document).ready(function () {
@@ -202,6 +382,14 @@ var redirect = function redirect(response) {
     width: 'hide'
   }, 350);
   window.location = response.redirect;
+};
+
+var hideAds = function hideAds(premiumStatus) {
+  if (premiumStatus === true) {
+    $(".ad-sidebar").hide();
+  } else {
+    $(".ad-sidebar").show();
+  }
 };
 
 var sendAjax = function sendAjax(type, action, data, success, error) {

@@ -300,13 +300,26 @@ const ClipList = function(props)
 const SearchBar = function(props)
 {
     return(
-        <section id="search">
-            <input id="userSearch" type="text" name="userSearch" placeholder="User to search for..." />
-            <input id="gameSearch" type="text" name="gameSearch" placeholder="Game to search for..." />
-            <input id="charSearch" type="text" name="charSearch" placeholder="Character(s) to search for... (Seperate by commas)" />
+        <div id="search" className="content-box">
+            <h5>Search: </h5>
+            
+            <div className="input-item">
+                <input id="userSearch" type="text" name="userSearch" placeholder="MKLeo" /><br />
+                <label className="input-label" htmlFor="userSearch">User: </label>
+            </div>
+            
+            <div className="input-item">
+                <input id="gameSearch" type="text" name="gameSearch" placeholder="Super Smash Bros. Ultimate" /><br />
+                <label className="input-label" htmlFor="gameSearch">Game: </label>
+            </div>
+            
+            <div className="input-item">
+                <input id="charSearch" type="text" name="charSearch" placeholder="marth, zelda" />
+                <label className="input-label help" title="Seperate characters by commas!" htmlFor="charSearch">Characters: </label>
+            </div>
 
-            <button onClick={showClips}>Search</button>
-        </section>
+            <button className="formSubmit" onClick={showClips}>Search</button>
+        </div>
     );
 }
 

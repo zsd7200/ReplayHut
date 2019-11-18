@@ -1,22 +1,19 @@
 "use strict";
 
-var InfoData = function InfoData(props) {
-  $("#terryMessage").animate({
-    width: 'toggle'
-  }, 350);
+var NotFoundData = function NotFoundData(props) {
   return React.createElement("div", {
-    className: "content-box"
-  }, React.createElement("h3", {
-    id: "title"
-  }, "Replay Hut"), React.createElement("h5", null, "modified by ", React.createElement("a", {
-    href: "https://github.com/zsd7200"
-  }, "Zack Dunham"), " and ", React.createElement("a", {
-    href: "https://github.com/tam8217"
-  }, "Tristan Marshall"), " from DomoMaker"));
+    id: "content"
+  }, React.createElement("img", {
+    id: "hut",
+    src: "/assets/img/hut_orig.png",
+    alt: "Hut"
+  }), React.createElement("div", {
+    className: "content-box center-content"
+  }, React.createElement("h3", null, "404 - Page Not Found")));
 };
 
 var setup = function setup(csrf) {
-  ReactDOM.render(React.createElement(InfoData, {
+  ReactDOM.render(React.createElement(NotFoundData, {
     csrf: csrf
   }), document.querySelector("#content"));
 };

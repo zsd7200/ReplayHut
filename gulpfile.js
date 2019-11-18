@@ -34,6 +34,14 @@ const jsTask = (done) => {
     presets: ['@babel/preset-env', '@babel/preset-react']
   }))
   .pipe(gulp.dest('./hosted'));
+  
+  gulp.src(['./client/404/*.js', './client/helper/*.js'])
+  .pipe(plumber())
+  .pipe(concat('404Bundle.js'))
+  .pipe(babel({
+    presets: ['@babel/preset-env', '@babel/preset-react']
+  }))
+  .pipe(gulp.dest('./hosted'));
 
   // loginBundle
   gulp.src(['./client/login/*.js', './client/helper/*.js'])

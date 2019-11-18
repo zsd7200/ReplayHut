@@ -211,6 +211,14 @@ var redirect = function redirect(response) {
   window.location = response.redirect;
 };
 
+var hideAds = function hideAds(premiumStatus) {
+  if (premiumStatus === true) {
+    $(".ad-sidebar").hide();
+  } else {
+    $(".ad-sidebar").show();
+  }
+};
+
 var sendAjax = function sendAjax(type, action, data, success, error) {
   $.ajax({
     cache: false,
