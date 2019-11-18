@@ -48,7 +48,8 @@ var showClips = function showClips() {
 };
 
 var ClipList = function ClipList(props) {
-  // If no clip have been made, show error
+  checkPremium(); // If no clip have been made, show error
+
   if (props.clips.length === 0) {
     return React.createElement("div", {
       className: "loader-container"
@@ -382,14 +383,17 @@ var redirect = function redirect(response) {
     width: 'hide'
   }, 350);
   window.location = response.redirect;
-};
+}; // checks for premium and hides ads if necessary
 
-var hideAds = function hideAds(premiumStatus) {
-  if (premiumStatus === true) {
-    $(".ad-sidebar").hide();
-  } else {
-    $(".ad-sidebar").show();
-  }
+
+var checkPremium = function checkPremium() {
+  sendAjax('GET', '/getMyAccount', null, function (data) {
+    if (data.account.premiumStatus === true) {
+      $(".ad-sidebar").hide();
+    } else {
+      $(".ad-sidebar").show();
+    }
+  });
 };
 
 var sendAjax = function sendAjax(type, action, data, success, error) {

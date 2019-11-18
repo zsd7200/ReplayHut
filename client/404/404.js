@@ -1,4 +1,5 @@
 const NotFoundData = function(props) {
+    checkPremium();
     return (
         <div id="content">
             <img id="hut" src="/assets/img/hut_orig.png" alt="Hut" />

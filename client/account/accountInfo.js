@@ -129,7 +129,7 @@ const PremiumInfo = function(props)
 
 const AccountInfo = function(props)
 {
-    hideAds(props.account.premiumStatus);
+    checkPremium();
     if(props.account.premiumStatus === false)
     {
         return(

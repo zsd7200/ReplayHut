@@ -15,6 +15,7 @@ const makePost = (e) =>{
 };
 
 const CreateForm = (props) =>{
+    checkPremium();
     return(
     <div className="content-box">
         <form id="createForm" onSubmit={makePost}name="createForm" action="/createClip" method="POST" classname="createForm">

@@ -31,12 +31,15 @@ const redirect = (response) => {
     window.location = response.redirect;
 };
 
-const hideAds = (premiumStatus) => {
-    if(premiumStatus === true) {
-        $(".ad-sidebar").hide();
-    } else {
-        $(".ad-sidebar").show();
-    }
+// checks for premium and hides ads if necessary
+const checkPremium = () => {
+    sendAjax('GET', '/getMyAccount', null, (data) =>{
+        if(data.account.premiumStatus === true) {
+            $(".ad-sidebar").hide();
+        } else {
+            $(".ad-sidebar").show();
+        }
+    });  
 };
 
 const sendAjax = (type, action, data, success, error) => {

@@ -1,6 +1,7 @@
 const InfoData = function(props) {
     $("#terryMessage").animate({width:'toggle'}, 350);
-
+    checkPremium();
+    
     return (    
         <div className="content-box">
             <h3 id="title">Replay Hut</h3>

@@ -4,6 +4,7 @@ var InfoData = function InfoData(props) {
   $("#terryMessage").animate({
     width: 'toggle'
   }, 350);
+  checkPremium();
   return React.createElement("div", {
     className: "content-box"
   }, React.createElement("h3", {
@@ -71,14 +72,17 @@ var redirect = function redirect(response) {
     width: 'hide'
   }, 350);
   window.location = response.redirect;
-};
+}; // checks for premium and hides ads if necessary
 
-var hideAds = function hideAds(premiumStatus) {
-  if (premiumStatus === true) {
-    $(".ad-sidebar").hide();
-  } else {
-    $(".ad-sidebar").show();
-  }
+
+var checkPremium = function checkPremium() {
+  sendAjax('GET', '/getMyAccount', null, function (data) {
+    if (data.account.premiumStatus === true) {
+      $(".ad-sidebar").hide();
+    } else {
+      $(".ad-sidebar").show();
+    }
+  });
 };
 
 var sendAjax = function sendAjax(type, action, data, success, error) {

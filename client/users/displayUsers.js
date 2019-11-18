@@ -1,5 +1,6 @@
 const UserList = function(props) 
 {
+    checkPremium();
     //If no users have been made (Should not happen becuase need to be logged in), show error
     if(props.users.length === 0)
     {

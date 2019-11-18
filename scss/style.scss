@@ -59,6 +59,7 @@ li {
 
 /* Classes */
 .ad-sidebar {
+    display: none;
     position: absolute;
     z-index: 999;
     padding-left: 10px;
@@ -102,7 +103,7 @@ li {
   margin: auto;
   margin-top: 13%;
   position: relative;
-  left: $sidebarSize;
+  left: $sidebarSize - 12;
   width: 800px;
   border-radius: 25px;
   border: 2px solid $darkestBrown;
@@ -381,11 +382,6 @@ li {
   padding-right: 20px;
 }
 
-#search {
-  margin-top: 15px;
-  margin-left: $sidebarSize + 48;
-}
-
 #terry {
   z-index: 225;
   margin-left: 100px;
@@ -442,4 +438,5 @@ li {
 }
 
 /* IDs one-liners */
+#search { margin-top: 15px; }
 #title { padding-bottom: 10px; }
