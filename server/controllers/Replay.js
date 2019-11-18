@@ -1,9 +1,12 @@
+// Bringing in the models
 const models = require('../models');
 
+// Setting up models so that they can be accessed
 const { Replays } = models;
 
 const { Account } = models;
 
+// Rendering pages
 const createPage = (req, res) => res.render('create', { csrfToken: req.csrfToken() });
 const galleryPage = (req, res) => {
   res.render('gallery', { csrfToken: req.csrfToken() });
@@ -11,6 +14,7 @@ const galleryPage = (req, res) => {
 
 // Used to create a 'clip' which is saved in the database
 const createClip = (req, res) => {
+  // Making sure all of the required fields are filled out
   if (!req.body.title || !req.body.description || !req.body.youtube || !req.body.game) {
     return res.status(400).json({ error: 'Hey! Make sure you fill out all required fields!' });
   }
@@ -23,8 +27,12 @@ const createClip = (req, res) => {
   // change link to an embedded link and remove & parameters from link
   const ytEmbed = `https://www.youtube.com/embed/${req.body.youtube.split('=')[1].split('&')[0]}`;
 
-  let currentPremStatus = false;
+
   // Used to increment the amount of clips created by a person
+  // Due to the way these functions interact, the creation of a clip must take place in here
+  // It requires the user's Premium Status to be sent
+  // This data does not get natively updated, and since the clips need to be incremented
+  // This is the most efficient way to perform both actions
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
@@ -34,9 +42,8 @@ const createClip = (req, res) => {
 
     // Increasing their amount of clips
     foundUser.createdClips++;
-    currentPremStatus = foundUser.premiumStatus;
 
-    // console.log(currentPremStatus);
+    // Creating the necessary information for a new clip
     const clipData = {
       title: req.body.title,
       game: req.body.game,
@@ -45,23 +52,32 @@ const createClip = (req, res) => {
       character1: req.body.char1,
       character2: req.body.char2,
       creatorUN: req.session.account.username,
-      creatorPremStatus: currentPremStatus,
+      creatorPremStatus: foundUser.premiumStatus,
     };
+
+    // Creating a new clip with the data
     const newClip = new Replays.ReplayModel(clipData);
 
+    // Saving the clip to the database
     const clipPromise = newClip.save();
+
     // Handling promise to reassign the user's info
     const updatePromise = foundUser.save();
 
+    // Catching errors with the user's data
     updatePromise.catch((err2) => res.json({ err2 }));
+
+    // If the clip creation was successful, send back a response
     clipPromise.then(() => { res.json({ message: 'Clip successfully created!' }); });
 
-
+    // If there was an error with clip creation, send that back
     clipPromise.catch((err2) => {
       console.log(err2);
 
       return res.status(400).json({ error: 'An error occured!' });
     });
+
+    // Must return true to comply with
     return true;
   });
   return true;
@@ -69,6 +85,7 @@ const createClip = (req, res) => {
 
 // Retrieves all clips
 const getClips = (request, response) => {
+  // Set up the response
   const res = response;
 
   // Sending back users
@@ -79,6 +96,7 @@ const getClips = (request, response) => {
   });
 };
 
+// Exports to be used in the router
 module.exports.createClip = createClip;
 module.exports.createPage = createPage;
 module.exports.galleryPage = galleryPage;

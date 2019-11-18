@@ -1,26 +1,31 @@
+//Handles the changing of users passwords
 const passChange = (e) =>{
     e.preventDefault();
+    
+    //Hiding the sidebar message which may have popped up
     $("#terryMessage").animate({width:'hide'}, 350);
 
+    //Error checks
+    //Making sure all values are filled in
     if( $("#pass").val() == '' || $("#pass2").val() == '' || $("#currentPass").val() == '') {
         showMessage("Hey, make sure you fill out all fields!");
         return false;
     }
 
+    //Checking if the new passwords match each other
     if($("#pass").val() !== $("#pass2").val()) {
         showMessage("Woah, those new passwords don't match!");
         return false;
     }
     
-
+    //Sending the request to the router to change the password
     sendAjax('POST', $("#changePassForm").attr("action"), $("#changePassForm").serialize(),
     (result)=>{
-        $("#pass").val() == '';
-        $("#pass2").val() == '';
-        $("#currentPass").val() == ''; 
+        //Displaying the results
         showMessage(result.message);
     }, 
     (xhr, status, error) =>{
+        //Catching an error in filling out the form
         if(error === 'Unauthorized')
         showMessage("Current password is not correct");
     });
@@ -28,30 +33,40 @@ const passChange = (e) =>{
     return false;
 };
 
+//Used to send a request to activate premium for the user
 const activatePremium = (e) =>{
     e.preventDefault();
     sendAjax('POST', $("#premCardForm").attr("action"), $("#premCardForm").serialize(), (result) => {
+        //Goes back to the account page upon completion
         showAccount();
+        //Writing out a success message
         showMessage(result.message, "good")}
     );
-}
+};
 
+//Sending a request to cancel the premium membership
 const cancelPremium = (e) =>{
     e.preventDefault();
 
     sendAjax('POST', "/cancelPremium", $("#csrf").serialize(), (result) => {
+        //Returning to the account page
         showAccount();
+        
+        //Writing out a success message
         showMessage(result.message, "wait")},
     (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
         showMessage(messageObj.error);}
     );
 }
+
+//Gets a csrf token and then displays the page with information about the premium membership
 const showPremium = () =>{
     sendAjax('GET', '/getToken', null, (result) => {
         ReactDOM.render(<PremiumInfo csrf={result.csrfToken} />, document.querySelector("#content"));
     });
 };
 
+//Gets a csrf token and then displays the account page
 const showAccount = () =>{
     sendAjax('GET', '/getToken', null, (result) => {
         sendAjax('GET', '/getMyAccount', null, (data) =>{
@@ -60,12 +75,14 @@ const showAccount = () =>{
     });
 };
 
+//Gets a csrf token and then displays the page with information about cancelling the premiuum membership
 const showCancelPremium = () =>{
     sendAjax('GET', '/getToken', null, (result) => {
         ReactDOM.render(<CancelPremium csrf={result.csrfToken} />, document.querySelector("#content"));
     });
 };
 
+//Returns the content for the page regarding cancelling premium
 const CancelPremium = function(props) 
 {
     return(
@@ -86,7 +103,9 @@ const CancelPremium = function(props)
             <button className="formSubmit pointer premium-button" onClick={cancelPremium}>Cancel Subscription</button>
         </div>
     )
-}
+};
+
+//Returns the content for the page regarding the premium membership
 const PremiumInfo = function(props)
 {
     return(
@@ -127,6 +146,7 @@ const PremiumInfo = function(props)
     )
 }
 
+//Returns the page with the account information
 const AccountInfo = function(props)
 {
     checkPremium();
@@ -204,20 +224,7 @@ const AccountInfo = function(props)
     }
 }
 
-/*const setup = function(csrf)
-{
-    sendAjax('GET', '/getMyAccount', null, (data) =>{
-        ReactDOM.render(<AccountInfo account={data.account} csrf={csrf} />, document.querySelector("#content"));
-    });
-}
-
-const getToken = () =>{
-    sendAjax('GET', '/getToken', null, (result) => {
-        setup(result.csrfToken);
-    });
-};
-*/
+//Showing the account page upon loading
 $(document).ready(function() {
-    //getToken();
     showAccount();
 });
