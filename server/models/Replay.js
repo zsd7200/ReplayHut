@@ -47,4 +47,5 @@ ReplayModel = mongoose.model('Replay', ReplaySchema);
 module.exports = {
   ReplayModel,
   ReplaySchema,
+  convertId,
 };

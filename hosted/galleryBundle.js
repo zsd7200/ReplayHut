@@ -150,6 +150,25 @@ var ClipList = function ClipList(props) {
               className: "formSubmit",
               type: "submit",
               value: "Add Favorite"
+            })), React.createElement("form", {
+              id: "delForm",
+              onSubmit: deleteClips,
+              name: "delForm",
+              action: "/deleteClips",
+              method: "POST",
+              className: "delForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
+            }), React.createElement("input", {
+              className: "formSubmit",
+              type: "submit",
+              value: "Delete Clip"
             })));
           } else {
             return React.createElement("div", {
@@ -192,6 +211,25 @@ var ClipList = function ClipList(props) {
               className: "formSubmit",
               type: "submit",
               value: "Add Favorite"
+            })), React.createElement("form", {
+              id: "delForm",
+              onSubmit: deleteClips,
+              name: "delForm",
+              action: "/deleteClips",
+              method: "POST",
+              className: "delForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
+            }), React.createElement("input", {
+              className: "formSubmit",
+              type: "submit",
+              value: "Delete Clip"
             })));
           }
         } else if (clip.character2 !== '') {
@@ -235,6 +273,25 @@ var ClipList = function ClipList(props) {
             className: "formSubmit",
             type: "submit",
             value: "Add Favorite"
+          })), React.createElement("form", {
+            id: "delForm",
+            onSubmit: deleteClips,
+            name: "delForm",
+            action: "/deleteClips",
+            method: "POST",
+            className: "delForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
+          }), React.createElement("input", {
+            className: "formSubmit",
+            type: "submit",
+            value: "Delete Clip"
           })));
         } else {
           return React.createElement("div", {
@@ -275,6 +332,25 @@ var ClipList = function ClipList(props) {
             className: "formSubmit",
             type: "submit",
             value: "Add Favorite"
+          })), React.createElement("form", {
+            id: "delForm",
+            onSubmit: deleteClips,
+            name: "delForm",
+            action: "/deleteClips",
+            method: "POST",
+            className: "delForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
+          }), React.createElement("input", {
+            className: "formSubmit",
+            type: "submit",
+            value: "Delete Clip"
           })));
         }
       } else {
@@ -407,6 +483,25 @@ var ClipList = function ClipList(props) {
             className: "formSubmit",
             type: "submit",
             value: "Add Favorite"
+          })), React.createElement("form", {
+            id: "delForm",
+            onSubmit: deleteClips,
+            name: "delForm",
+            action: "/deleteClips",
+            method: "POST",
+            className: "delForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
+          }), React.createElement("input", {
+            className: "formSubmit",
+            type: "submit",
+            value: "Delete Clip"
           })));
         } else {
           return React.createElement("div", {
@@ -447,6 +542,25 @@ var ClipList = function ClipList(props) {
             className: "formSubmit",
             type: "submit",
             value: "Add Favorite"
+          })), React.createElement("form", {
+            id: "delForm",
+            onSubmit: deleteClips,
+            name: "delForm",
+            action: "/deleteClips",
+            method: "POST",
+            className: "delForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
+          }), React.createElement("input", {
+            className: "formSubmit",
+            type: "submit",
+            value: "Delete Clip"
           })));
         }
       }
@@ -458,7 +572,20 @@ var ClipList = function ClipList(props) {
 };
 
 var deleteClips = function deleteClips() {
-  sendAjax('GET', '/deleteClips', null);
+  e.preventDefault();
+  $("#terryMessage").animate({
+    width: 'hide'
+  }, 350);
+  sendAjax('POST', $("#delForm").attr("action"), $("#delForm").serialize(), function (result) {
+    showMessage(result.message);
+    sendAjax('GET', '/getToken', null, function (result) {
+      showClips(result.csrfToken);
+    });
+  }, function (xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    showMessage(messageObj.error);
+  });
+  return false;
 };
 
 var SearchBar = function SearchBar(props) {

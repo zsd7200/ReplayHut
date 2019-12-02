@@ -101,14 +101,15 @@ const getClips = (request, response) => {
 
 const deleteClips = (request, response) => {
   const res = response;
-  // console.log(app.mainDB);
-  const testPromise = app.mainDB.collection('replays').deleteOne({ title: 'a' });
+  const req = request;
+  const testPromise = app.mainDB.collection('replays').deleteOne({ _id: Replays.convertId(req.body._id) });
 
   testPromise.then(() => {
-    console.log('h');
-    res.json({ redirect: '/gallery' });
+    // res.json({ message: 'Clip deleted!' });
   });
-  return true;
+  testPromise.catch((err) => res.json({ err }));
+
+  return false;
 };
 
 // Exports to be used in the router

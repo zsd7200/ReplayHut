@@ -151,6 +151,11 @@ const ClipList = function(props)
                                     <input name="title" type="hidden" value={clip.title}/>
                                     <input className="formSubmit" type="submit" value="Add Favorite"/>
                                 </form>
+                                <form id="delForm" onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                                    <input name="_id" type="hidden" value={clip._id}/>
+                                    <input className="formSubmit" type="submit" value="Delete Clip"/>
+                                </form>
                             </div>
                         );
                     } else {
@@ -176,6 +181,11 @@ const ClipList = function(props)
                                     <input type="hidden" name="_csrf" value={props.csrf}/>
                                     <input name="title" type="hidden" value={clip.title}/>
                                     <input className="formSubmit" type="submit" value="Add Favorite"/>
+                                </form>
+                                <form id="delForm" onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                                    <input name="_id" type="hidden" value={clip._id}/>
+                                    <input className="formSubmit" type="submit" value="Delete Clip"/>
                                 </form>
                             </div>
                         );
@@ -204,6 +214,11 @@ const ClipList = function(props)
                                 <input name="title" type="hidden" value={clip.title}/>
                                 <input className="formSubmit" type="submit" value="Add Favorite"/>
                             </form>
+                            <form id="delForm" onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                                    <input name="_id" type="hidden" value={clip._id}/>
+                                    <input className="formSubmit" type="submit" value="Delete Clip"/>
+                                </form>
                         </div>
                     );
                 } else {
@@ -229,6 +244,11 @@ const ClipList = function(props)
                                 <input name="title" type="hidden" value={clip.title}/>
                                 <input className="formSubmit" type="submit" value="Add Favorite"/>
                             </form>
+                            <form id="delForm" onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                                    <input name="_id" type="hidden" value={clip._id}/>
+                                    <input className="formSubmit" type="submit" value="Delete Clip"/>
+                                </form>
                         </div>
                     );
                 }
@@ -314,6 +334,11 @@ const ClipList = function(props)
                                 <input name="title" type="hidden" value={clip.title}/>
                                 <input className="formSubmit" type="submit" value="Add Favorite"/>
                             </form>
+                            <form id="delForm" onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                                    <input name="_id" type="hidden" value={clip._id}/>
+                                    <input className="formSubmit" type="submit" value="Delete Clip"/>
+                                </form>
                         </div>
                     );
                 } else {
@@ -339,6 +364,11 @@ const ClipList = function(props)
                                 <input name="title" type="hidden" value={clip.title}/>
                                 <input className="formSubmit" type="submit" value="Add Favorite"/>
                             </form>
+                            <form id="delForm" onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                                    <input name="_id" type="hidden" value={clip._id}/>
+                                    <input className="formSubmit" type="submit" value="Delete Clip"/>
+                                </form>
                         </div>
                     );
                 }
@@ -355,9 +385,21 @@ const ClipList = function(props)
 }
 
 const deleteClips = () =>{
+    e.preventDefault();
+    $("#terryMessage").animate({width:'hide'}, 350);
 
-    sendAjax('GET', '/deleteClips', null);
+    sendAjax('POST', $("#delForm").attr("action"), $("#delForm").serialize(), (result)=>
+    {
+        showMessage(result.message);
+        sendAjax('GET', '/getToken', null, (result) => {
+            showClips(result.csrfToken);
+        })
+    }, 
+    (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
+        showMessage(messageObj.error);});
     
+
+    return false;
 };
 
 const SearchBar = function(props)
