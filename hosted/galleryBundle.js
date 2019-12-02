@@ -781,10 +781,7 @@ var SearchBar = function SearchBar(props) {
   }, "Characters: ")), React.createElement("button", {
     className: "formSubmit",
     onClick: showClips
-  }, "Search"), React.createElement("button", {
-    className: "formSubmit",
-    onClick: deleteClips
-  }, "Delete Clip"));
+  }, "Search"));
 }; // check for issues with post; send ajax request if everything is all good
 
 

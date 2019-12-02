@@ -468,10 +468,7 @@ const SearchBar = function(props)
                 <label className="input-label help" title="Seperate characters by commas!" htmlFor="charSearch">Characters: </label>
             </div>
 
-            <button className="formSubmit" onClick={showClips}>Search</button>
-
-            <button className="formSubmit" onClick={deleteClips}>Delete Clip</button>
-            
+            <button className="formSubmit" onClick={showClips}>Search</button>            
         </div>
     );
 }
