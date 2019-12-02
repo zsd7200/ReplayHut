@@ -33,10 +33,10 @@ const formatDate = (date) => {
     return newDate;
 };
 
-const showClips = () =>{
+const showClips = (csrf) =>{
     // Retrieving the clips
     sendAjax('GET', '/getClips', null, (data) => {
-        ReactDOM.render(<ClipList clips={data.clips} />, document.querySelector("#clips"));
+        ReactDOM.render(<ClipList clips={data.clips} csrf={csrf} />, document.querySelector("#clips"));
     },
     (xhr, status, error) =>{
         var messageObj = JSON.parse(xhr.responseText);
@@ -146,6 +146,11 @@ const ClipList = function(props)
                                     allowFullScreen
                                     >
                                 </iframe>
+                                <form id="favForm" onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="favForm">
+                                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                                    <input name="title" type="hidden" value={clip.title}/>
+                                    <input className="formSubmit" type="submit" value="Add Favorite"/>
+                                </form>
                             </div>
                         );
                     } else {
@@ -166,7 +171,13 @@ const ClipList = function(props)
                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                                     allowFullScreen
                                     >
-                                </iframe>                    </div>
+                                </iframe>
+                                <form id="favForm" onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="favForm">
+                                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                                    <input name="title" type="hidden" value={clip.title}/>
+                                    <input className="formSubmit" type="submit" value="Add Favorite"/>
+                                </form>
+                            </div>
                         );
                     }
                 } else if (clip.character2 !== ''){
@@ -188,6 +199,11 @@ const ClipList = function(props)
                                 allowFullScreen
                                 >
                             </iframe>
+                            <form id="favForm" onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="favForm">
+                                <input type="hidden" name="_csrf" value={props.csrf}/>
+                                <input name="title" type="hidden" value={clip.title}/>
+                                <input className="formSubmit" type="submit" value="Add Favorite"/>
+                            </form>
                         </div>
                     );
                 } else {
@@ -208,6 +224,11 @@ const ClipList = function(props)
                                 allowFullScreen
                                 >
                             </iframe>
+                            <form id="favForm" onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="favForm">
+                                <input type="hidden" name="_csrf" value={props.csrf}/>
+                                <input name="title" type="hidden" value={clip.title}/>
+                                <input className="formSubmit" type="submit" value="Add Favorite"/>
+                            </form>
                         </div>
                     );
                 }
@@ -235,6 +256,11 @@ const ClipList = function(props)
                                     allowFullScreen
                                     >
                                 </iframe>
+                                <form id="favForm" onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="favForm">
+                                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                                    <input name="title" type="hidden" value={clip.title}/>
+                                    <input className="formSubmit" type="submit" value="Add Favorite"/>
+                                </form>
                             </div>
                         );
                     } else {
@@ -255,7 +281,13 @@ const ClipList = function(props)
                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                                     allowFullScreen
                                     >
-                                </iframe>                    </div>
+                                </iframe>
+                                <form id="favForm" onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="favForm">
+                                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                                    <input name="title" type="hidden" value={clip.title}/>
+                                    <input className="formSubmit" type="submit" value="Add Favorite"/>
+                                </form>
+                            </div>
                         );
                     }
                 } else if (clip.character2 !== ''){
@@ -277,6 +309,11 @@ const ClipList = function(props)
                                 allowFullScreen
                                 >
                             </iframe>
+                            <form id="favForm" onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="favForm">
+                                <input type="hidden" name="_csrf" value={props.csrf}/>
+                                <input name="title" type="hidden" value={clip.title}/>
+                                <input className="formSubmit" type="submit" value="Add Favorite"/>
+                            </form>
                         </div>
                     );
                 } else {
@@ -297,6 +334,11 @@ const ClipList = function(props)
                                 allowFullScreen
                                 >
                             </iframe>
+                            <form id="favForm" onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="favForm">
+                                <input type="hidden" name="_csrf" value={props.csrf}/>
+                                <input name="title" type="hidden" value={clip.title}/>
+                                <input className="formSubmit" type="submit" value="Add Favorite"/>
+                            </form>
                         </div>
                     );
                 }
@@ -347,11 +389,32 @@ const SearchBar = function(props)
     );
 }
 
-const setup = function()
-{   
-    showClips();
+// check for issues with post; send ajax request if everything is all good
+const makePost = (e) =>{
+    e.preventDefault();
+    $("#terryMessage").animate({width:'hide'}, 350);
 
-    ReactDOM.render(<SearchBar />, document.querySelector("#search"));
+    sendAjax('POST', $("#favForm").attr("action"), $("#favForm").serialize(), (result)=>{showMessage(result.message);}, 
+    (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
+        showMessage(messageObj.error);});
+    
+
+    return false;
+};
+
+const setup = (csrf) => {   
+    showClips(csrf);
+
+    ReactDOM.render(<SearchBar csrf={csrf} />, document.querySelector("#search"));
 }
 
-$(document).ready(function(){setup();});
+// get csrf token
+const getToken = () => {
+    sendAjax('GET', '/getToken', null, (result) => {
+        setup(result.csrfToken);
+    });
+};
+
+$(document).ready(function() {
+    getToken();
+});

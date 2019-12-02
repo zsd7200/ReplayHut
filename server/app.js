@@ -23,7 +23,7 @@ mongoose.connect(dbURL, (err, db) => {
     throw err;
   }
   mainDB = db;
-  //console.log(mainDB);
+  // console.log(mainDB);
   module.exports.mainDB = mainDB;
   // console.log(mainDB.collection('replays').find({title:'a'}));
   // mainDB.collection('replays').deleteOne({ title: 'asdf' });
@@ -88,5 +88,3 @@ app.listen(port, (err) => {
   }
   console.log(`Listening on port ${port}`);
 });
-
-

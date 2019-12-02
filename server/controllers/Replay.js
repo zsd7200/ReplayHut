@@ -101,7 +101,7 @@ const getClips = (request, response) => {
 
 const deleteClips = (request, response) => {
   const res = response;
-  //console.log(app.mainDB);
+  // console.log(app.mainDB);
   const testPromise = app.mainDB.collection('replays').deleteOne({ title: 'a' });
 
   testPromise.then(() => {

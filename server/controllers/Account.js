@@ -247,6 +247,74 @@ const cancelPremium = (request, response) => {
   });
 };
 
+const addFavorite = (request, response) => {
+  // Setting up the request and response
+  const req = request;
+  const res = response;
+
+  // Finding the specific user so that they can be updated
+  Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
+    // Error check
+    if (err) return res.json({ error: err });
+
+    // If no error, create a temp variable to store changes
+    const foundUser = doc;
+
+    // add to favorites array
+    if (foundUser.favorites.indexOf(req.body.title) === -1) {
+      foundUser.favorites.push(req.body.title);
+    } else {
+      return res.json({ error: 'Already in favorites!' });
+    }
+    // Handling promise to reassign the user's info
+    const updatePromise = foundUser.save();
+
+    // Send a message back to the user once it is finished saving
+    updatePromise.then(() => res.json({ message: 'Added to favorites!' }));
+
+    // Return an error back if one is found
+    updatePromise.catch((err2) => res.json({ err2 }));
+    return true;
+  });
+};
+
+const remFavorite = (request, response) => {
+  // Setting up the request and response
+  const req = request;
+  const res = response;
+
+  // Finding the specific user so that they can be updated
+  Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
+    // Error check
+    if (err) return res.json({ error: err });
+
+    // If no error, create a temp variable to store changes
+    const foundUser = doc;
+
+    // removing from favorites array
+    const index = foundUser.favorites.indexOf(req.body.title);
+    if (index !== -1) { // if req.body is found in array
+      foundUser.favorites.splice(index, 1); // cut favorites out of array
+    }
+
+    // probably need to rerender page afterward if we allow for people to remove
+    // favorites from the favorites page
+
+    // Handling promise to reassign the user's info
+    const updatePromise = foundUser.save();
+
+    // Send a message back to the user once it is finished saving
+    updatePromise.then(() => res.json({ message: 'Removed from favorites!' }));
+
+    // Return an error back if one is found
+    updatePromise.catch((err2) => res.json({ err2 }));
+    return true;
+  });
+};
+
+const favoritesPage = (req, res) => {
+  res.render('favorites');
+};
 
 // Getting a CSRF token for the user
 const getToken = (request, response) => {
@@ -276,3 +344,6 @@ module.exports.myAccount = myAccount;
 module.exports.changePassword = changePassword;
 module.exports.activatePremium = activatePremium;
 module.exports.cancelPremium = cancelPremium;
+module.exports.addFavorite = addFavorite;
+module.exports.remFavorite = remFavorite;
+module.exports.favoritesPage = favoritesPage;

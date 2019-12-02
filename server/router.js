@@ -24,6 +24,10 @@ const router = (app) => {
   app.get('/gallery', mid.requiresSecure, mid.requiresLogin, controllers.Replay.galleryPage);
   app.get('/getClips', mid.requiresLogin, controllers.Replay.getClips);
 
+  app.post('/addFavorite', mid.requiresLogin, controllers.Account.addFavorite);
+  app.post('/remFavorite', mid.requiresLogin, controllers.Account.remFavorite);
+  app.get('/favorites', mid.requiresLogin, controllers.Account.favoritesPage);
+
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 
   app.get('*', mid.requiresLogin, controllers.Info.notFoundPage);
