@@ -105,7 +105,7 @@ const deleteClips = (request, response) => {
   const testPromise = app.mainDB.collection('replays').deleteOne({ _id: Replays.convertId(req.body._id) });
 
   testPromise.then(() => {
-    // res.json({ message: 'Clip deleted!' });
+    res.json({ message: 'Clip deleted!' });
   });
   testPromise.catch((err) => res.json({ err }));
 

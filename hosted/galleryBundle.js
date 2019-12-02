@@ -173,7 +173,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               value: "Remove Favorite"
             })), React.createElement("form", {
-              id: "delForm",
+              id: "delForm" + numClips,
               onSubmit: deleteClips,
               name: "delForm",
               action: "/deleteClips",
@@ -253,7 +253,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               value: "Remove Favorite"
             })), React.createElement("form", {
-              id: "delForm",
+              id: "delForm" + numClips,
               onSubmit: deleteClips,
               name: "delForm",
               action: "/deleteClips",
@@ -334,7 +334,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             value: "Remove Favorite"
           })), React.createElement("form", {
-            id: "delForm",
+            id: "delForm" + numClips,
             onSubmit: deleteClips,
             name: "delForm",
             action: "/deleteClips",
@@ -412,7 +412,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             value: "Remove Favorite"
           })), React.createElement("form", {
-            id: "delForm",
+            id: "delForm" + numClips,
             onSubmit: deleteClips,
             name: "delForm",
             action: "/deleteClips",
@@ -496,6 +496,25 @@ var ClipList = function ClipList(props) {
               className: "formSubmit",
               type: "submit",
               value: "Remove Favorite"
+            })), React.createElement("form", {
+              id: "delForm" + numClips,
+              onSubmit: deleteClips,
+              name: "delForm",
+              action: "/deleteClips",
+              method: "POST",
+              className: "delForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
+            }), React.createElement("input", {
+              className: "formSubmit",
+              type: "submit",
+              value: "Delete Clip"
             })));
           } else {
             return React.createElement("div", {
@@ -557,6 +576,25 @@ var ClipList = function ClipList(props) {
               className: "formSubmit",
               type: "submit",
               value: "Remove Favorite"
+            })), React.createElement("form", {
+              id: "delForm" + numClips,
+              onSubmit: deleteClips,
+              name: "delForm",
+              action: "/deleteClips",
+              method: "POST",
+              className: "delForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
+            }), React.createElement("input", {
+              className: "formSubmit",
+              type: "submit",
+              value: "Delete Clip"
             })));
           }
         } else if (clip.character2 !== '') {
@@ -620,7 +658,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             value: "Remove Favorite"
           })), React.createElement("form", {
-            id: "delForm",
+            id: "delForm" + numClips,
             onSubmit: deleteClips,
             name: "delForm",
             action: "/deleteClips",
@@ -698,7 +736,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             value: "Remove Favorite"
           })), React.createElement("form", {
-            id: "delForm",
+            id: "delForm" + numClips,
             onSubmit: deleteClips,
             name: "delForm",
             action: "/deleteClips",
@@ -726,12 +764,13 @@ var ClipList = function ClipList(props) {
   }, clipNodes);
 };
 
-var deleteClips = function deleteClips() {
+var deleteClips = function deleteClips(e) {
   e.preventDefault();
   $("#terryMessage").animate({
     width: 'hide'
   }, 350);
-  sendAjax('POST', $("#delForm").attr("action"), $("#delForm").serialize(), function (result) {
+  sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function (result) {
+    console.log(result);
     showMessage(result.message);
     sendAjax('GET', '/getToken', null, function (result) {
       showClips(result.csrfToken);
