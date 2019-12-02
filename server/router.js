@@ -18,6 +18,7 @@ const router = (app) => {
   app.post('/changePassword', mid.requiresLogin, controllers.Account.changePassword);
   app.get('/info', mid.requiresSecure, controllers.Info.infoPage);
 
+  app.get('/deleteClips', mid.requiresLogin, controllers.Replay.deleteClips);
   app.post('/createClip', mid.requiresLogin, controllers.Replay.createClip);
   app.get('/create', mid.requiresLogin, controllers.Replay.createPage);
   app.get('/gallery', mid.requiresSecure, mid.requiresLogin, controllers.Replay.galleryPage);

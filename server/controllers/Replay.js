@@ -6,6 +6,9 @@ const { Replays } = models;
 
 const { Account } = models;
 
+
+const app = require('../app.js');
+
 // Rendering pages
 const createPage = (req, res) => res.render('create', { csrfToken: req.csrfToken() });
 const galleryPage = (req, res) => {
@@ -96,8 +99,21 @@ const getClips = (request, response) => {
   });
 };
 
+const deleteClips = (request, response) => {
+  const res = response;
+  //console.log(app.mainDB);
+  const testPromise = app.mainDB.collection('replays').deleteOne({ title: 'a' });
+
+  testPromise.then(() => {
+    console.log('h');
+    res.json({ redirect: '/gallery' });
+  });
+  return true;
+};
+
 // Exports to be used in the router
 module.exports.createClip = createClip;
 module.exports.createPage = createPage;
 module.exports.galleryPage = galleryPage;
 module.exports.getClips = getClips;
+module.exports.deleteClips = deleteClips;

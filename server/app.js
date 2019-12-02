@@ -16,11 +16,17 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/ReplayHut';
 
-mongoose.connect(dbURL, (err) => {
+let mainDB;
+mongoose.connect(dbURL, (err, db) => {
   if (err) {
     console.log('Could not connect to database');
     throw err;
   }
+  mainDB = db;
+  //console.log(mainDB);
+  module.exports.mainDB = mainDB;
+  // console.log(mainDB.collection('replays').find({title:'a'}));
+  // mainDB.collection('replays').deleteOne({ title: 'asdf' });
 });
 
 let redisURL = {
@@ -82,3 +88,5 @@ app.listen(port, (err) => {
   }
   console.log(`Listening on port ${port}`);
 });
+
+

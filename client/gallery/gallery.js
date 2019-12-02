@@ -312,6 +312,12 @@ const ClipList = function(props)
     )
 }
 
+const deleteClips = () =>{
+
+    sendAjax('GET', '/deleteClips', null);
+    
+};
+
 const SearchBar = function(props)
 {
     return(
@@ -334,6 +340,9 @@ const SearchBar = function(props)
             </div>
 
             <button className="formSubmit" onClick={showClips}>Search</button>
+
+            <button className="formSubmit" onClick={deleteClips}>Delete Clip</button>
+            
         </div>
     );
 }

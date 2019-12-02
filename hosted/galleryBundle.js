@@ -304,6 +304,10 @@ var ClipList = function ClipList(props) {
   }, clipNodes);
 };
 
+var deleteClips = function deleteClips() {
+  sendAjax('GET', '/deleteClips', null);
+};
+
 var SearchBar = function SearchBar(props) {
   return React.createElement("div", {
     id: "search",
@@ -342,7 +346,10 @@ var SearchBar = function SearchBar(props) {
   }, "Characters: ")), React.createElement("button", {
     className: "formSubmit",
     onClick: showClips
-  }, "Search"));
+  }, "Search"), React.createElement("button", {
+    className: "formSubmit",
+    onClick: deleteClips
+  }, "Delete Clip"));
 };
 
 var setup = function setup() {
