@@ -35,11 +35,12 @@ var formatDate = function formatDate(date) {
   return newDate;
 };
 
-var showClips = function showClips() {
+var showClips = function showClips(csrf) {
   // Retrieving the clips
   sendAjax('GET', '/getClips', null, function (data) {
     ReactDOM.render(React.createElement(ClipList, {
-      clips: data.clips
+      clips: data.clips,
+      csrf: csrf
     }), document.querySelector("#clips"));
   }, function (xhr, status, error) {
     var messageObj = JSON.parse(xhr.responseText);
@@ -130,7 +131,26 @@ var ClipList = function ClipList(props) {
               frameBorder: "0",
               allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
               allowFullScreen: true
-            }));
+            }), React.createElement("form", {
+              id: "favForm",
+              onSubmit: makePost,
+              name: "favForm",
+              action: "/addFavorite",
+              method: "POST",
+              className: "favForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("input", {
+              className: "formSubmit",
+              type: "submit",
+              value: "Add Favorite"
+            })));
           } else {
             return React.createElement("div", {
               className: "clip"
@@ -153,7 +173,26 @@ var ClipList = function ClipList(props) {
               frameBorder: "0",
               allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
               allowFullScreen: true
-            }), "                    ");
+            }), React.createElement("form", {
+              id: "favForm",
+              onSubmit: makePost,
+              name: "favForm",
+              action: "/addFavorite",
+              method: "POST",
+              className: "favForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("input", {
+              className: "formSubmit",
+              type: "submit",
+              value: "Add Favorite"
+            })));
           }
         } else if (clip.character2 !== '') {
           return React.createElement("div", {
@@ -177,7 +216,26 @@ var ClipList = function ClipList(props) {
             frameBorder: "0",
             allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
             allowFullScreen: true
-          }));
+          }), React.createElement("form", {
+            id: "favForm",
+            onSubmit: makePost,
+            name: "favForm",
+            action: "/addFavorite",
+            method: "POST",
+            className: "favForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("input", {
+            className: "formSubmit",
+            type: "submit",
+            value: "Add Favorite"
+          })));
         } else {
           return React.createElement("div", {
             className: "clip"
@@ -198,7 +256,26 @@ var ClipList = function ClipList(props) {
             frameBorder: "0",
             allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
             allowFullScreen: true
-          }));
+          }), React.createElement("form", {
+            id: "favForm",
+            onSubmit: makePost,
+            name: "favForm",
+            action: "/addFavorite",
+            method: "POST",
+            className: "favForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("input", {
+            className: "formSubmit",
+            type: "submit",
+            value: "Add Favorite"
+          })));
         }
       } else {
         if (clip.character1 !== '') {
@@ -226,7 +303,26 @@ var ClipList = function ClipList(props) {
               frameBorder: "0",
               allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
               allowFullScreen: true
-            }));
+            }), React.createElement("form", {
+              id: "favForm",
+              onSubmit: makePost,
+              name: "favForm",
+              action: "/addFavorite",
+              method: "POST",
+              className: "favForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("input", {
+              className: "formSubmit",
+              type: "submit",
+              value: "Add Favorite"
+            })));
           } else {
             return React.createElement("div", {
               className: "clip"
@@ -249,7 +345,26 @@ var ClipList = function ClipList(props) {
               frameBorder: "0",
               allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
               allowFullScreen: true
-            }), "                    ");
+            }), React.createElement("form", {
+              id: "favForm",
+              onSubmit: makePost,
+              name: "favForm",
+              action: "/addFavorite",
+              method: "POST",
+              className: "favForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("input", {
+              className: "formSubmit",
+              type: "submit",
+              value: "Add Favorite"
+            })));
           }
         } else if (clip.character2 !== '') {
           return React.createElement("div", {
@@ -273,7 +388,26 @@ var ClipList = function ClipList(props) {
             frameBorder: "0",
             allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
             allowFullScreen: true
-          }));
+          }), React.createElement("form", {
+            id: "favForm",
+            onSubmit: makePost,
+            name: "favForm",
+            action: "/addFavorite",
+            method: "POST",
+            className: "favForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("input", {
+            className: "formSubmit",
+            type: "submit",
+            value: "Add Favorite"
+          })));
         } else {
           return React.createElement("div", {
             className: "clip"
@@ -294,7 +428,26 @@ var ClipList = function ClipList(props) {
             frameBorder: "0",
             allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
             allowFullScreen: true
-          }));
+          }), React.createElement("form", {
+            id: "favForm",
+            onSubmit: makePost,
+            name: "favForm",
+            action: "/addFavorite",
+            method: "POST",
+            className: "favForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("input", {
+            className: "formSubmit",
+            type: "submit",
+            value: "Add Favorite"
+          })));
         }
       }
     }
@@ -343,15 +496,39 @@ var SearchBar = function SearchBar(props) {
     className: "formSubmit",
     onClick: showClips
   }, "Search"));
+}; // check for issues with post; send ajax request if everything is all good
+
+
+var makePost = function makePost(e) {
+  e.preventDefault();
+  $("#terryMessage").animate({
+    width: 'hide'
+  }, 350);
+  sendAjax('POST', $("#favForm").attr("action"), $("#favForm").serialize(), function (result) {
+    showMessage(result.message);
+  }, function (xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    showMessage(messageObj.error);
+  });
+  return false;
 };
 
-var setup = function setup() {
-  showClips();
-  ReactDOM.render(React.createElement(SearchBar, null), document.querySelector("#search"));
+var setup = function setup(csrf) {
+  showClips(csrf);
+  ReactDOM.render(React.createElement(SearchBar, {
+    csrf: csrf
+  }), document.querySelector("#search"));
+}; // get csrf token
+
+
+var getToken = function getToken() {
+  sendAjax('GET', '/getToken', null, function (result) {
+    setup(result.csrfToken);
+  });
 };
 
 $(document).ready(function () {
-  setup();
+  getToken();
 }); // show error message
 
 var showMessage = function showMessage(message) {
