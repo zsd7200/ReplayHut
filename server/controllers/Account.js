@@ -295,6 +295,8 @@ const remFavorite = (request, response) => {
     const index = foundUser.favorites.indexOf(req.body.title);
     if (index !== -1) { // if req.body is found in array
       foundUser.favorites.splice(index, 1); // cut favorites out of array
+    } else {
+      return res.json({ error: 'Not in favorites!' });
     }
 
     // probably need to rerender page afterward if we allow for people to remove
