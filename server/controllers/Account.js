@@ -251,7 +251,7 @@ const addFavorite = (request, response) => {
   // Setting up the request and response
   const req = request;
   const res = response;
-  
+
   // Finding the specific user so that they can be updated
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
@@ -261,10 +261,10 @@ const addFavorite = (request, response) => {
     const foundUser = doc;
 
     // add to favorites array
-    if(foundUser.favorites.indexOf(req.body.title) === -1) {
-        foundUser.favorites.push(req.body.title);
+    if (foundUser.favorites.indexOf(req.body.title) === -1) {
+      foundUser.favorites.push(req.body.title);
     } else {
-        return res.json({ error: 'Already in favorites!' });
+      return res.json({ error: 'Already in favorites!' });
     }
     // Handling promise to reassign the user's info
     const updatePromise = foundUser.save();
@@ -282,7 +282,7 @@ const remFavorite = (request, response) => {
   // Setting up the request and response
   const req = request;
   const res = response;
-  
+
   // Finding the specific user so that they can be updated
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
@@ -293,10 +293,10 @@ const remFavorite = (request, response) => {
 
     // removing from favorites array
     const index = foundUser.favorites.indexOf(req.body.title);
-    if (index != -1) { // if req.body is found in array
-        foundUser.favorites.splice(index, 1); // cut favorites out of array
+    if (index !== -1) { // if req.body is found in array
+      foundUser.favorites.splice(index, 1); // cut favorites out of array
     }
-    
+
     // probably need to rerender page afterward if we allow for people to remove
     // favorites from the favorites page
 
@@ -310,7 +310,7 @@ const remFavorite = (request, response) => {
     updatePromise.catch((err2) => res.json({ err2 }));
     return true;
   });
-}
+};
 
 const favoritesPage = (req, res) => {
   res.render('favorites');
