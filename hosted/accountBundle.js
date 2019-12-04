@@ -84,6 +84,12 @@ var showCancelPremium = function showCancelPremium() {
       csrf: result.csrfToken
     }), document.querySelector("#content"));
   });
+};
+
+var deleteAccount = function deleteAccount(e) {
+  e.preventDefault();
+  sendAjax('POST', '/deleteAccount', $("#delForm").serialize(), redirect);
+  return false;
 }; //Returns the content for the page regarding cancelling premium
 
 
@@ -227,7 +233,18 @@ var AccountInfo = function AccountInfo(props) {
     })), React.createElement("button", {
       className: "formSubmit pointer premium-button",
       onClick: showPremium
-    }, "Sign up for Prime!"));
+    }, "Sign up for Prime!"), React.createElement("form", {
+      id: "delForm",
+      onSubmit: deleteAccount
+    }, React.createElement("input", {
+      type: "hidden",
+      name: "_csrf",
+      value: props.csrf
+    }), React.createElement("input", {
+      className: "formSubmit pointer premium-button",
+      type: "submit",
+      value: "Delete Account?"
+    })));
   } else {
     return React.createElement("div", {
       className: "content-box"

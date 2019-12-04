@@ -82,6 +82,13 @@ const showCancelPremium = () =>{
     });
 };
 
+const deleteAccount = (e) =>{
+    e.preventDefault();
+    sendAjax('POST', '/deleteAccount', $("#delForm").serialize(), redirect);
+    
+    return false;
+};
+
 //Returns the content for the page regarding cancelling premium
 const CancelPremium = function(props) 
 {
@@ -184,6 +191,10 @@ const AccountInfo = function(props)
                     <input className="formSubmit" type="submit" value="Change Password"/>
                 </form>
                 <button className="formSubmit pointer premium-button" onClick={showPremium}>Sign up for Prime!</button>
+                <form  id="delForm" onSubmit={deleteAccount} >
+                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                    <input className="formSubmit pointer premium-button" type="submit" value="Delete Account?"/>
+                </form>
             </div>
         )
     }
@@ -223,6 +234,7 @@ const AccountInfo = function(props)
         )
     }
 }
+
 
 //Showing the account page upon loading
 $(document).ready(function() {

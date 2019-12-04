@@ -4,6 +4,8 @@ const models = require('../models');
 // Setting up the account specific model
 const { Account } = models;
 
+const app = require('../app.js');
+
 // Rendering specific pages
 const loginPage = (req, res) => {
   res.render('login', { csrfToken: req.csrfToken() });
@@ -23,6 +25,10 @@ const userList = (req, res) => {
 // render account page
 const myAccount = (req, res) => {
   res.render('account');
+};
+
+const favoritesPage = (req, res) => {
+  res.render('favorites');
 };
 
 // Retrieves all accounts
@@ -314,10 +320,19 @@ const remFavorite = (request, response) => {
   });
 };
 
-const favoritesPage = (req, res) => {
-  res.render('favorites');
-};
+//Deleting the user's account
+const deleteAccount = (request, response) => {
+  const req = request;
+  const res = response;
+  //Set up the promise and search for the account to be deleted
+  const delPromise = app.mainDB.collection('accounts').deleteOne({ username: req.session.account.username });
 
+  //When the deleting is finished, destroy the session, and go back to the login screen
+  delPromise.then(() => {
+    req.session.destroy();
+    res.json({ redirect: '/' });
+  });
+};
 // Getting a CSRF token for the user
 const getToken = (request, response) => {
   // Setting up the request and response
@@ -349,3 +364,4 @@ module.exports.cancelPremium = cancelPremium;
 module.exports.addFavorite = addFavorite;
 module.exports.remFavorite = remFavorite;
 module.exports.favoritesPage = favoritesPage;
+module.exports.deleteAccount = deleteAccount;
