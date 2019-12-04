@@ -64,6 +64,12 @@ li {
   box-shadow: 7px 7px 4px #73c9e6;
   transition: .5s; }
 
+.clipForm {
+  display: inline-block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  float: right; }
+
 .clipList {
   width: 100%;
   margin-left: 160px;
@@ -97,6 +103,10 @@ li {
 
 .current-page {
   border: 2px solid #BA7D2F; }
+
+.fa-button {
+  border: 0;
+  background-color: transparent; }
 
 .formSubmit, .back {
   transition: background-color 0.4s ease;

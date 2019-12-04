@@ -84,6 +84,13 @@ li {
     transition: .5s;
 }
 
+.clipForm {
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    float: right;
+}
+
 .clipList {
   width: 100%;
   margin-left: $sidebarSize;
@@ -123,6 +130,11 @@ li {
 
 .current-page {
     border: 2px solid $lightBrown;
+}
+
+.fa-button {
+    border: 0;
+    background-color: transparent;
 }
 
 .formSubmit, .back {

@@ -80,8 +80,11 @@ var ClipList = function ClipList(props) {
       charSearch[index] = charSearch[index].trim();
       charSearch[index] = charSearch[index].toLowerCase();
     }
-  } // Displaying each clip
+  }
 
+  var heart = React.createElement("i", {
+    className: "fas fa-heart"
+  }); // Displaying each clip
 
   var clipNodes = props.clips.map(function (clip) {
     // Checks to see if a clip should be posted based on search parameters 
@@ -135,50 +138,12 @@ var ClipList = function ClipList(props) {
               allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
               allowFullScreen: true
             }), React.createElement("form", {
-              id: "favForm" + numClips,
-              onSubmit: makePost,
-              name: "favForm",
-              action: "/addFavorite",
-              method: "POST",
-              className: "favForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "title",
-              type: "hidden",
-              value: clip.title
-            }), React.createElement("input", {
-              className: "formSubmit",
-              type: "submit",
-              value: "Add Favorite"
-            })), React.createElement("form", {
-              id: "remForm" + numClips,
-              onSubmit: makePost,
-              name: "remForm",
-              action: "/remFavorite",
-              method: "POST",
-              className: "remForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "title",
-              type: "hidden",
-              value: clip.title
-            }), React.createElement("input", {
-              className: "formSubmit",
-              type: "submit",
-              value: "Remove Favorite"
-            })), React.createElement("form", {
               id: "delForm" + numClips,
               onSubmit: makePost,
               name: "delForm",
               action: "/deleteClips",
               method: "POST",
-              className: "delForm"
+              className: "clipForm"
             }, React.createElement("input", {
               type: "hidden",
               name: "_csrf",
@@ -187,11 +152,55 @@ var ClipList = function ClipList(props) {
               name: "_id",
               type: "hidden",
               value: clip._id
-            }), React.createElement("input", {
-              className: "formSubmit",
+            }), React.createElement("button", {
+              className: "fa-button",
               type: "submit",
-              value: "Delete Clip"
-            })));
+              title: "Delete Clip"
+            }, React.createElement("i", {
+              className: "fas fa-trash-alt"
+            }))), React.createElement("form", {
+              id: "remForm" + numClips,
+              onSubmit: makePost,
+              name: "remForm",
+              action: "/remFavorite",
+              method: "POST",
+              className: "clipForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("button", {
+              className: "fa-button",
+              type: "submit",
+              title: "Remove Favorite"
+            }, React.createElement("i", {
+              className: "fas fa-heart-broken"
+            }))), React.createElement("form", {
+              id: "favForm" + numClips,
+              onSubmit: makePost,
+              name: "favForm",
+              action: "/addFavorite",
+              method: "POST",
+              className: "clipForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("button", {
+              className: "fa-button",
+              type: "submit",
+              title: "Add Favorite"
+            }, React.createElement("i", {
+              className: "fas fa-heart"
+            }))));
           } else {
             return React.createElement("div", {
               className: "clip"
@@ -215,50 +224,12 @@ var ClipList = function ClipList(props) {
               allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
               allowFullScreen: true
             }), React.createElement("form", {
-              id: "favForm" + numClips,
-              onSubmit: makePost,
-              name: "favForm",
-              action: "/addFavorite",
-              method: "POST",
-              className: "favForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "title",
-              type: "hidden",
-              value: clip.title
-            }), React.createElement("input", {
-              className: "formSubmit",
-              type: "submit",
-              value: "Add Favorite"
-            })), React.createElement("form", {
-              id: "remForm" + numClips,
-              onSubmit: makePost,
-              name: "remForm",
-              action: "/remFavorite",
-              method: "POST",
-              className: "remForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "title",
-              type: "hidden",
-              value: clip.title
-            }), React.createElement("input", {
-              className: "formSubmit",
-              type: "submit",
-              value: "Remove Favorite"
-            })), React.createElement("form", {
               id: "delForm" + numClips,
               onSubmit: makePost,
               name: "delForm",
               action: "/deleteClips",
               method: "POST",
-              className: "delForm"
+              className: "clipForm"
             }, React.createElement("input", {
               type: "hidden",
               name: "_csrf",
@@ -267,11 +238,55 @@ var ClipList = function ClipList(props) {
               name: "_id",
               type: "hidden",
               value: clip._id
-            }), React.createElement("input", {
-              className: "formSubmit",
+            }), React.createElement("button", {
+              className: "fa-button",
               type: "submit",
-              value: "Delete Clip"
-            })));
+              title: "Delete Clip"
+            }, React.createElement("i", {
+              className: "fas fa-trash-alt"
+            }))), React.createElement("form", {
+              id: "remForm" + numClips,
+              onSubmit: makePost,
+              name: "remForm",
+              action: "/remFavorite",
+              method: "POST",
+              className: "clipForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("button", {
+              className: "fa-button",
+              type: "submit",
+              title: "Remove Favorite"
+            }, React.createElement("i", {
+              className: "fas fa-heart-broken"
+            }))), React.createElement("form", {
+              id: "favForm" + numClips,
+              onSubmit: makePost,
+              name: "favForm",
+              action: "/addFavorite",
+              method: "POST",
+              className: "clipForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("button", {
+              className: "fa-button",
+              type: "submit",
+              title: "Add Favorite"
+            }, React.createElement("i", {
+              className: "fas fa-heart"
+            }))));
           }
         } else if (clip.character2 !== '') {
           return React.createElement("div", {
@@ -296,50 +311,12 @@ var ClipList = function ClipList(props) {
             allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
             allowFullScreen: true
           }), React.createElement("form", {
-            id: "favForm" + numClips,
-            onSubmit: makePost,
-            name: "favForm",
-            action: "/addFavorite",
-            method: "POST",
-            className: "favForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "title",
-            type: "hidden",
-            value: clip.title
-          }), React.createElement("input", {
-            className: "formSubmit",
-            type: "submit",
-            value: "Add Favorite"
-          })), React.createElement("form", {
-            id: "remForm" + numClips,
-            onSubmit: makePost,
-            name: "remForm",
-            action: "/remFavorite",
-            method: "POST",
-            className: "remForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "title",
-            type: "hidden",
-            value: clip.title
-          }), React.createElement("input", {
-            className: "formSubmit",
-            type: "submit",
-            value: "Remove Favorite"
-          })), React.createElement("form", {
             id: "delForm" + numClips,
             onSubmit: makePost,
             name: "delForm",
             action: "/deleteClips",
             method: "POST",
-            className: "delForm"
+            className: "clipForm"
           }, React.createElement("input", {
             type: "hidden",
             name: "_csrf",
@@ -348,11 +325,55 @@ var ClipList = function ClipList(props) {
             name: "_id",
             type: "hidden",
             value: clip._id
-          }), React.createElement("input", {
-            className: "formSubmit",
+          }), React.createElement("button", {
+            className: "fa-button",
             type: "submit",
-            value: "Delete Clip"
-          })));
+            title: "Delete Clip"
+          }, React.createElement("i", {
+            className: "fas fa-trash-alt"
+          }))), React.createElement("form", {
+            id: "remForm" + numClips,
+            onSubmit: makePost,
+            name: "remForm",
+            action: "/remFavorite",
+            method: "POST",
+            className: "clipForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("button", {
+            className: "fa-button",
+            type: "submit",
+            title: "Remove Favorite"
+          }, React.createElement("i", {
+            className: "fas fa-heart-broken"
+          }))), React.createElement("form", {
+            id: "favForm" + numClips,
+            onSubmit: makePost,
+            name: "favForm",
+            action: "/addFavorite",
+            method: "POST",
+            className: "clipForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("button", {
+            className: "fa-button",
+            type: "submit",
+            title: "Add Favorite"
+          }, React.createElement("i", {
+            className: "fas fa-heart"
+          }))));
         } else {
           return React.createElement("div", {
             className: "clip"
@@ -374,50 +395,12 @@ var ClipList = function ClipList(props) {
             allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
             allowFullScreen: true
           }), React.createElement("form", {
-            id: "favForm" + numClips,
-            onSubmit: makePost,
-            name: "favForm",
-            action: "/addFavorite",
-            method: "POST",
-            className: "favForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "title",
-            type: "hidden",
-            value: clip.title
-          }), React.createElement("input", {
-            className: "formSubmit",
-            type: "submit",
-            value: "Add Favorite"
-          })), React.createElement("form", {
-            id: "remForm" + numClips,
-            onSubmit: makePost,
-            name: "remForm",
-            action: "/remFavorite",
-            method: "POST",
-            className: "remForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "title",
-            type: "hidden",
-            value: clip.title
-          }), React.createElement("input", {
-            className: "formSubmit",
-            type: "submit",
-            value: "Remove Favorite"
-          })), React.createElement("form", {
             id: "delForm" + numClips,
             onSubmit: makePost,
             name: "delForm",
             action: "/deleteClips",
             method: "POST",
-            className: "delForm"
+            className: "clipForm"
           }, React.createElement("input", {
             type: "hidden",
             name: "_csrf",
@@ -426,11 +409,55 @@ var ClipList = function ClipList(props) {
             name: "_id",
             type: "hidden",
             value: clip._id
-          }), React.createElement("input", {
-            className: "formSubmit",
+          }), React.createElement("button", {
+            className: "fa-button",
             type: "submit",
-            value: "Delete Clip"
-          })));
+            title: "Delete Clip"
+          }, React.createElement("i", {
+            className: "fas fa-trash-alt"
+          }))), React.createElement("form", {
+            id: "remForm" + numClips,
+            onSubmit: makePost,
+            name: "remForm",
+            action: "/remFavorite",
+            method: "POST",
+            className: "clipForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("button", {
+            className: "fa-button",
+            type: "submit",
+            title: "Remove Favorite"
+          }, React.createElement("i", {
+            className: "fas fa-heart-broken"
+          }))), React.createElement("form", {
+            id: "favForm" + numClips,
+            onSubmit: makePost,
+            name: "favForm",
+            action: "/addFavorite",
+            method: "POST",
+            className: "clipForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("button", {
+            className: "fa-button",
+            type: "submit",
+            title: "Add Favorite"
+          }, React.createElement("i", {
+            className: "fas fa-heart"
+          }))));
         }
       } else {
         if (clip.character1 !== '') {
@@ -459,50 +486,12 @@ var ClipList = function ClipList(props) {
               allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
               allowFullScreen: true
             }), React.createElement("form", {
-              id: "favForm" + numClips,
-              onSubmit: makePost,
-              name: "favForm",
-              action: "/addFavorite",
-              method: "POST",
-              className: "favForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "title",
-              type: "hidden",
-              value: clip.title
-            }), React.createElement("input", {
-              className: "formSubmit",
-              type: "submit",
-              value: "Add Favorite"
-            })), React.createElement("form", {
-              id: "remForm" + numClips,
-              onSubmit: makePost,
-              name: "remForm",
-              action: "/remFavorite",
-              method: "POST",
-              className: "remForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "title",
-              type: "hidden",
-              value: clip.title
-            }), React.createElement("input", {
-              className: "formSubmit",
-              type: "submit",
-              value: "Remove Favorite"
-            })), React.createElement("form", {
               id: "delForm" + numClips,
               onSubmit: makePost,
               name: "delForm",
               action: "/deleteClips",
               method: "POST",
-              className: "delForm"
+              className: "clipForm"
             }, React.createElement("input", {
               type: "hidden",
               name: "_csrf",
@@ -511,11 +500,55 @@ var ClipList = function ClipList(props) {
               name: "_id",
               type: "hidden",
               value: clip._id
-            }), React.createElement("input", {
-              className: "formSubmit",
+            }), React.createElement("button", {
+              className: "fa-button",
               type: "submit",
-              value: "Delete Clip"
-            })));
+              title: "Delete Clip"
+            }, React.createElement("i", {
+              className: "fas fa-trash-alt"
+            }))), React.createElement("form", {
+              id: "remForm" + numClips,
+              onSubmit: makePost,
+              name: "remForm",
+              action: "/remFavorite",
+              method: "POST",
+              className: "clipForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("button", {
+              className: "fa-button",
+              type: "submit",
+              title: "Remove Favorite"
+            }, React.createElement("i", {
+              className: "fas fa-heart-broken"
+            }))), React.createElement("form", {
+              id: "favForm" + numClips,
+              onSubmit: makePost,
+              name: "favForm",
+              action: "/addFavorite",
+              method: "POST",
+              className: "clipForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("button", {
+              className: "fa-button",
+              type: "submit",
+              title: "Add Favorite"
+            }, React.createElement("i", {
+              className: "fas fa-heart"
+            }))));
           } else {
             return React.createElement("div", {
               className: "clip"
@@ -539,50 +572,12 @@ var ClipList = function ClipList(props) {
               allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
               allowFullScreen: true
             }), React.createElement("form", {
-              id: "favForm" + numClips,
-              onSubmit: makePost,
-              name: "favForm",
-              action: "/addFavorite",
-              method: "POST",
-              className: "favForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "title",
-              type: "hidden",
-              value: clip.title
-            }), React.createElement("input", {
-              className: "formSubmit",
-              type: "submit",
-              value: "Add Favorite"
-            })), React.createElement("form", {
-              id: "remForm" + numClips,
-              onSubmit: makePost,
-              name: "remForm",
-              action: "/remFavorite",
-              method: "POST",
-              className: "remForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "title",
-              type: "hidden",
-              value: clip.title
-            }), React.createElement("input", {
-              className: "formSubmit",
-              type: "submit",
-              value: "Remove Favorite"
-            })), React.createElement("form", {
               id: "delForm" + numClips,
               onSubmit: makePost,
               name: "delForm",
               action: "/deleteClips",
               method: "POST",
-              className: "delForm"
+              className: "clipForm"
             }, React.createElement("input", {
               type: "hidden",
               name: "_csrf",
@@ -591,11 +586,55 @@ var ClipList = function ClipList(props) {
               name: "_id",
               type: "hidden",
               value: clip._id
-            }), React.createElement("input", {
-              className: "formSubmit",
+            }), React.createElement("button", {
+              className: "fa-button",
               type: "submit",
-              value: "Delete Clip"
-            })));
+              title: "Delete Clip"
+            }, React.createElement("i", {
+              className: "fas fa-trash-alt"
+            }))), React.createElement("form", {
+              id: "remForm" + numClips,
+              onSubmit: makePost,
+              name: "remForm",
+              action: "/remFavorite",
+              method: "POST",
+              className: "clipForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("button", {
+              className: "fa-button",
+              type: "submit",
+              title: "Remove Favorite"
+            }, React.createElement("i", {
+              className: "fas fa-heart-broken"
+            }))), React.createElement("form", {
+              id: "favForm" + numClips,
+              onSubmit: makePost,
+              name: "favForm",
+              action: "/addFavorite",
+              method: "POST",
+              className: "clipForm"
+            }, React.createElement("input", {
+              type: "hidden",
+              name: "_csrf",
+              value: props.csrf
+            }), React.createElement("input", {
+              name: "title",
+              type: "hidden",
+              value: clip.title
+            }), React.createElement("button", {
+              className: "fa-button",
+              type: "submit",
+              title: "Add Favorite"
+            }, React.createElement("i", {
+              className: "fas fa-heart"
+            }))));
           }
         } else if (clip.character2 !== '') {
           return React.createElement("div", {
@@ -620,50 +659,12 @@ var ClipList = function ClipList(props) {
             allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
             allowFullScreen: true
           }), React.createElement("form", {
-            id: "favForm" + numClips,
-            onSubmit: makePost,
-            name: "favForm",
-            action: "/addFavorite",
-            method: "POST",
-            className: "favForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "title",
-            type: "hidden",
-            value: clip.title
-          }), React.createElement("input", {
-            className: "formSubmit",
-            type: "submit",
-            value: "Add Favorite"
-          })), React.createElement("form", {
-            id: "remForm" + numClips,
-            onSubmit: makePost,
-            name: "remForm",
-            action: "/remFavorite",
-            method: "POST",
-            className: "remForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "title",
-            type: "hidden",
-            value: clip.title
-          }), React.createElement("input", {
-            className: "formSubmit",
-            type: "submit",
-            value: "Remove Favorite"
-          })), React.createElement("form", {
             id: "delForm" + numClips,
             onSubmit: makePost,
             name: "delForm",
             action: "/deleteClips",
             method: "POST",
-            className: "delForm"
+            className: "clipForm"
           }, React.createElement("input", {
             type: "hidden",
             name: "_csrf",
@@ -672,11 +673,55 @@ var ClipList = function ClipList(props) {
             name: "_id",
             type: "hidden",
             value: clip._id
-          }), React.createElement("input", {
-            className: "formSubmit",
+          }), React.createElement("button", {
+            className: "fa-button",
             type: "submit",
-            value: "Delete Clip"
-          })));
+            title: "Delete Clip"
+          }, React.createElement("i", {
+            className: "fas fa-trash-alt"
+          }))), React.createElement("form", {
+            id: "remForm" + numClips,
+            onSubmit: makePost,
+            name: "remForm",
+            action: "/remFavorite",
+            method: "POST",
+            className: "clipForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("button", {
+            className: "fa-button",
+            type: "submit",
+            title: "Remove Favorite"
+          }, React.createElement("i", {
+            className: "fas fa-heart-broken"
+          }))), React.createElement("form", {
+            id: "favForm" + numClips,
+            onSubmit: makePost,
+            name: "favForm",
+            action: "/addFavorite",
+            method: "POST",
+            className: "clipForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("button", {
+            className: "fa-button",
+            type: "submit",
+            title: "Add Favorite"
+          }, React.createElement("i", {
+            className: "fas fa-heart"
+          }))));
         } else {
           return React.createElement("div", {
             className: "clip"
@@ -698,50 +743,12 @@ var ClipList = function ClipList(props) {
             allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
             allowFullScreen: true
           }), React.createElement("form", {
-            id: "favForm" + numClips,
-            onSubmit: makePost,
-            name: "favForm",
-            action: "/addFavorite",
-            method: "POST",
-            className: "favForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "title",
-            type: "hidden",
-            value: clip.title
-          }), React.createElement("input", {
-            className: "formSubmit",
-            type: "submit",
-            value: "Add Favorite"
-          })), React.createElement("form", {
-            id: "remForm" + numClips,
-            onSubmit: makePost,
-            name: "remForm",
-            action: "/remFavorite",
-            method: "POST",
-            className: "remForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "title",
-            type: "hidden",
-            value: clip.title
-          }), React.createElement("input", {
-            className: "formSubmit",
-            type: "submit",
-            value: "Remove Favorite"
-          })), React.createElement("form", {
             id: "delForm" + numClips,
             onSubmit: makePost,
             name: "delForm",
             action: "/deleteClips",
             method: "POST",
-            className: "delForm"
+            className: "clipForm"
           }, React.createElement("input", {
             type: "hidden",
             name: "_csrf",
@@ -750,11 +757,55 @@ var ClipList = function ClipList(props) {
             name: "_id",
             type: "hidden",
             value: clip._id
-          }), React.createElement("input", {
-            className: "formSubmit",
+          }), React.createElement("button", {
+            className: "fa-button",
             type: "submit",
-            value: "Delete Clip"
-          })));
+            title: "Delete Clip"
+          }, React.createElement("i", {
+            className: "fas fa-trash-alt"
+          }))), React.createElement("form", {
+            id: "remForm" + numClips,
+            onSubmit: makePost,
+            name: "remForm",
+            action: "/remFavorite",
+            method: "POST",
+            className: "clipForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("button", {
+            className: "fa-button",
+            type: "submit",
+            title: "Remove Favorite"
+          }, React.createElement("i", {
+            className: "fas fa-heart-broken"
+          }))), React.createElement("form", {
+            id: "favForm" + numClips,
+            onSubmit: makePost,
+            name: "favForm",
+            action: "/addFavorite",
+            method: "POST",
+            className: "clipForm"
+          }, React.createElement("input", {
+            type: "hidden",
+            name: "_csrf",
+            value: props.csrf
+          }), React.createElement("input", {
+            name: "title",
+            type: "hidden",
+            value: clip.title
+          }), React.createElement("button", {
+            className: "fa-button",
+            type: "submit",
+            title: "Add Favorite"
+          }, React.createElement("i", {
+            className: "fas fa-heart"
+          }))));
         }
       }
     }
