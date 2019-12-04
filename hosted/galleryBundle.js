@@ -174,7 +174,7 @@ var ClipList = function ClipList(props) {
               value: "Remove Favorite"
             })), React.createElement("form", {
               id: "delForm" + numClips,
-              onSubmit: deleteClips,
+              onSubmit: makePost,
               name: "delForm",
               action: "/deleteClips",
               method: "POST",
@@ -254,7 +254,7 @@ var ClipList = function ClipList(props) {
               value: "Remove Favorite"
             })), React.createElement("form", {
               id: "delForm" + numClips,
-              onSubmit: deleteClips,
+              onSubmit: makePost,
               name: "delForm",
               action: "/deleteClips",
               method: "POST",
@@ -335,7 +335,7 @@ var ClipList = function ClipList(props) {
             value: "Remove Favorite"
           })), React.createElement("form", {
             id: "delForm" + numClips,
-            onSubmit: deleteClips,
+            onSubmit: makePost,
             name: "delForm",
             action: "/deleteClips",
             method: "POST",
@@ -413,7 +413,7 @@ var ClipList = function ClipList(props) {
             value: "Remove Favorite"
           })), React.createElement("form", {
             id: "delForm" + numClips,
-            onSubmit: deleteClips,
+            onSubmit: makePost,
             name: "delForm",
             action: "/deleteClips",
             method: "POST",
@@ -498,7 +498,7 @@ var ClipList = function ClipList(props) {
               value: "Remove Favorite"
             })), React.createElement("form", {
               id: "delForm" + numClips,
-              onSubmit: deleteClips,
+              onSubmit: makePost,
               name: "delForm",
               action: "/deleteClips",
               method: "POST",
@@ -578,7 +578,7 @@ var ClipList = function ClipList(props) {
               value: "Remove Favorite"
             })), React.createElement("form", {
               id: "delForm" + numClips,
-              onSubmit: deleteClips,
+              onSubmit: makePost,
               name: "delForm",
               action: "/deleteClips",
               method: "POST",
@@ -659,7 +659,7 @@ var ClipList = function ClipList(props) {
             value: "Remove Favorite"
           })), React.createElement("form", {
             id: "delForm" + numClips,
-            onSubmit: deleteClips,
+            onSubmit: makePost,
             name: "delForm",
             action: "/deleteClips",
             method: "POST",
@@ -737,7 +737,7 @@ var ClipList = function ClipList(props) {
             value: "Remove Favorite"
           })), React.createElement("form", {
             id: "delForm" + numClips,
-            onSubmit: deleteClips,
+            onSubmit: makePost,
             name: "delForm",
             action: "/deleteClips",
             method: "POST",
@@ -762,24 +762,6 @@ var ClipList = function ClipList(props) {
   return React.createElement("div", {
     className: "clipList"
   }, clipNodes);
-};
-
-var deleteClips = function deleteClips(e) {
-  e.preventDefault();
-  $("#terryMessage").animate({
-    width: 'hide'
-  }, 350);
-  sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function (result) {
-    console.log(result);
-    showMessage(result.message);
-    sendAjax('GET', '/getToken', null, function (result) {
-      showClips(result.csrfToken);
-    });
-  }, function (xhr, status, error) {
-    var messageObj = JSON.parse(xhr.responseText);
-    showMessage(messageObj.error);
-  });
-  return false;
 };
 
 var SearchBar = function SearchBar(props) {
@@ -828,10 +810,14 @@ var makePost = function makePost(e) {
   e.preventDefault();
   $("#terryMessage").animate({
     width: 'hide'
-  }, 350); // e.target.id will be the ID of the form that called makePost in the first place
+  }, 350); // create variables to make this slightly more readable
 
-  sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), function (result) {
+  var id = "#" + e.target.id;
+  var csrf = e.target._csrf; // e.target.id will be the ID of the form that called makePost in the first place
+
+  sendAjax('POST', $(id).attr("action"), $(id).serialize(), function (result) {
     showMessage(result.message);
+    showClips(csrf);
   }, function (xhr, status, error) {
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);

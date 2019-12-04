@@ -161,7 +161,7 @@ const ClipList = function(props)
                                     <input name="title" type="hidden" value={clip.title}/>
                                     <input className="formSubmit" type="submit" value="Remove Favorite"/>
                                 </form>
-                                <form id={"delForm" + numClips} onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                                <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="delForm">
                                     <input type="hidden" name="_csrf" value={props.csrf}/>
                                     <input name="_id" type="hidden" value={clip._id}/>
                                     <input className="formSubmit" type="submit" value="Delete Clip"/>
@@ -197,7 +197,7 @@ const ClipList = function(props)
                                     <input name="title" type="hidden" value={clip.title}/>
                                     <input className="formSubmit" type="submit" value="Remove Favorite"/>
                                 </form>
-                                <form id={"delForm" + numClips} onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                                <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="delForm">
                                     <input type="hidden" name="_csrf" value={props.csrf}/>
                                     <input name="_id" type="hidden" value={clip._id}/>
                                     <input className="formSubmit" type="submit" value="Delete Clip"/>
@@ -234,7 +234,7 @@ const ClipList = function(props)
                                 <input name="title" type="hidden" value={clip.title}/>
                                 <input className="formSubmit" type="submit" value="Remove Favorite"/>
                             </form>
-                            <form id={"delForm" + numClips} onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                            <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="delForm">
                                     <input type="hidden" name="_csrf" value={props.csrf}/>
                                     <input name="_id" type="hidden" value={clip._id}/>
                                     <input className="formSubmit" type="submit" value="Delete Clip"/>
@@ -269,7 +269,7 @@ const ClipList = function(props)
                                 <input name="title" type="hidden" value={clip.title}/>
                                 <input className="formSubmit" type="submit" value="Remove Favorite"/>
                             </form>
-                            <form id={"delForm" + numClips} onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                            <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="delForm">
                                     <input type="hidden" name="_csrf" value={props.csrf}/>
                                     <input name="_id" type="hidden" value={clip._id}/>
                                     <input className="formSubmit" type="submit" value="Delete Clip"/>
@@ -311,7 +311,7 @@ const ClipList = function(props)
                                     <input name="title" type="hidden" value={clip.title}/>
                                     <input className="formSubmit" type="submit" value="Remove Favorite"/>
                                 </form>
-                                <form id={"delForm" + numClips} onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                                <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="delForm">
                                     <input type="hidden" name="_csrf" value={props.csrf}/>
                                     <input name="_id" type="hidden" value={clip._id}/>
                                     <input className="formSubmit" type="submit" value="Delete Clip"/>
@@ -347,7 +347,7 @@ const ClipList = function(props)
                                     <input name="title" type="hidden" value={clip.title}/>
                                     <input className="formSubmit" type="submit" value="Remove Favorite"/>
                                 </form>
-                                <form id={"delForm" + numClips} onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                                <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="delForm">
                                     <input type="hidden" name="_csrf" value={props.csrf}/>
                                     <input name="_id" type="hidden" value={clip._id}/>
                                     <input className="formSubmit" type="submit" value="Delete Clip"/>
@@ -384,7 +384,7 @@ const ClipList = function(props)
                                 <input name="title" type="hidden" value={clip.title}/>
                                 <input className="formSubmit" type="submit" value="Remove Favorite"/>
                             </form>
-                            <form id={"delForm" + numClips} onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                            <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="delForm">
                                     <input type="hidden" name="_csrf" value={props.csrf}/>
                                     <input name="_id" type="hidden" value={clip._id}/>
                                     <input className="formSubmit" type="submit" value="Delete Clip"/>
@@ -419,7 +419,7 @@ const ClipList = function(props)
                                 <input name="title" type="hidden" value={clip.title}/>
                                 <input className="formSubmit" type="submit" value="Remove Favorite"/>
                             </form>
-                            <form id={"delForm" + numClips} onSubmit={deleteClips} name="delForm" action="/deleteClips" method="POST" className="delForm">
+                            <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="delForm">
                                     <input type="hidden" name="_csrf" value={props.csrf}/>
                                     <input name="_id" type="hidden" value={clip._id}/>
                                     <input className="formSubmit" type="submit" value="Delete Clip"/>
@@ -438,25 +438,6 @@ const ClipList = function(props)
         </div>
     )
 }
-
-const deleteClips = (e) =>{
-    e.preventDefault();
-    $("#terryMessage").animate({width:'hide'}, 350);
-
-    sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), (result)=>
-    {
-        console.log(result);
-        showMessage(result.message);
-        sendAjax('GET', '/getToken', null, (result) => {
-            showClips(result.csrfToken);
-        })
-    }, 
-    (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
-        showMessage(messageObj.error);});
-    
-
-    return false;
-};
 
 const SearchBar = function(props)
 {
@@ -488,9 +469,16 @@ const SearchBar = function(props)
 const makePost = (e) =>{
     e.preventDefault();
     $("#terryMessage").animate({width:'hide'}, 350);
+    
+    // create variables to make this slightly more readable
+    const id = "#" + e.target.id;
+    const csrf = e.target._csrf;
 
     // e.target.id will be the ID of the form that called makePost in the first place
-    sendAjax('POST', $("#" + e.target.id).attr("action"), $("#" + e.target.id).serialize(), (result)=>{showMessage(result.message);}, 
+    sendAjax('POST', $(id).attr("action"), $(id).serialize(), (result) => {
+        showMessage(result.message);
+        showClips(csrf);
+    }, 
     (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
         showMessage(messageObj.error);});
     
