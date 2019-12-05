@@ -344,7 +344,7 @@ const deleteAccount = (request, response) => {
       });
 
       return true;
-  });
+    });
   return true;
 };
 // Getting a CSRF token for the user
