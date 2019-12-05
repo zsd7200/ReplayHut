@@ -474,7 +474,7 @@ const makePost = (e) =>{
     
     // create variables to make this slightly more readable
     const id = "#" + e.target.id;
-    const csrf = e.target._csrf;
+    const csrf = `${e.target._csrf.value}`;
 
     // e.target.id will be the ID of the form that called makePost in the first place
     sendAjax('POST', $(id).attr("action"), $(id).serialize(), (result) => {
@@ -490,7 +490,6 @@ const makePost = (e) =>{
 
 const setup = (csrf) => {   
     showClips(csrf);
-
     ReactDOM.render(<SearchBar csrf={csrf} />, document.querySelector("#search"));
 }
 

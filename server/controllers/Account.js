@@ -110,10 +110,10 @@ const changePassword = (request, response) => {
     (err, doc) => {
       // Error checks
       if (err) {
-        return res.status(401).json({ messsage: 'An error occured' });
+        return res.status(401).json({ error: 'An error occured' });
       }
       if (!doc) {
-        return res.status(401).json({ message: 'Current password is incorrect' });
+        return res.status(401).json({ error: 'Current password is incorrect' });
       }
 
       // Creating the new password by encrypting it
@@ -320,18 +320,32 @@ const remFavorite = (request, response) => {
   });
 };
 
-//Deleting the user's account
+// Deleting the user's account
 const deleteAccount = (request, response) => {
   const req = request;
   const res = response;
-  //Set up the promise and search for the account to be deleted
-  const delPromise = app.mainDB.collection('accounts').deleteOne({ username: req.session.account.username });
 
-  //When the deleting is finished, destroy the session, and go back to the login screen
-  delPromise.then(() => {
-    req.session.destroy();
-    res.json({ redirect: '/' });
+  Account.AccountModel.authenticate(req.session.account.username, req.body.currentPass,
+    (err, doc) => {
+      // Error checks
+      if (err) {
+        return res.status(401).json({ error: 'An error occured' });
+      }
+      if (!doc) {
+        return res.status(401).json({ error: 'Current password is incorrect' });
+      }
+      // Set up the promise and search for the account to be deleted
+      const delPromise = app.mainDB.collection('accounts').deleteOne({ username: req.session.account.username });
+
+      // When the deleting is finished, destroy the session, and go back to the login screen
+      delPromise.then(() => {
+        req.session.destroy();
+        res.json({ redirect: '/' });
+      });
+
+      return true;
   });
+  return true;
 };
 // Getting a CSRF token for the user
 const getToken = (request, response) => {

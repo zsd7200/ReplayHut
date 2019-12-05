@@ -25,9 +25,8 @@ const passChange = (e) =>{
         showMessage(result.message);
     }, 
     (xhr, status, error) =>{
-        //Catching an error in filling out the form
-        if(error === 'Unauthorized')
-        showMessage("Current password is not correct");
+        var messageObj = JSON.parse(xhr.responseText);
+        showMessage(messageObj.error);
     });
     
     return false;
@@ -60,10 +59,9 @@ const cancelPremium = (e) =>{
 }
 
 //Gets a csrf token and then displays the page with information about the premium membership
-const showPremium = () =>{
-    sendAjax('GET', '/getToken', null, (result) => {
-        ReactDOM.render(<PremiumInfo csrf={result.csrfToken} />, document.querySelector("#content"));
-    });
+const showPremium = (e) =>{
+    const csrf = `${e.target._csrf.value}`;
+    ReactDOM.render(<PremiumInfo csrf={csrf} />, document.querySelector("#content"));
 };
 
 //Gets a csrf token and then displays the account page
@@ -76,15 +74,30 @@ const showAccount = () =>{
 };
 
 //Gets a csrf token and then displays the page with information about cancelling the premiuum membership
-const showCancelPremium = () =>{
-    sendAjax('GET', '/getToken', null, (result) => {
-        ReactDOM.render(<CancelPremium csrf={result.csrfToken} />, document.querySelector("#content"));
-    });
+const showCancelPremium = (e) =>{
+    const csrf = `${e.target._csrf.value}`;
+    ReactDOM.render(<CancelPremium csrf={csrf} />, document.querySelector("#content"));
+};
+
+const showDeleteAccount = (e) =>{
+    
+    const csrf = `${e.target._csrf.value}`;
+    
+    ReactDOM.render(<DeleteInfo csrf={csrf} />, document.querySelector("#content"));
 };
 
 const deleteAccount = (e) =>{
     e.preventDefault();
-    sendAjax('POST', '/deleteAccount', $("#delForm").serialize(), redirect);
+    
+    // create variables to make this slightly more readable
+    const id = "#" + e.target.id;
+
+    sendAjax('POST', $(id).attr("action"), $(id).serialize(), redirect, 
+    (xhr, status, error) =>{
+        var messageObj = JSON.parse(xhr.responseText);
+        showMessage(messageObj.error);
+        }
+    );
     
     return false;
 };
@@ -153,6 +166,34 @@ const PremiumInfo = function(props)
     )
 }
 
+const DeleteInfo = function(props)
+{
+    return(
+        <div className="content-box">
+            <button className="back pointer" onClick={showAccount}>Go Back</button>
+            <div className="center-content">
+                <h1>Woah there!</h1>
+                <h2>Are you really sure you want to delete your whole account?</h2>
+            </div><br />
+            
+            <h1>THIS CANNOT BE UNDONE!</h1>
+            <h3>Once your account is deleted, you will lost all information within it - this includes your premium status and number of clips made.</h3>
+            <h3>Your clips will remain on the site - it is advised that you delete your clips before deleting your account if you do not wish them to stay.</h3>
+            <br />
+            <h3>If you are sure you want to do this, please input your password below, and click the button.</h3>
+            <br />
+            <form id="delAccountForm" name="delAccountForm" onSubmit={deleteAccount} action="/deleteAccount" method="POST">
+                <div className="input-item">
+                    <input id="currentPass" type="password" name ="currentPass" placeholder="Current password"/>
+                    <label className="input-label" htmlFor="currentPass">Current Password: </label>
+                </div>
+                <input type="hidden" name="_csrf" value={props.csrf} />
+                <input className="formSubmit premium-button" type="submit" value="Delete Account"/>
+            </form>
+        </div>
+    );
+};
+
 //Returns the page with the account information
 const AccountInfo = function(props)
 {
@@ -190,9 +231,14 @@ const AccountInfo = function(props)
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input className="formSubmit" type="submit" value="Change Password"/>
                 </form>
-                <button className="formSubmit pointer premium-button" onClick={showPremium}>Sign up for Prime!</button>
-                <form  id="delForm" onSubmit={deleteAccount} >
-                    <input type="hidden" name="_csrf" value={props.csrf}/>
+
+                <form id="premForm" onSubmit={showPremium}>
+                    <input type="hidden" name="_csrf" value={props.csrf} />
+                    <input className="formSubmit pointer premium-button" type="submit" value="Sign up for Prime!" />
+                </form>
+
+                <form  id="delForm" onSubmit={showDeleteAccount} >
+                    <input type="hidden" name="_csrf" value={props.csrf} />
                     <input className="formSubmit pointer premium-button" type="submit" value="Delete Account?"/>
                 </form>
             </div>
@@ -229,7 +275,14 @@ const AccountInfo = function(props)
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input className="formSubmit" type="submit" value="Change Password"/>
                 </form>
-                <button className="formSubmit pointer premium-button" onClick={showCancelPremium}>Cancel Premium</button>
+                <form id="premForm" onSubmit={showCancelPremium}>
+                    <input type="hidden" name="_csrf" value={props.csrf} />
+                    <input className="formSubmit pointer premium-button" type="submit" value="Cancel Prime Membership" />
+                </form>
+                <form  id="delForm" onSubmit={showDeleteAccount} >
+                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                    <input className="formSubmit pointer premium-button" type="submit" value="Delete Account?"/>
+                </form>
             </div>
         )
     }

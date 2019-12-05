@@ -864,7 +864,7 @@ var makePost = function makePost(e) {
   }, 350); // create variables to make this slightly more readable
 
   var id = "#" + e.target.id;
-  var csrf = e.target._csrf; // e.target.id will be the ID of the form that called makePost in the first place
+  var csrf = "".concat(e.target._csrf.value); // e.target.id will be the ID of the form that called makePost in the first place
 
   sendAjax('POST', $(id).attr("action"), $(id).serialize(), function (result) {
     showMessage(result.message);
