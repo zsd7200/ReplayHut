@@ -36,7 +36,7 @@ var formatDate = function formatDate(date) {
   return newDate;
 };
 
-var showClips = function showClips(csrf) {
+var showClips = function showClips(csrf, e) {
   // Retrieving the clips
   sendAjax('GET', '/getClips', null, function (data) {
     ReactDOM.render(React.createElement(ClipList, {
@@ -50,7 +50,8 @@ var showClips = function showClips(csrf) {
 };
 
 var ClipList = function ClipList(props) {
-  checkPremium(); // If no clip have been made, show error
+  checkPremium();
+  numClips = 0; // If no clip have been made, show error
 
   if (props.clips.length === 0) {
     return React.createElement("div", {
@@ -80,6 +81,15 @@ var ClipList = function ClipList(props) {
       charSearch[index] = charSearch[index].trim();
       charSearch[index] = charSearch[index].toLowerCase();
     }
+  }
+
+  var searchParams = $("#sortList").val();
+
+  if (searchParams == 'newest') {
+    //https://stackoverflow.com/questions/10123953/how-to-sort-an-array-by-a-date-property
+    props.clips.sort(function (a, b) {
+      return new Date(b.postDate) - new Date(a.postDate);
+    });
   }
 
   var heart = React.createElement("i", {
@@ -852,8 +862,19 @@ var SearchBar = function SearchBar(props) {
     htmlFor: "charSearch"
   }, "Characters: ")), React.createElement("button", {
     className: "formSubmit",
-    onClick: showClips
-  }, "Search"));
+    onClick: function onClick() {
+      return showClips(props.csrf);
+    }
+  }, "Search"), React.createElement("select", {
+    id: "sortList",
+    onChange: function onChange() {
+      return showClips(props.csrf);
+    }
+  }, React.createElement("option", {
+    value: "oldest"
+  }, "Oldest First"), React.createElement("option", {
+    value: "newest"
+  }, "Newest First")));
 }; // check for issues with post; send ajax request if everything is all good
 
 

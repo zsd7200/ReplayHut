@@ -35,7 +35,7 @@ const formatDate = (date) => {
     return newDate;
 };
 
-const showClips = (csrf) =>{
+const showClips = (csrf, e) =>{
     // Retrieving the clips
     sendAjax('GET', '/getClips', null, (data) => {
         ReactDOM.render(<ClipList clips={data.clips} csrf={csrf} />, document.querySelector("#clips"));
@@ -49,7 +49,7 @@ const showClips = (csrf) =>{
 const ClipList = function(props) 
 {
     checkPremium();
-    
+    numClips = 0;
     // If no clip have been made, show error
     if(props.clips.length === 0)
     {
@@ -87,6 +87,15 @@ const ClipList = function(props)
         }
     }
     
+    let searchParams = $("#sortList").val();
+    if(searchParams == 'newest')
+    {
+        //https://stackoverflow.com/questions/10123953/how-to-sort-an-array-by-a-date-property
+        props.clips.sort(function(a,b){
+            return new Date(b.postDate) - new Date(a.postDate);
+        })
+    }
+
     const heart = <i className="fas fa-heart"></i>;
     
     // Displaying each clip
@@ -462,7 +471,12 @@ const SearchBar = function(props)
                 <label className="input-label help" title="Seperate characters by commas!" htmlFor="charSearch">Characters: </label>
             </div>
 
-            <button className="formSubmit" onClick={showClips}>Search</button>            
+            <button className="formSubmit" onClick={() => showClips(props.csrf)}>Search</button>     
+
+            <select id="sortList" onChange={() => showClips(props.csrf)}>
+                <option value="oldest">Oldest First</option>
+                <option value="newest">Newest First</option>
+            </select>       
         </div>
     );
 }
