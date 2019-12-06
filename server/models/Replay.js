@@ -34,12 +34,14 @@ const ReplaySchema = new mongoose.Schema({
     type: Boolean, required: true, default: false,
   },
   postDate: { type: Date, default: Date.now },
+  numFavorites: { type: Number, required: true, default: 0 },
 });
 
-ReplaySchema.statics.searchByOwner = (ownerId, callback) => {
-  const searchParams = { owner: convertId(ownerId) };
+ReplaySchema.statics.searchById = (replayId, callback) => {
+  const searchParams = { _id: convertId(replayId) };
 
-  return ReplayModel.find(searchParams).select('creator').exec(callback);
+  // return ReplayModel.find(searchParams).select('_id').exec(callback);
+  return ReplayModel.findOne(searchParams, callback);
 };
 
 ReplayModel = mongoose.model('Replay', ReplaySchema);

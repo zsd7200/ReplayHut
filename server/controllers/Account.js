@@ -4,6 +4,8 @@ const models = require('../models');
 // Setting up the account specific model
 const { Account } = models;
 
+// const { Replays } = models;
+
 const app = require('../app.js');
 
 // Rendering specific pages
@@ -258,28 +260,68 @@ const addFavorite = (request, response) => {
   const req = request;
   const res = response;
 
+  console.log('sss');
   // Finding the specific user so that they can be updated
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
+    /* console.log("aa");
+    Replays.ReplayModel.searchById(req.body._id, (err2, doc2) =>{
+      if (err2) return res.json({ error: err2 });
 
-    // If no error, create a temp variable to store changes
+      if (!doc2) {
+        return res.status(401).json({ error: 'Clip not found' });
+      }
+
+      console.log("ddd");
+      // If no error, create a temp variable to store changes
+      const foundUser = doc;
+
+      const foundClip = doc2;
+
+
+      console.log("zz");
+      // add to favorites array
+      if (foundUser.favorites.indexOf(req.body.title) === -1) {
+        console.log("qq");
+        foundUser.favorites.push(req.body.title);
+      } else {
+        console.log("vv");
+        return res.json({ error: 'Already in favorites!' });
+      }
+      console.log(foundClip.numFavorites);
+      foundClip.numFavorites = foundClip.numFavorites++;
+      console.log(foundClip.numFavorites);
+
+      // Handling promise to reassign the user's info
+      const updatePromise = foundUser.save();
+
+      const updatePromise2 = foundClip.save();
+      // Send a message back to the user once it is finished saving
+      updatePromise.then(() => res.json({ message: 'Added to favorites!' }));
+
+      updatePromise2.catch((err4) => res.json({error: err4}));
+      // Return an error back if one is found
+      updatePromise.catch((err3) => res.json({ error: err3 }));
+    })
+    */
     const foundUser = doc;
-
     // add to favorites array
     if (foundUser.favorites.indexOf(req.body.title) === -1) {
+      console.log('qq');
       foundUser.favorites.push(req.body.title);
     } else {
+      console.log('vv');
       return res.json({ error: 'Already in favorites!' });
     }
-    // Handling promise to reassign the user's info
     const updatePromise = foundUser.save();
 
-    // Send a message back to the user once it is finished saving
     updatePromise.then(() => res.json({ message: 'Added to favorites!' }));
+    updatePromise.catch((err3) => res.json({ error: err3 }));
 
-    // Return an error back if one is found
-    updatePromise.catch((err2) => res.json({ err2 }));
+
+    // Handling promise to reassign the user's info
+
     return true;
   });
 };

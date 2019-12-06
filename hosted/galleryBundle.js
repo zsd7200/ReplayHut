@@ -209,6 +209,10 @@ var ClipList = function ClipList(props) {
               name: "title",
               type: "hidden",
               value: clip.title
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
             }), React.createElement("button", {
               className: "fa-button",
               type: "submit",
@@ -230,6 +234,10 @@ var ClipList = function ClipList(props) {
               name: "title",
               type: "hidden",
               value: clip.title
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
             }), React.createElement("button", {
               className: "fa-button",
               type: "submit",
@@ -295,6 +303,10 @@ var ClipList = function ClipList(props) {
               name: "title",
               type: "hidden",
               value: clip.title
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
             }), React.createElement("button", {
               className: "fa-button",
               type: "submit",
@@ -316,6 +328,10 @@ var ClipList = function ClipList(props) {
               name: "title",
               type: "hidden",
               value: clip.title
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
             }), React.createElement("button", {
               className: "fa-button",
               type: "submit",
@@ -382,6 +398,10 @@ var ClipList = function ClipList(props) {
             name: "title",
             type: "hidden",
             value: clip.title
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
           }), React.createElement("button", {
             className: "fa-button",
             type: "submit",
@@ -403,6 +423,10 @@ var ClipList = function ClipList(props) {
             name: "title",
             type: "hidden",
             value: clip.title
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
           }), React.createElement("button", {
             className: "fa-button",
             type: "submit",
@@ -466,6 +490,10 @@ var ClipList = function ClipList(props) {
             name: "title",
             type: "hidden",
             value: clip.title
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
           }), React.createElement("button", {
             className: "fa-button",
             type: "submit",
@@ -487,6 +515,10 @@ var ClipList = function ClipList(props) {
             name: "title",
             type: "hidden",
             value: clip.title
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
           }), React.createElement("button", {
             className: "fa-button",
             type: "submit",
@@ -507,6 +539,8 @@ var ClipList = function ClipList(props) {
             }, "Creator: ", clip.creatorUN)), React.createElement("p", {
               className: "game"
             }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
               className: "description"
             }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
               className: "char1"
@@ -557,6 +591,10 @@ var ClipList = function ClipList(props) {
               name: "title",
               type: "hidden",
               value: clip.title
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
             }), React.createElement("button", {
               className: "fa-button",
               type: "submit",
@@ -578,6 +616,10 @@ var ClipList = function ClipList(props) {
               name: "title",
               type: "hidden",
               value: clip.title
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
             }), React.createElement("button", {
               className: "fa-button",
               type: "submit",
@@ -595,6 +637,8 @@ var ClipList = function ClipList(props) {
             }, "Creator: ", clip.creatorUN)), React.createElement("p", {
               className: "game"
             }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
               className: "description"
             }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
               className: "char1"
@@ -643,6 +687,10 @@ var ClipList = function ClipList(props) {
               name: "title",
               type: "hidden",
               value: clip.title
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
             }), React.createElement("button", {
               className: "fa-button",
               type: "submit",
@@ -664,6 +712,10 @@ var ClipList = function ClipList(props) {
               name: "title",
               type: "hidden",
               value: clip.title
+            }), React.createElement("input", {
+              name: "_id",
+              type: "hidden",
+              value: clip._id
             }), React.createElement("button", {
               className: "fa-button",
               type: "submit",
@@ -682,6 +734,8 @@ var ClipList = function ClipList(props) {
           }, "Creator: ", clip.creatorUN)), React.createElement("p", {
             className: "game"
           }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
             className: "description"
           }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
             className: "char2"
@@ -730,6 +784,10 @@ var ClipList = function ClipList(props) {
             name: "title",
             type: "hidden",
             value: clip.title
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
           }), React.createElement("button", {
             className: "fa-button",
             type: "submit",
@@ -751,6 +809,10 @@ var ClipList = function ClipList(props) {
             name: "title",
             type: "hidden",
             value: clip.title
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
           }), React.createElement("button", {
             className: "fa-button",
             type: "submit",
@@ -768,6 +830,8 @@ var ClipList = function ClipList(props) {
           }, "Creator: ", clip.creatorUN)), React.createElement("p", {
             className: "game"
           }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
             className: "description"
           }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
             className: "post-date"
@@ -814,6 +878,10 @@ var ClipList = function ClipList(props) {
             name: "title",
             type: "hidden",
             value: clip.title
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
           }), React.createElement("button", {
             className: "fa-button",
             type: "submit",
@@ -835,6 +903,10 @@ var ClipList = function ClipList(props) {
             name: "title",
             type: "hidden",
             value: clip.title
+          }), React.createElement("input", {
+            name: "_id",
+            type: "hidden",
+            value: clip._id
           }), React.createElement("button", {
             className: "fa-button",
             type: "submit",
@@ -921,6 +993,7 @@ var makePost = function makePost(e) {
     showMessage(result.message);
     showClips(csrf);
   }, function (xhr, status, error) {
+    console.log(xhr);
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);
   });
