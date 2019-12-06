@@ -119,7 +119,7 @@ var ClipList = function ClipList(props) {
   }
 
   var heart = React.createElement("i", {
-    className: "fas fa-heart"
+    className: "fas fa-heart fave"
   }); // Displaying each clip
 
   var clipNodes = props.clips.map(function (clip) {
@@ -193,7 +193,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Delete Clip"
             }, React.createElement("i", {
-              className: "fas fa-trash-alt"
+              className: "fas fa-trash trash"
             }))), React.createElement("form", {
               id: "remForm" + numClips,
               onSubmit: makePost,
@@ -218,7 +218,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Remove Favorite"
             }, React.createElement("i", {
-              className: "fas fa-heart-broken"
+              className: "fas fa-heart-broken un-fave"
             }))), React.createElement("form", {
               id: "favForm" + numClips,
               onSubmit: makePost,
@@ -243,7 +243,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Add Favorite"
             }, React.createElement("i", {
-              className: "fas fa-heart"
+              className: "fas fa-heart fave"
             }))));
           } else {
             return React.createElement("div", {
@@ -287,7 +287,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Delete Clip"
             }, React.createElement("i", {
-              className: "fas fa-trash-alt"
+              className: "fas fa-trash trash"
             }))), React.createElement("form", {
               id: "remForm" + numClips,
               onSubmit: makePost,
@@ -312,7 +312,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Remove Favorite"
             }, React.createElement("i", {
-              className: "fas fa-heart-broken"
+              className: "fas fa-heart-broken un-fave"
             }))), React.createElement("form", {
               id: "favForm" + numClips,
               onSubmit: makePost,
@@ -337,7 +337,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Add Favorite"
             }, React.createElement("i", {
-              className: "fas fa-heart"
+              className: "fas fa-heart fave"
             }))));
           }
         } else if (clip.character2 !== '') {
@@ -382,7 +382,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Delete Clip"
           }, React.createElement("i", {
-            className: "fas fa-trash-alt"
+            className: "fas fa-trash trash"
           }))), React.createElement("form", {
             id: "remForm" + numClips,
             onSubmit: makePost,
@@ -407,7 +407,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Remove Favorite"
           }, React.createElement("i", {
-            className: "fas fa-heart-broken"
+            className: "fas fa-heart-broken un-fave"
           }))), React.createElement("form", {
             id: "favForm" + numClips,
             onSubmit: makePost,
@@ -432,7 +432,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Add Favorite"
           }, React.createElement("i", {
-            className: "fas fa-heart"
+            className: "fas fa-heart fave"
           }))));
         } else {
           return React.createElement("div", {
@@ -474,7 +474,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Delete Clip"
           }, React.createElement("i", {
-            className: "fas fa-trash-alt"
+            className: "fas fa-trash trash"
           }))), React.createElement("form", {
             id: "remForm" + numClips,
             onSubmit: makePost,
@@ -499,7 +499,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Remove Favorite"
           }, React.createElement("i", {
-            className: "fas fa-heart-broken"
+            className: "fas fa-heart-broken un-fave"
           }))), React.createElement("form", {
             id: "favForm" + numClips,
             onSubmit: makePost,
@@ -524,7 +524,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Add Favorite"
           }, React.createElement("i", {
-            className: "fas fa-heart"
+            className: "fas fa-heart fave"
           }))));
         }
       } else {
@@ -575,7 +575,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Delete Clip"
             }, React.createElement("i", {
-              className: "fas fa-trash-alt"
+              className: "fas fa-trash trash"
             }))), React.createElement("form", {
               id: "remForm" + numClips,
               onSubmit: makePost,
@@ -600,7 +600,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Remove Favorite"
             }, React.createElement("i", {
-              className: "fas fa-heart-broken"
+              className: "fas fa-heart-broken un-fave"
             }))), React.createElement("form", {
               id: "favForm" + numClips,
               onSubmit: makePost,
@@ -625,7 +625,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Add Favorite"
             }, React.createElement("i", {
-              className: "fas fa-heart"
+              className: "fas fa-heart fave"
             }))));
           } else {
             return React.createElement("div", {
@@ -671,7 +671,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Delete Clip"
             }, React.createElement("i", {
-              className: "fas fa-trash-alt"
+              className: "fas fa-trash trash"
             }))), React.createElement("form", {
               id: "remForm" + numClips,
               onSubmit: makePost,
@@ -696,7 +696,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Remove Favorite"
             }, React.createElement("i", {
-              className: "fas fa-heart-broken"
+              className: "fas fa-heart-broken un-fave"
             }))), React.createElement("form", {
               id: "favForm" + numClips,
               onSubmit: makePost,
@@ -721,7 +721,7 @@ var ClipList = function ClipList(props) {
               type: "submit",
               title: "Add Favorite"
             }, React.createElement("i", {
-              className: "fas fa-heart"
+              className: "fas fa-heart fave"
             }))));
           }
         } else if (clip.character2 !== '') {
@@ -768,7 +768,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Delete Clip"
           }, React.createElement("i", {
-            className: "fas fa-trash-alt"
+            className: "fas fa-trash trash"
           }))), React.createElement("form", {
             id: "remForm" + numClips,
             onSubmit: makePost,
@@ -793,7 +793,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Remove Favorite"
           }, React.createElement("i", {
-            className: "fas fa-heart-broken"
+            className: "fas fa-heart-broken un-fave"
           }))), React.createElement("form", {
             id: "favForm" + numClips,
             onSubmit: makePost,
@@ -818,7 +818,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Add Favorite"
           }, React.createElement("i", {
-            className: "fas fa-heart"
+            className: "fas fa-heart fave"
           }))));
         } else {
           return React.createElement("div", {
@@ -862,7 +862,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Delete Clip"
           }, React.createElement("i", {
-            className: "fas fa-trash-alt"
+            className: "fas fa-trash trash"
           }))), React.createElement("form", {
             id: "remForm" + numClips,
             onSubmit: makePost,
@@ -887,7 +887,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Remove Favorite"
           }, React.createElement("i", {
-            className: "fas fa-heart-broken"
+            className: "fas fa-heart-broken un-fave"
           }))), React.createElement("form", {
             id: "favForm" + numClips,
             onSubmit: makePost,
@@ -912,7 +912,7 @@ var ClipList = function ClipList(props) {
             type: "submit",
             title: "Add Favorite"
           }, React.createElement("i", {
-            className: "fas fa-heart"
+            className: "fas fa-heart fave"
           }))));
         }
       }
