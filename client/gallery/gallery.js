@@ -95,6 +95,24 @@ const ClipList = function(props)
             return new Date(b.postDate) - new Date(a.postDate);
         })
     }
+    else if(searchParams == 'alphabeticalDown')
+    {
+        //https://stackoverflow.com/questions/6712034/sort-array-by-firstname-alphabetically-in-javascript
+        props.clips.sort(function(a,b){
+            if(a.title < b.title) { return -1; }
+            if(a.title > b.title) { return 1; }
+            return 0;
+        })
+    }
+    else if(searchParams == 'alphabeticalUp')
+    {
+        //https://stackoverflow.com/questions/6712034/sort-array-by-firstname-alphabetically-in-javascript
+        props.clips.sort(function(a,b){
+            if(a.title < b.title) { return 1; }
+            if(a.title > b.title) { return -1; }
+            return 0;
+        })
+    }
 
     const heart = <i className="fas fa-heart"></i>;
     
@@ -476,6 +494,8 @@ const SearchBar = function(props)
             <select id="sortList" onChange={() => showClips(props.csrf)}>
                 <option value="oldest">Oldest First</option>
                 <option value="newest">Newest First</option>
+                <option value="alphabeticalDown">Alphabetical (A-Z)</option>
+                <option value="alphabeticalUp">Alphabetical (Z-A)</option>
             </select>       
         </div>
     );

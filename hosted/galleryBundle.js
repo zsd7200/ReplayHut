@@ -90,6 +90,32 @@ var ClipList = function ClipList(props) {
     props.clips.sort(function (a, b) {
       return new Date(b.postDate) - new Date(a.postDate);
     });
+  } else if (searchParams == 'alphabeticalDown') {
+    //https://stackoverflow.com/questions/6712034/sort-array-by-firstname-alphabetically-in-javascript
+    props.clips.sort(function (a, b) {
+      if (a.title < b.title) {
+        return -1;
+      }
+
+      if (a.title > b.title) {
+        return 1;
+      }
+
+      return 0;
+    });
+  } else if (searchParams == 'alphabeticalUp') {
+    //https://stackoverflow.com/questions/6712034/sort-array-by-firstname-alphabetically-in-javascript
+    props.clips.sort(function (a, b) {
+      if (a.title < b.title) {
+        return 1;
+      }
+
+      if (a.title > b.title) {
+        return -1;
+      }
+
+      return 0;
+    });
   }
 
   var heart = React.createElement("i", {
@@ -874,7 +900,11 @@ var SearchBar = function SearchBar(props) {
     value: "oldest"
   }, "Oldest First"), React.createElement("option", {
     value: "newest"
-  }, "Newest First")));
+  }, "Newest First"), React.createElement("option", {
+    value: "alphabeticalDown"
+  }, "Alphabetical (A-Z)"), React.createElement("option", {
+    value: "alphabeticalUp"
+  }, "Alphabetical (Z-A)")));
 }; // check for issues with post; send ajax request if everything is all good
 
 
