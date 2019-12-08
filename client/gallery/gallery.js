@@ -38,9 +38,10 @@ const formatDate = (date) => {
 const showClips = (csrf, e) =>{
     
     sendAjax('GET', '/getMyAccount', null, (accdata) => {
+        console.log(accdata);
         // Retrieving the clips
         sendAjax('GET', '/getClips', null, (clipdata) => {
-            ReactDOM.render(<ClipList clips={clipdata.clips} userfaves={accdata.account.favorites} csrf={csrf} />, document.querySelector("#clips"));
+            ReactDOM.render(<ClipList clips={clipdata.clips} userfaves={accdata.account.favorites} user={accdata.account.username} csrf={csrf} />, document.querySelector("#clips"));
         },
         (xhr, status, error) =>{
             var messageObj = JSON.parse(xhr.responseText);
@@ -58,6 +59,10 @@ const showClips = (csrf, e) =>{
 
 const ClipList = function(props) 
 {
+    
+    for(let i = 0; i < props.clips.length; i++) {
+        props.clips[i].currUser = props.user;
+    }
     console.log(props);
     checkPremium();
     numClips = 0;
@@ -180,325 +185,1025 @@ const ClipList = function(props)
         // If all the checks pass, display that clip
         if(userCheck && gameCheck && charCheck)
         {
-            if(clip.creatorPremStatus)
-            {
-                if(clip.character1 !== '') {
-                    if(clip.character2 !== '') {
-                        return(
-                            <div className="clip">
-                                <h4 className="clip-title"><u>{clip.title}</u>
-                                    <span className="creator">Creator: {clip.creatorUN} ⭐</span>
-                                </h4>
-                                <p className="game"><b>Game:</b> {clip.game}</p>
-                                <p className="description"><b>Description:</b> {clip.description}</p>
-                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
-                                <p className="char2"><b>Character 2:</b> {clip.character2}</p>
-                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                                <iframe 
-                                    width={ytWidth} 
-                                    height={ytHeight} 
-                                    src={clip.youtube} 
-                                    frameBorder="0" 
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowFullScreen
-                                    >
-                                </iframe>
-                                <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
-                                </form>
-                                <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="clipID" type="hidden" value={clip.id}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
-                                </form>
-                                <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="clipID" type="hidden" value={clip.id}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
-                                </form>
-                            </div>
-                        );
+            if(clip.creatorUN === clip.currUser) {
+                if(clip.creatorPremStatus)
+                {
+                    if(clip.character1 !== '') {
+                        if(clip.character2 !== '') {
+                            if(clip.faveStatus === true) {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            } else {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            }
+                        } else {
+                            if(clip.faveStatus === true) {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            } else {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            }
+                        }
+                    } else if (clip.character2 !== ''){
+                        if(clip.faveStatus === true) {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        } else {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        }
                     } else {
-                        return(
-                            <div className="clip">
-                                <h4 className="clip-title"><u>{clip.title}</u>
-                                    <span className="creator">Creator: {clip.creatorUN} ⭐</span>
-                                </h4>
-                                <p className="game"><b>Game:</b> {clip.game}</p>
-                                <p className="description"><b>Description:</b> {clip.description}</p>
-                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
-                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                                <iframe 
-                                    width={ytWidth} 
-                                    height={ytHeight} 
-                                    src={clip.youtube} 
-                                    frameBorder="0" 
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowFullScreen
-                                    >
-                                </iframe>
-                                <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
-                                </form>
-                                <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="clipID" type="hidden" value={clip.id}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
-                                </form>
-                                <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="clipID" type="hidden" value={clip.id}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
-                                </form>
-                            </div>
-                        );
+                        if(clip.faveStatus === true) {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        } else {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        }
                     }
-                } else if (clip.character2 !== ''){
-                    return(
-                        <div className="clip">
-                            <h4 className="clip-title"><u>{clip.title}</u>
-                                <span className="creator">Creator: {clip.creatorUN} ⭐</span>
-                            </h4>
-                            <p className="game"><b>Game:</b> {clip.game}</p>
-                            <p className="description"><b>Description:</b> {clip.description}</p>
-                            <p className="char2"><b>Character 2:</b> {clip.character2}</p>
-                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                            <iframe 
-                                width={ytWidth} 
-                                height={ytHeight} 
-                                src={clip.youtube} 
-                                frameBorder="0" 
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                allowFullScreen
-                                >
-                            </iframe>
-                            <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
-                            </form>
-                            <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="clipID" type="hidden" value={clip.id}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
-                            </form>
-                            <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="clipID" type="hidden" value={clip.id}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
-                            </form>
-                        </div>
-                    );
-                } else {
-                    return(
-                        <div className="clip">
-                            <h4 className="clip-title"><u>{clip.title}</u>
-                                <span className="creator">Creator: {clip.creatorUN} ⭐</span>
-                            </h4>
-                            <p className="game"><b>Game:</b> {clip.game}</p>
-                            <p className="description"><b>Description:</b> {clip.description}</p>
-                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                            <iframe 
-                                width={ytWidth} 
-                                height={ytHeight} 
-                                src={clip.youtube} 
-                                frameBorder="0" 
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                allowFullScreen
-                                >
-                            </iframe>
-                            <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
-                            </form>
-                            <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="clipID" type="hidden" value={clip.id}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
-                            </form>
-                            <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="clipID" type="hidden" value={clip.id}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
-                            </form>
-                        </div>
-                    );
                 }
-            }
-            else
-            {
-                if(clip.character1 !== '') {
-                    if(clip.character2 !== '') {
-                        return(
-                            <div className="clip">
-                                <h4 className="clip-title"><u>{clip.title}</u>
-                                    <span className="creator">Creator: {clip.creatorUN}</span>
-                                </h4>
-                                <p className="game"><b>Game:</b> {clip.game}</p>
-                                <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
-                                <p className="description"><b>Description:</b> {clip.description}</p>
-                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
-                                <p className="char2"><b>Character 2:</b> {clip.character2}</p>
-                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                                <iframe 
-                                    width={ytWidth} 
-                                    height={ytHeight} 
-                                    src={clip.youtube} 
-                                    frameBorder="0" 
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowFullScreen
-                                    >
-                                </iframe>
-                                <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
-                                </form>
-                                <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="clipID" type="hidden" value={clip.id}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
-                                </form>
-                                <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="clipID" type="hidden" value={clip.id}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
-                                </form>
-                            </div>
-                        );
+                else
+                {
+                    if(clip.character1 !== '') {
+                        if(clip.character2 !== '') {
+                            if(clip.faveStatus === true) {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN}</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            } else {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN}</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            }
+                        } else {
+                            if(clip.faveStatus === true) {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN}</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            } else {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN}</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            }
+                        }
+                    } else if (clip.character2 !== ''){
+                        if(clip.faveStatus === true) {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN}</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        } else {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN}</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        }
                     } else {
-                        return(
-                            <div className="clip">
-                                <h4 className="clip-title"><u>{clip.title}</u>
-                                    <span className="creator">Creator: {clip.creatorUN}</span>
-                                </h4>
-                                <p className="game"><b>Game:</b> {clip.game}</p>
-                                <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
-                                <p className="description"><b>Description:</b> {clip.description}</p>
-                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
-                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                                <iframe 
-                                    width={ytWidth} 
-                                    height={ytHeight} 
-                                    src={clip.youtube} 
-                                    frameBorder="0" 
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowFullScreen
-                                    >
-                                </iframe>
-                                <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
-                                </form>
-                                <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="clipID" type="hidden" value={clip.id}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
-                                </form>
-                                <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
-                                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                                    <input name="clipID" type="hidden" value={clip.id}/>
-                                    <input name="_id" type="hidden" value={clip._id}/>
-                                    <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
-                                </form>
-                            </div>
-                        );
+                        if(clip.faveStatus === true) {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN}</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        } else {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN}</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        }
                     }
-                } else if (clip.character2 !== ''){
-                    return(
-                        <div className="clip">
-                            <h4 className="clip-title"><u>{clip.title}</u>
-                                <span className="creator">Creator: {clip.creatorUN}</span>
-                            </h4>
-                            <p className="game"><b>Game:</b> {clip.game}</p>
-                            <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
-                            <p className="description"><b>Description:</b> {clip.description}</p>
-                            <p className="char2"><b>Character 2:</b> {clip.character2}</p>
-                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                            <iframe 
-                                width={ytWidth} 
-                                height={ytHeight} 
-                                src={clip.youtube} 
-                                frameBorder="0" 
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                allowFullScreen
-                                >
-                            </iframe>
-                            <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
-                            </form>
-                            <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="clipID" type="hidden" value={clip.id}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
-                            </form>
-                            <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="clipID" type="hidden" value={clip.id}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
-                            </form>
-                        </div>
-                    );
-                } else {
-                    return(
-                        <div className="clip">
-                            <h4 className="clip-title"><u>{clip.title}</u>
-                                <span className="creator">Creator: {clip.creatorUN}</span>
-                            </h4>
-                            <p className="game"><b>Game:</b> {clip.game}</p>
-                            <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
-                            <p className="description"><b>Description:</b> {clip.description}</p>
-                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
-                            <iframe 
-                                width={ytWidth} 
-                                height={ytHeight} 
-                                src={clip.youtube} 
-                                frameBorder="0" 
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                                allowFullScreen
-                                >
-                            </iframe>
-                            <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
-                            </form>
-                            <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="clipID" type="hidden" value={clip.id}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
-                            </form>
-                            <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
-                                <input type="hidden" name="_csrf" value={props.csrf}/>
-                                <input name="clipID" type="hidden" value={clip.id}/>
-                                <input name="_id" type="hidden" value={clip._id}/>
-                                <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
-                            </form>
-                        </div>
-                    );
                 }
+            } else {
+                if(clip.creatorPremStatus)
+                {
+                    if(clip.character1 !== '') {
+                        if(clip.character2 !== '') {
+                            if(clip.faveStatus === true) {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            } else {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            }
+                        } else {
+                            if(clip.faveStatus === true) {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            } else {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            }
+                        }
+                    } else if (clip.character2 !== ''){
+                        if(clip.faveStatus === true) {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        } else {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        }
+                    } else {
+                        if(clip.faveStatus === true) {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        } else {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        }
+                    }
+                }
+                else
+                {
+                    if(clip.character1 !== '') {
+                        if(clip.character2 !== '') {
+                            if(clip.faveStatus === true) {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN}</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            } else {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN}</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            }
+                        } else {
+                            if(clip.faveStatus === true) {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN}</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            } else {
+                                return(
+                                    <div className="clip">
+                                        <h4 className="clip-title"><u>{clip.title}</u>
+                                            <span className="creator">Creator: {clip.creatorUN}</span>
+                                        </h4>
+                                        <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                        <p className="description"><b>Description:</b> {clip.description}</p>
+                                        <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                        <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                        <iframe 
+                                            width={ytWidth} 
+                                            height={ytHeight} 
+                                            src={clip.youtube} 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowFullScreen
+                                            >
+                                        </iframe>
+                                        <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                        </form>
+                                    </div>
+                                );
+                            }
+                        }
+                    } else if (clip.character2 !== ''){
+                        if(clip.faveStatus === true) {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN}</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        } else {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN}</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        }
+                    } else {
+                        if(clip.faveStatus === true) {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN}</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        } else {
+                            return(
+                                <div className="clip">
+                                    <h4 className="clip-title"><u>{clip.title}</u>
+                                        <span className="creator">Creator: {clip.creatorUN}</span>
+                                    </h4>
+                                    <p className="game"><b>Game:</b> {clip.game}</p>
+                                    <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+                                    <p className="description"><b>Description:</b> {clip.description}</p>
+                                    <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                    <iframe 
+                                        width={ytWidth} 
+                                        height={ytHeight} 
+                                        src={clip.youtube} 
+                                        frameBorder="0" 
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                        >
+                                    </iframe>
+                                    <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
+                                    </form>
+                                </div>
+                            );
+                        }
+                    }
+                }
+
             }
         }
     });

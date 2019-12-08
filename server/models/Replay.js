@@ -39,6 +39,9 @@ const ReplaySchema = new mongoose.Schema({
   faveStatus: {
     type: Boolean, required: true, default: false,
   },
+  currUser: {
+    type: Boolean, required: true, trim: true, set: setName,
+  },
   postDate: { type: Date, default: Date.now },
   numFavorites: { type: Number, required: true, default: 0 },
 });

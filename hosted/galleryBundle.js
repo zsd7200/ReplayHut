@@ -38,11 +38,13 @@ var formatDate = function formatDate(date) {
 
 var showClips = function showClips(csrf, e) {
   sendAjax('GET', '/getMyAccount', null, function (accdata) {
-    // Retrieving the clips
+    console.log(accdata); // Retrieving the clips
+
     sendAjax('GET', '/getClips', null, function (clipdata) {
       ReactDOM.render(React.createElement(ClipList, {
         clips: clipdata.clips,
         userfaves: accdata.account.favorites,
+        user: accdata.account.username,
         csrf: csrf
       }), document.querySelector("#clips"));
     }, function (xhr, status, error) {
@@ -56,6 +58,10 @@ var showClips = function showClips(csrf, e) {
 };
 
 var ClipList = function ClipList(props) {
+  for (var i = 0; i < props.clips.length; i++) {
+    props.clips[i].currUser = props.user;
+  }
+
   console.log(props);
   checkPremium();
   numClips = 0; // If no clip have been made, show error
@@ -125,9 +131,9 @@ var ClipList = function ClipList(props) {
     });
   }
 
-  for (var i = 0; i < props.userfaves.length; i++) {
+  for (var _i = 0; _i < props.userfaves.length; _i++) {
     for (var j = 0; j < props.clips.length; j++) {
-      if (props.userfaves[i] === props.clips[j].id) {
+      if (props.userfaves[_i] === props.clips[j].id) {
         props.clips[j].faveStatus = true;
         break;
       }
@@ -162,773 +168,1961 @@ var ClipList = function ClipList(props) {
     numClips++; // If all the checks pass, display that clip
 
     if (userCheck && gameCheck && charCheck) {
-      if (clip.creatorPremStatus) {
-        if (clip.character1 !== '') {
-          if (clip.character2 !== '') {
-            return React.createElement("div", {
-              className: "clip"
-            }, React.createElement("h4", {
-              className: "clip-title"
-            }, React.createElement("u", null, clip.title), React.createElement("span", {
-              className: "creator"
-            }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
-              className: "game"
-            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-              className: "description"
-            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-              className: "char1"
-            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
-              className: "char2"
-            }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
-              className: "post-date"
-            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-              width: ytWidth,
-              height: ytHeight,
-              src: clip.youtube,
-              frameBorder: "0",
-              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-              allowFullScreen: true
-            }), React.createElement("form", {
-              id: "delForm" + numClips,
-              onSubmit: makePost,
-              name: "delForm",
-              action: "/deleteClips",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Delete Clip"
-            }, React.createElement("i", {
-              className: "fas fa-trash trash"
-            }))), React.createElement("form", {
-              id: "remForm" + numClips,
-              onSubmit: makePost,
-              name: "remForm",
-              action: "/remFavorite",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "clipID",
-              type: "hidden",
-              value: clip.id
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Remove Favorite"
-            }, React.createElement("i", {
-              className: "fas fa-heart-broken un-fave"
-            }))), React.createElement("form", {
-              id: "favForm" + numClips,
-              onSubmit: makePost,
-              name: "favForm",
-              action: "/addFavorite",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "clipID",
-              type: "hidden",
-              value: clip.id
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Add Favorite"
-            }, React.createElement("i", {
-              className: "fas fa-heart fave"
-            }))));
+      if (clip.creatorUN === clip.currUser) {
+        if (clip.creatorPremStatus) {
+          if (clip.character1 !== '') {
+            if (clip.character2 !== '') {
+              if (clip.faveStatus === true) {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "char2"
+                }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "delForm" + numClips,
+                  onSubmit: makePost,
+                  name: "delForm",
+                  action: "/deleteClips",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Delete Clip"
+                }, React.createElement("i", {
+                  className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "remForm" + numClips,
+                  onSubmit: makePost,
+                  name: "remForm",
+                  action: "/remFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Remove Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart-broken un-fave"
+                }))));
+              } else {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "char2"
+                }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "delForm" + numClips,
+                  onSubmit: makePost,
+                  name: "delForm",
+                  action: "/deleteClips",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Delete Clip"
+                }, React.createElement("i", {
+                  className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "favForm" + numClips,
+                  onSubmit: makePost,
+                  name: "favForm",
+                  action: "/addFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart fave"
+                }))));
+              }
+            } else {
+              if (clip.faveStatus === true) {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "delForm" + numClips,
+                  onSubmit: makePost,
+                  name: "delForm",
+                  action: "/deleteClips",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Delete Clip"
+                }, React.createElement("i", {
+                  className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "remForm" + numClips,
+                  onSubmit: makePost,
+                  name: "remForm",
+                  action: "/remFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Remove Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart-broken un-fave"
+                }))));
+              } else {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "delForm" + numClips,
+                  onSubmit: makePost,
+                  name: "delForm",
+                  action: "/deleteClips",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Delete Clip"
+                }, React.createElement("i", {
+                  className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "favForm" + numClips,
+                  onSubmit: makePost,
+                  name: "favForm",
+                  action: "/addFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart fave"
+                }))));
+              }
+            }
+          } else if (clip.character2 !== '') {
+            if (clip.faveStatus === true) {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "char2"
+              }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "delForm" + numClips,
+                onSubmit: makePost,
+                name: "delForm",
+                action: "/deleteClips",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Delete Clip"
+              }, React.createElement("i", {
+                className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "remForm" + numClips,
+                onSubmit: makePost,
+                name: "remForm",
+                action: "/remFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Remove Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart-broken un-fave"
+              }))));
+            } else {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "char2"
+              }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "delForm" + numClips,
+                onSubmit: makePost,
+                name: "delForm",
+                action: "/deleteClips",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Delete Clip"
+              }, React.createElement("i", {
+                className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "favForm" + numClips,
+                onSubmit: makePost,
+                name: "favForm",
+                action: "/addFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart fave"
+              }))));
+            }
           } else {
-            return React.createElement("div", {
-              className: "clip"
-            }, React.createElement("h4", {
-              className: "clip-title"
-            }, React.createElement("u", null, clip.title), React.createElement("span", {
-              className: "creator"
-            }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
-              className: "game"
-            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-              className: "description"
-            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-              className: "char1"
-            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
-              className: "post-date"
-            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-              width: ytWidth,
-              height: ytHeight,
-              src: clip.youtube,
-              frameBorder: "0",
-              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-              allowFullScreen: true
-            }), React.createElement("form", {
-              id: "delForm" + numClips,
-              onSubmit: makePost,
-              name: "delForm",
-              action: "/deleteClips",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Delete Clip"
-            }, React.createElement("i", {
-              className: "fas fa-trash trash"
-            }))), React.createElement("form", {
-              id: "remForm" + numClips,
-              onSubmit: makePost,
-              name: "remForm",
-              action: "/remFavorite",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "clipID",
-              type: "hidden",
-              value: clip.id
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Remove Favorite"
-            }, React.createElement("i", {
-              className: "fas fa-heart-broken un-fave"
-            }))), React.createElement("form", {
-              id: "favForm" + numClips,
-              onSubmit: makePost,
-              name: "favForm",
-              action: "/addFavorite",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "clipID",
-              type: "hidden",
-              value: clip.id
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Add Favorite"
-            }, React.createElement("i", {
-              className: "fas fa-heart fave"
-            }))));
+            if (clip.faveStatus === true) {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "delForm" + numClips,
+                onSubmit: makePost,
+                name: "delForm",
+                action: "/deleteClips",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Delete Clip"
+              }, React.createElement("i", {
+                className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "remForm" + numClips,
+                onSubmit: makePost,
+                name: "remForm",
+                action: "/remFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Remove Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart-broken un-fave"
+              }))));
+            } else {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "delForm" + numClips,
+                onSubmit: makePost,
+                name: "delForm",
+                action: "/deleteClips",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Delete Clip"
+              }, React.createElement("i", {
+                className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "favForm" + numClips,
+                onSubmit: makePost,
+                name: "favForm",
+                action: "/addFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart fave"
+              }))));
+            }
           }
-        } else if (clip.character2 !== '') {
-          return React.createElement("div", {
-            className: "clip"
-          }, React.createElement("h4", {
-            className: "clip-title"
-          }, React.createElement("u", null, clip.title), React.createElement("span", {
-            className: "creator"
-          }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
-            className: "game"
-          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-            className: "description"
-          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-            className: "char2"
-          }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
-            className: "post-date"
-          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-            width: ytWidth,
-            height: ytHeight,
-            src: clip.youtube,
-            frameBorder: "0",
-            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-            allowFullScreen: true
-          }), React.createElement("form", {
-            id: "delForm" + numClips,
-            onSubmit: makePost,
-            name: "delForm",
-            action: "/deleteClips",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Delete Clip"
-          }, React.createElement("i", {
-            className: "fas fa-trash trash"
-          }))), React.createElement("form", {
-            id: "remForm" + numClips,
-            onSubmit: makePost,
-            name: "remForm",
-            action: "/remFavorite",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "clipID",
-            type: "hidden",
-            value: clip.id
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Remove Favorite"
-          }, React.createElement("i", {
-            className: "fas fa-heart-broken un-fave"
-          }))), React.createElement("form", {
-            id: "favForm" + numClips,
-            onSubmit: makePost,
-            name: "favForm",
-            action: "/addFavorite",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "clipID",
-            type: "hidden",
-            value: clip.id
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Add Favorite"
-          }, React.createElement("i", {
-            className: "fas fa-heart fave"
-          }))));
         } else {
-          return React.createElement("div", {
-            className: "clip"
-          }, React.createElement("h4", {
-            className: "clip-title"
-          }, React.createElement("u", null, clip.title), React.createElement("span", {
-            className: "creator"
-          }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
-            className: "game"
-          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-            className: "description"
-          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-            className: "post-date"
-          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-            width: ytWidth,
-            height: ytHeight,
-            src: clip.youtube,
-            frameBorder: "0",
-            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-            allowFullScreen: true
-          }), React.createElement("form", {
-            id: "delForm" + numClips,
-            onSubmit: makePost,
-            name: "delForm",
-            action: "/deleteClips",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Delete Clip"
-          }, React.createElement("i", {
-            className: "fas fa-trash trash"
-          }))), React.createElement("form", {
-            id: "remForm" + numClips,
-            onSubmit: makePost,
-            name: "remForm",
-            action: "/remFavorite",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "clipID",
-            type: "hidden",
-            value: clip.id
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Remove Favorite"
-          }, React.createElement("i", {
-            className: "fas fa-heart-broken un-fave"
-          }))), React.createElement("form", {
-            id: "favForm" + numClips,
-            onSubmit: makePost,
-            name: "favForm",
-            action: "/addFavorite",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "clipID",
-            type: "hidden",
-            value: clip.id
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Add Favorite"
-          }, React.createElement("i", {
-            className: "fas fa-heart fave"
-          }))));
+          if (clip.character1 !== '') {
+            if (clip.character2 !== '') {
+              if (clip.faveStatus === true) {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "char2"
+                }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "delForm" + numClips,
+                  onSubmit: makePost,
+                  name: "delForm",
+                  action: "/deleteClips",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Delete Clip"
+                }, React.createElement("i", {
+                  className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "remForm" + numClips,
+                  onSubmit: makePost,
+                  name: "remForm",
+                  action: "/remFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Remove Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart-broken un-fave"
+                }))));
+              } else {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "char2"
+                }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "delForm" + numClips,
+                  onSubmit: makePost,
+                  name: "delForm",
+                  action: "/deleteClips",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Delete Clip"
+                }, React.createElement("i", {
+                  className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "favForm" + numClips,
+                  onSubmit: makePost,
+                  name: "favForm",
+                  action: "/addFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart fave"
+                }))));
+              }
+            } else {
+              if (clip.faveStatus === true) {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "delForm" + numClips,
+                  onSubmit: makePost,
+                  name: "delForm",
+                  action: "/deleteClips",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Delete Clip"
+                }, React.createElement("i", {
+                  className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "remForm" + numClips,
+                  onSubmit: makePost,
+                  name: "remForm",
+                  action: "/remFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Remove Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart-broken un-fave"
+                }))));
+              } else {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "delForm" + numClips,
+                  onSubmit: makePost,
+                  name: "delForm",
+                  action: "/deleteClips",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Delete Clip"
+                }, React.createElement("i", {
+                  className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "favForm" + numClips,
+                  onSubmit: makePost,
+                  name: "favForm",
+                  action: "/addFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart fave"
+                }))));
+              }
+            }
+          } else if (clip.character2 !== '') {
+            if (clip.faveStatus === true) {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "char2"
+              }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "delForm" + numClips,
+                onSubmit: makePost,
+                name: "delForm",
+                action: "/deleteClips",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Delete Clip"
+              }, React.createElement("i", {
+                className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "remForm" + numClips,
+                onSubmit: makePost,
+                name: "remForm",
+                action: "/remFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Remove Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart-broken un-fave"
+              }))));
+            } else {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "char2"
+              }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "delForm" + numClips,
+                onSubmit: makePost,
+                name: "delForm",
+                action: "/deleteClips",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Delete Clip"
+              }, React.createElement("i", {
+                className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "favForm" + numClips,
+                onSubmit: makePost,
+                name: "favForm",
+                action: "/addFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart fave"
+              }))));
+            }
+          } else {
+            if (clip.faveStatus === true) {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "delForm" + numClips,
+                onSubmit: makePost,
+                name: "delForm",
+                action: "/deleteClips",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Delete Clip"
+              }, React.createElement("i", {
+                className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "remForm" + numClips,
+                onSubmit: makePost,
+                name: "remForm",
+                action: "/remFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Remove Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart-broken un-fave"
+              }))));
+            } else {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "delForm" + numClips,
+                onSubmit: makePost,
+                name: "delForm",
+                action: "/deleteClips",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Delete Clip"
+              }, React.createElement("i", {
+                className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "favForm" + numClips,
+                onSubmit: makePost,
+                name: "favForm",
+                action: "/addFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart fave"
+              }))));
+            }
+          }
         }
       } else {
-        if (clip.character1 !== '') {
-          if (clip.character2 !== '') {
-            return React.createElement("div", {
-              className: "clip"
-            }, React.createElement("h4", {
-              className: "clip-title"
-            }, React.createElement("u", null, clip.title), React.createElement("span", {
-              className: "creator"
-            }, "Creator: ", clip.creatorUN)), React.createElement("p", {
-              className: "game"
-            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-              className: "game"
-            }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
-              className: "description"
-            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-              className: "char1"
-            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
-              className: "char2"
-            }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
-              className: "post-date"
-            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-              width: ytWidth,
-              height: ytHeight,
-              src: clip.youtube,
-              frameBorder: "0",
-              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-              allowFullScreen: true
-            }), React.createElement("form", {
-              id: "delForm" + numClips,
-              onSubmit: makePost,
-              name: "delForm",
-              action: "/deleteClips",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Delete Clip"
-            }, React.createElement("i", {
-              className: "fas fa-trash trash"
-            }))), React.createElement("form", {
-              id: "remForm" + numClips,
-              onSubmit: makePost,
-              name: "remForm",
-              action: "/remFavorite",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "clipID",
-              type: "hidden",
-              value: clip.id
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Remove Favorite"
-            }, React.createElement("i", {
-              className: "fas fa-heart-broken un-fave"
-            }))), React.createElement("form", {
-              id: "favForm" + numClips,
-              onSubmit: makePost,
-              name: "favForm",
-              action: "/addFavorite",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "clipID",
-              type: "hidden",
-              value: clip.id
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Add Favorite"
-            }, React.createElement("i", {
-              className: "fas fa-heart fave"
-            }))));
+        if (clip.creatorPremStatus) {
+          if (clip.character1 !== '') {
+            if (clip.character2 !== '') {
+              if (clip.faveStatus === true) {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "char2"
+                }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "remForm" + numClips,
+                  onSubmit: makePost,
+                  name: "remForm",
+                  action: "/remFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Remove Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart-broken un-fave"
+                }))));
+              } else {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "char2"
+                }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "favForm" + numClips,
+                  onSubmit: makePost,
+                  name: "favForm",
+                  action: "/addFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart fave"
+                }))));
+              }
+            } else {
+              if (clip.faveStatus === true) {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "remForm" + numClips,
+                  onSubmit: makePost,
+                  name: "remForm",
+                  action: "/remFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Remove Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart-broken un-fave"
+                }))));
+              } else {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "favForm" + numClips,
+                  onSubmit: makePost,
+                  name: "favForm",
+                  action: "/addFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart fave"
+                }))));
+              }
+            }
+          } else if (clip.character2 !== '') {
+            if (clip.faveStatus === true) {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "char2"
+              }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "remForm" + numClips,
+                onSubmit: makePost,
+                name: "remForm",
+                action: "/remFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Remove Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart-broken un-fave"
+              }))));
+            } else {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "char2"
+              }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "favForm" + numClips,
+                onSubmit: makePost,
+                name: "favForm",
+                action: "/addFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart fave"
+              }))));
+            }
           } else {
-            return React.createElement("div", {
-              className: "clip"
-            }, React.createElement("h4", {
-              className: "clip-title"
-            }, React.createElement("u", null, clip.title), React.createElement("span", {
-              className: "creator"
-            }, "Creator: ", clip.creatorUN)), React.createElement("p", {
-              className: "game"
-            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-              className: "game"
-            }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
-              className: "description"
-            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-              className: "char1"
-            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
-              className: "post-date"
-            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-              width: ytWidth,
-              height: ytHeight,
-              src: clip.youtube,
-              frameBorder: "0",
-              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-              allowFullScreen: true
-            }), React.createElement("form", {
-              id: "delForm" + numClips,
-              onSubmit: makePost,
-              name: "delForm",
-              action: "/deleteClips",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Delete Clip"
-            }, React.createElement("i", {
-              className: "fas fa-trash trash"
-            }))), React.createElement("form", {
-              id: "remForm" + numClips,
-              onSubmit: makePost,
-              name: "remForm",
-              action: "/remFavorite",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "clipID",
-              type: "hidden",
-              value: clip.id
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Remove Favorite"
-            }, React.createElement("i", {
-              className: "fas fa-heart-broken un-fave"
-            }))), React.createElement("form", {
-              id: "favForm" + numClips,
-              onSubmit: makePost,
-              name: "favForm",
-              action: "/addFavorite",
-              method: "POST",
-              className: "clipForm"
-            }, React.createElement("input", {
-              type: "hidden",
-              name: "_csrf",
-              value: props.csrf
-            }), React.createElement("input", {
-              name: "clipID",
-              type: "hidden",
-              value: clip.id
-            }), React.createElement("input", {
-              name: "_id",
-              type: "hidden",
-              value: clip._id
-            }), React.createElement("button", {
-              className: "fa-button",
-              type: "submit",
-              title: "Add Favorite"
-            }, React.createElement("i", {
-              className: "fas fa-heart fave"
-            }))));
+            if (clip.faveStatus === true) {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "remForm" + numClips,
+                onSubmit: makePost,
+                name: "remForm",
+                action: "/remFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Remove Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart-broken un-fave"
+              }))));
+            } else {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "favForm" + numClips,
+                onSubmit: makePost,
+                name: "favForm",
+                action: "/addFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart fave"
+              }))));
+            }
           }
-        } else if (clip.character2 !== '') {
-          return React.createElement("div", {
-            className: "clip"
-          }, React.createElement("h4", {
-            className: "clip-title"
-          }, React.createElement("u", null, clip.title), React.createElement("span", {
-            className: "creator"
-          }, "Creator: ", clip.creatorUN)), React.createElement("p", {
-            className: "game"
-          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-            className: "game"
-          }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
-            className: "description"
-          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-            className: "char2"
-          }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
-            className: "post-date"
-          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-            width: ytWidth,
-            height: ytHeight,
-            src: clip.youtube,
-            frameBorder: "0",
-            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-            allowFullScreen: true
-          }), React.createElement("form", {
-            id: "delForm" + numClips,
-            onSubmit: makePost,
-            name: "delForm",
-            action: "/deleteClips",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Delete Clip"
-          }, React.createElement("i", {
-            className: "fas fa-trash trash"
-          }))), React.createElement("form", {
-            id: "remForm" + numClips,
-            onSubmit: makePost,
-            name: "remForm",
-            action: "/remFavorite",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "clipID",
-            type: "hidden",
-            value: clip.id
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Remove Favorite"
-          }, React.createElement("i", {
-            className: "fas fa-heart-broken un-fave"
-          }))), React.createElement("form", {
-            id: "favForm" + numClips,
-            onSubmit: makePost,
-            name: "favForm",
-            action: "/addFavorite",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "clipID",
-            type: "hidden",
-            value: clip.id
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Add Favorite"
-          }, React.createElement("i", {
-            className: "fas fa-heart fave"
-          }))));
         } else {
-          return React.createElement("div", {
-            className: "clip"
-          }, React.createElement("h4", {
-            className: "clip-title"
-          }, React.createElement("u", null, clip.title), React.createElement("span", {
-            className: "creator"
-          }, "Creator: ", clip.creatorUN)), React.createElement("p", {
-            className: "game"
-          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
-            className: "game"
-          }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
-            className: "description"
-          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
-            className: "post-date"
-          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
-            width: ytWidth,
-            height: ytHeight,
-            src: clip.youtube,
-            frameBorder: "0",
-            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
-            allowFullScreen: true
-          }), React.createElement("form", {
-            id: "delForm" + numClips,
-            onSubmit: makePost,
-            name: "delForm",
-            action: "/deleteClips",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Delete Clip"
-          }, React.createElement("i", {
-            className: "fas fa-trash trash"
-          }))), React.createElement("form", {
-            id: "remForm" + numClips,
-            onSubmit: makePost,
-            name: "remForm",
-            action: "/remFavorite",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "clipID",
-            type: "hidden",
-            value: clip.id
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Remove Favorite"
-          }, React.createElement("i", {
-            className: "fas fa-heart-broken un-fave"
-          }))), React.createElement("form", {
-            id: "favForm" + numClips,
-            onSubmit: makePost,
-            name: "favForm",
-            action: "/addFavorite",
-            method: "POST",
-            className: "clipForm"
-          }, React.createElement("input", {
-            type: "hidden",
-            name: "_csrf",
-            value: props.csrf
-          }), React.createElement("input", {
-            name: "clipID",
-            type: "hidden",
-            value: clip.id
-          }), React.createElement("input", {
-            name: "_id",
-            type: "hidden",
-            value: clip._id
-          }), React.createElement("button", {
-            className: "fa-button",
-            type: "submit",
-            title: "Add Favorite"
-          }, React.createElement("i", {
-            className: "fas fa-heart fave"
-          }))));
+          if (clip.character1 !== '') {
+            if (clip.character2 !== '') {
+              if (clip.faveStatus === true) {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "char2"
+                }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "remForm" + numClips,
+                  onSubmit: makePost,
+                  name: "remForm",
+                  action: "/remFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Remove Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart-broken un-fave"
+                }))));
+              } else {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "char2"
+                }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "favForm" + numClips,
+                  onSubmit: makePost,
+                  name: "favForm",
+                  action: "/addFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart fave"
+                }))));
+              }
+            } else {
+              if (clip.faveStatus === true) {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "remForm" + numClips,
+                  onSubmit: makePost,
+                  name: "remForm",
+                  action: "/remFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Remove Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart-broken un-fave"
+                }))));
+              } else {
+                return React.createElement("div", {
+                  className: "clip"
+                }, React.createElement("h4", {
+                  className: "clip-title"
+                }, React.createElement("u", null, clip.title), React.createElement("span", {
+                  className: "creator"
+                }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                  className: "description"
+                }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                  className: "char1"
+                }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+                  className: "post-date"
+                }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                  width: ytWidth,
+                  height: ytHeight,
+                  src: clip.youtube,
+                  frameBorder: "0",
+                  allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                  allowFullScreen: true
+                }), React.createElement("form", {
+                  id: "favForm" + numClips,
+                  onSubmit: makePost,
+                  name: "favForm",
+                  action: "/addFavorite",
+                  method: "POST",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("input", {
+                  name: "_id",
+                  type: "hidden",
+                  value: clip._id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add Favorite"
+                }, React.createElement("i", {
+                  className: "fas fa-heart fave"
+                }))));
+              }
+            }
+          } else if (clip.character2 !== '') {
+            if (clip.faveStatus === true) {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "char2"
+              }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "remForm" + numClips,
+                onSubmit: makePost,
+                name: "remForm",
+                action: "/remFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Remove Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart-broken un-fave"
+              }))));
+            } else {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "char2"
+              }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "favForm" + numClips,
+                onSubmit: makePost,
+                name: "favForm",
+                action: "/addFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart fave"
+              }))));
+            }
+          } else {
+            if (clip.faveStatus === true) {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "remForm" + numClips,
+                onSubmit: makePost,
+                name: "remForm",
+                action: "/remFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Remove Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart-broken un-fave"
+              }))));
+            } else {
+              return React.createElement("div", {
+                className: "clip"
+              }, React.createElement("h4", {
+                className: "clip-title"
+              }, React.createElement("u", null, clip.title), React.createElement("span", {
+                className: "creator"
+              }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
+                className: "description"
+              }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+                className: "post-date"
+              }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+                width: ytWidth,
+                height: ytHeight,
+                src: clip.youtube,
+                frameBorder: "0",
+                allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+                allowFullScreen: true
+              }), React.createElement("form", {
+                id: "favForm" + numClips,
+                onSubmit: makePost,
+                name: "favForm",
+                action: "/addFavorite",
+                method: "POST",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("input", {
+                name: "_id",
+                type: "hidden",
+                value: clip._id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add Favorite"
+              }, React.createElement("i", {
+                className: "fas fa-heart fave"
+              }))));
+            }
+          }
         }
       }
     }

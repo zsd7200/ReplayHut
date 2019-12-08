@@ -59,6 +59,7 @@ const createClip = (req, res) => {
       creatorUN: req.session.account.username,
       creatorPremStatus: foundUser.premiumStatus,
       faveStatus: false,
+      currUser: '',
     };
 
     // Creating a new clip with the data
