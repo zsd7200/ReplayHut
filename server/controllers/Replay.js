@@ -106,13 +106,37 @@ const getClips = (request, response) => {
 const deleteClips = (request, response) => {
   const res = response;
   const req = request;
-  const testPromise = app.mainDB.collection('replays').deleteOne({ _id: Replays.convertId(req.body._id) });
 
-  testPromise.then(() => {
-    res.json({ message: 'Clip deleted!' });
+  // Finding the specific user so that they can be updated
+  Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
+    // Error check
+    if (err) return res.json({ error: err });
+
+    // If no error, create a temp variable to store changes
+    const foundUser = doc;
+
+    // removing from favorites array
+    const index = foundUser.favorites.indexOf(req.body._id);
+    if (index !== -1) { // if req.body is found in array
+      foundUser.favorites.splice(index, 1); // cut favorites out of array
+    }
+    // Handling promise to reassign the user's info
+    const updatePromise = foundUser.save();
+
+    // Deleting the clip from the database
+    // Passed in ID needs to be converted to Mongo ObjectID
+    const deletePromise = app.mainDB.collection('replays').deleteOne({ _id: Replays.convertId(req.body._id) });
+
+    deletePromise.then(() => {
+      res.json({ message: 'Clip deleted!' });
+    });
+    deletePromise.catch((err2) => res.json({ err2 }));
+
+    // Return an error back if one is found
+    updatePromise.catch((err3) => res.json({ error: err3 }));
+
+    return true;
   });
-  testPromise.catch((err) => res.json({ err }));
-
   return false;
 };
 

@@ -4,7 +4,7 @@ const models = require('../models');
 // Setting up the account specific model
 const { Account } = models;
 
-// const { Replays } = models;
+const { Replays } = models;
 
 const app = require('../app.js');
 
@@ -265,59 +265,44 @@ const addFavorite = (request, response) => {
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
-    /* console.log("aa");
-    Replays.ReplayModel.searchById(req.body._id, (err2, doc2) =>{
+    Replays.ReplayModel.searchById(req.body._id, (err2, doc2) => {
       if (err2) return res.json({ error: err2 });
 
       if (!doc2) {
         return res.status(401).json({ error: 'Clip not found' });
       }
 
-      console.log("ddd");
+
       // If no error, create a temp variable to store changes
       const foundUser = doc;
 
       const foundClip = doc2;
+      let tempNumFav = foundClip.numFavorites;
+      tempNumFav++;
 
-
-      console.log("zz");
       // add to favorites array
-      if (foundUser.favorites.indexOf(req.body.title) === -1) {
-        console.log("qq");
-        foundUser.favorites.push(req.body.title);
+      if (foundUser.favorites.indexOf(req.body._id) === -1) {
+        foundUser.favorites.push(req.body._id);
       } else {
-        console.log("vv");
-        return res.json({ error: 'Already in favorites!' });
+        return res.status(400).json({ error: 'Already in favorites!' });
       }
-      console.log(foundClip.numFavorites);
-      foundClip.numFavorites = foundClip.numFavorites++;
-      console.log(foundClip.numFavorites);
+      foundClip.numFavorites = tempNumFav;
 
       // Handling promise to reassign the user's info
       const updatePromise = foundUser.save();
 
       const updatePromise2 = foundClip.save();
       // Send a message back to the user once it is finished saving
-      updatePromise.then(() => res.json({ message: 'Added to favorites!' }));
+      updatePromise.then(() => {
+        res.json({ message: 'Added to favorites!' });
+      });
 
-      updatePromise2.catch((err4) => res.json({error: err4}));
+      updatePromise2.catch((err4) => res.json({ error: err4 }));
       // Return an error back if one is found
       updatePromise.catch((err3) => res.json({ error: err3 }));
-    })
-    */
-    const foundUser = doc;
-    // add to favorites array
-    if (foundUser.favorites.indexOf(req.body.clipID) === -1) {
-      foundUser.favorites.push(req.body.clipID);
-    } else {
-      return res.json({ error: 'Already in favorites!' });
-    }
-    const updatePromise = foundUser.save();
 
-    updatePromise.then(() => res.json({ message: 'Added to favorites!' }));
-    updatePromise.catch((err3) => res.json({ error: err3 }));
-
-
+      return true;
+    });
     // Handling promise to reassign the user's info
 
     return true;
@@ -333,29 +318,45 @@ const remFavorite = (request, response) => {
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
+    Replays.ReplayModel.searchById(req.body._id, (err2, doc2) => {
+      if (err2) return res.json({ error: err2 });
 
-    // If no error, create a temp variable to store changes
-    const foundUser = doc;
+      if (!doc2) {
+        return res.status(401).json({ error: 'Clip not found' });
+      }
+      // If no error, create a temp variable to store changes
+      const foundUser = doc;
 
-    // removing from favorites array
-    const index = foundUser.favorites.indexOf(req.body.clipID);
-    if (index !== -1) { // if req.body is found in array
-      foundUser.favorites.splice(index, 1); // cut favorites out of array
-    } else {
-      return res.json({ error: 'Not in favorites!' });
-    }
+      const foundClip = doc2;
+      let tempNumFav = foundClip.numFavorites;
+      tempNumFav--;
+      // removing from favorites array
+      const index = foundUser.favorites.indexOf(req.body._id);
+      if (index !== -1) { // if req.body is found in array
+        foundUser.favorites.splice(index, 1); // cut favorites out of array
+      } else {
+        return res.status(400).json({ error: 'Not in favorites!' });
+      }
 
-    // probably need to rerender page afterward if we allow for people to remove
-    // favorites from the favorites page
+      // probably need to rerender page afterward if we allow for people to remove
+      // favorites from the favorites page
+      foundClip.numFavorites = tempNumFav;
 
-    // Handling promise to reassign the user's info
-    const updatePromise = foundUser.save();
+      // Handling promise to reassign the user's info
+      const updatePromise = foundUser.save();
 
-    // Send a message back to the user once it is finished saving
-    updatePromise.then(() => res.json({ message: 'Removed from favorites!' }));
+      const updatePromise2 = foundClip.save();
 
-    // Return an error back if one is found
-    updatePromise.catch((err2) => res.json({ err2 }));
+      // Send a message back to the user once it is finished saving
+      updatePromise.then(() => res.json({ message: 'Removed from favorites!' }));
+
+      updatePromise2.catch((err4) => res.json({ error: err4 }));
+
+      // Return an error back if one is found
+      updatePromise.catch((err3) => res.json({ error: err3 }));
+
+      return true;
+    });
     return true;
   });
 };

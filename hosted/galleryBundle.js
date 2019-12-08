@@ -129,6 +129,16 @@ var ClipList = function ClipList(props) {
 
       return 0;
     });
+  } else if (searchParams == 'faveDown') {
+    //Code for sorting taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+    props.clips.sort(function (a, b) {
+      return b.numFavorites - a.numFavorites;
+    });
+  } else if (searchParams == 'faveUp') {
+    //Code for sorting taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+    props.clips.sort(function (a, b) {
+      return a.numFavorites - b.numFavorites;
+    });
   }
 
   for (var _i = 0; _i < props.userfaves.length; _i++) {
@@ -2185,7 +2195,11 @@ var SearchBar = function SearchBar(props) {
     value: "alphabeticalDown"
   }, "Alphabetical (A-Z)"), React.createElement("option", {
     value: "alphabeticalUp"
-  }, "Alphabetical (Z-A)")));
+  }, "Alphabetical (Z-A)"), React.createElement("option", {
+    value: "faveDown"
+  }, "Number of Favorites (Highest first)"), React.createElement("option", {
+    value: "faveUp"
+  }, "Number of Favorites (Lowest first)")));
 }; // check for issues with post; send ajax request if everything is all good
 
 

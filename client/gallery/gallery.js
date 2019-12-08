@@ -129,7 +129,18 @@ const ClipList = function(props)
             return 0;
         })
     }
+    else if(searchParams == 'faveDown')
+    {
+        //Code for sorting taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+        props.clips.sort(function(a,b) {return b.numFavorites-a.numFavorites});
+    }
+    else if(searchParams == 'faveUp')
+    {
+        //Code for sorting taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+        props.clips.sort(function(a,b) {return a.numFavorites-b.numFavorites});
+    }
     
+
     
     for(let i = 0; i < props.userfaves.length; i++) {
         for(let j = 0; j < props.clips.length; j++) {
@@ -1244,6 +1255,8 @@ const SearchBar = function(props)
                 <option value="newest">Newest First</option>
                 <option value="alphabeticalDown">Alphabetical (A-Z)</option>
                 <option value="alphabeticalUp">Alphabetical (Z-A)</option>
+                <option value="faveDown">Number of Favorites (Highest first)</option>
+                <option value="faveUp">Number of Favorites (Lowest first)</option>
             </select>       
         </div>
     );
