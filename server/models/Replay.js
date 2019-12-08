@@ -49,7 +49,6 @@ const ReplaySchema = new mongoose.Schema({
 ReplaySchema.statics.searchById = (replayId, callback) => {
   const searchParams = { id: replayId };
 
-  // return ReplayModel.find(searchParams).select('_id').exec(callback);
   return ReplayModel.findOne(searchParams, callback);
 };
 

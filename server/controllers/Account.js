@@ -255,28 +255,32 @@ const cancelPremium = (request, response) => {
   });
 };
 
+// Adding a favorite to the user's Favorite array
+// Updating the count of the clip's number of favorites
 const addFavorite = (request, response) => {
   // Setting up the request and response
   const req = request;
   const res = response;
 
-  console.log('ss');
   // Finding the specific user so that they can be updated
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
-    Replays.ReplayModel.searchById(req.body.clipID, (err2, doc2) => {
-      if (err2) return res.json({ error: err2 });
 
+    // Finding the replay, and updating its favorite count
+    Replays.ReplayModel.searchById(req.body.clipID, (err2, doc2) => {
+      // Error checks
+      if (err2) return res.json({ error: err2 });
       if (!doc2) {
         return res.status(401).json({ error: 'Clip not found' });
       }
 
 
-      // If no error, create a temp variable to store changes
+      // If no error, create temp variables to store changes
       const foundUser = doc;
-
       const foundClip = doc2;
+
+      // Temporarily saving the number of favorites to update it
       let tempNumFav = foundClip.numFavorites;
       tempNumFav++;
 
@@ -286,11 +290,14 @@ const addFavorite = (request, response) => {
       } else {
         return res.status(400).json({ error: 'Already in favorites!' });
       }
+
+      // Reassign the clip's favorites
       foundClip.numFavorites = tempNumFav;
 
       // Handling promise to reassign the user's info
       const updatePromise = foundUser.save();
 
+      // Saving the information about the clip
       const updatePromise2 = foundClip.save();
       // Send a message back to the user once it is finished saving
       updatePromise.then(() => {
@@ -318,18 +325,23 @@ const remFavorite = (request, response) => {
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
-    Replays.ReplayModel.searchById(req.body.clipID, (err2, doc2) => {
-      if (err2) return res.json({ error: err2 });
 
+    // Finding the clip based on its ID and updating it favorite count
+    Replays.ReplayModel.searchById(req.body.clipID, (err2, doc2) => {
+      // Error checks
+      if (err2) return res.json({ error: err2 });
       if (!doc2) {
         return res.status(401).json({ error: 'Clip not found' });
       }
-      // If no error, create a temp variable to store changes
-      const foundUser = doc;
 
+      // If no error, create temp variables to store changes
+      const foundUser = doc;
       const foundClip = doc2;
+
+      // Temporary variable to alow updating of the favorite count
       let tempNumFav = foundClip.numFavorites;
       tempNumFav--;
+
       // removing from favorites array
       const index = foundUser.favorites.indexOf(req.body.clipID);
       if (index !== -1) { // if req.body is found in array
@@ -338,18 +350,19 @@ const remFavorite = (request, response) => {
         return res.status(400).json({ error: 'Not in favorites!' });
       }
 
-      // probably need to rerender page afterward if we allow for people to remove
-      // favorites from the favorites page
+      // Updating the number of favorites
       foundClip.numFavorites = tempNumFav;
 
       // Handling promise to reassign the user's info
       const updatePromise = foundUser.save();
 
+      // Handling promise to update the clip
       const updatePromise2 = foundClip.save();
 
       // Send a message back to the user once it is finished saving
       updatePromise.then(() => res.json({ message: 'Removed from favorites!' }));
 
+      // Checking for errors with saving the clip
       updatePromise2.catch((err4) => res.json({ error: err4 }));
 
       // Return an error back if one is found
@@ -366,6 +379,7 @@ const deleteAccount = (request, response) => {
   const req = request;
   const res = response;
 
+  // Making sure that the user's account is correct before feleting
   Account.AccountModel.authenticate(req.session.account.username, req.body.currentPass,
     (err, doc) => {
       // Error checks
@@ -375,6 +389,7 @@ const deleteAccount = (request, response) => {
       if (!doc) {
         return res.status(401).json({ error: 'Current password is incorrect' });
       }
+
       // Set up the promise and search for the account to be deleted
       const delPromise = app.mainDB.collection('accounts').deleteOne({ username: req.session.account.username });
 

@@ -82,17 +82,19 @@ var showCancelPremium = function showCancelPremium(e) {
   ReactDOM.render(React.createElement(CancelPremium, {
     csrf: csrf
   }), document.querySelector("#content"));
-};
+}; // Uses CSRF token and displays the page with information about deleting an account
+
 
 var showDeleteAccount = function showDeleteAccount(e) {
   var csrf = "".concat(e.target._csrf.value);
   ReactDOM.render(React.createElement(DeleteInfo, {
     csrf: csrf
   }), document.querySelector("#content"));
-};
+}; //Deleting the User's account, will take them back to the home screen upon deletion
+
 
 var deleteAccount = function deleteAccount(e) {
-  e.preventDefault(); // create variables to make this slightly more readable
+  e.preventDefault(); // create variable to make this slightly more readable
 
   var id = "#" + e.target.id;
   sendAjax('POST', $(id).attr("action"), $(id).serialize(), redirect, function (xhr, status, error) {
@@ -185,7 +187,8 @@ var PremiumInfo = function PremiumInfo(props) {
     type: "submit",
     value: "Activate Premium"
   })));
-};
+}; //Returns the content for the page regarging deleting an account
+
 
 var DeleteInfo = function DeleteInfo(props) {
   return React.createElement("div", {

@@ -12,9 +12,7 @@ const app = require('../app.js');
 
 // Rendering pages
 const createPage = (req, res) => res.render('create', { csrfToken: req.csrfToken() });
-const galleryPage = (req, res) => {
-  res.render('gallery', { csrfToken: req.csrfToken() });
-};
+const galleryPage = (req, res) => { res.render('gallery', { csrfToken: req.csrfToken() }); };
 
 // Used to create a 'clip' which is saved in the database
 const createClip = (req, res) => {
@@ -78,11 +76,7 @@ const createClip = (req, res) => {
     clipPromise.then(() => { res.json({ message: 'Clip successfully created!' }); });
 
     // If there was an error with clip creation, send that back
-    clipPromise.catch((err2) => {
-      console.log(err2);
-
-      return res.status(400).json({ error: 'An error occured!' });
-    });
+    clipPromise.catch((err2) => res.status(400).json({ error: err2 }));
 
     // Must return true to comply with
     return true;
@@ -103,6 +97,7 @@ const getClips = (request, response) => {
   });
 };
 
+// Deleting a specific clip
 const deleteClips = (request, response) => {
   const res = response;
   const req = request;
@@ -124,17 +119,18 @@ const deleteClips = (request, response) => {
     const updatePromise = foundUser.save();
 
     // Deleting the clip from the database
-    // Passed in ID needs to be converted to Mongo ObjectID
     const deletePromise = app.mainDB.collection('replays').deleteOne({ id: req.body.clipID });
 
-    deletePromise.then(() => {
-      res.json({ message: 'Clip deleted!' });
-    });
+    // Show message upon successful deletion
+    deletePromise.then(() => { res.json({ message: 'Clip deleted!' }); });
+
+    // Error with deleting the clip
     deletePromise.catch((err2) => res.json({ err2 }));
 
     // Return an error back if one is found
     updatePromise.catch((err3) => res.json({ error: err3 }));
 
+    // Returning to satisfy ESLint
     return true;
   });
   return false;
