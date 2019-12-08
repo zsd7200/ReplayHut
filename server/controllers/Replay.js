@@ -1,11 +1,12 @@
+// bring in UUID for ID generation
+const uuidv4 = require('uuid/v4');
+
 // Bringing in the models
 const models = require('../models');
 
 // Setting up models so that they can be accessed
 const { Replays } = models;
-
 const { Account } = models;
-
 
 const app = require('../app.js');
 
@@ -51,11 +52,13 @@ const createClip = (req, res) => {
       title: req.body.title,
       game: req.body.game,
       description: req.body.description,
+      id: uuidv4(),
       youtube: ytEmbed,
       character1: req.body.char1,
       character2: req.body.char2,
       creatorUN: req.session.account.username,
       creatorPremStatus: foundUser.premiumStatus,
+      faveStatus: false,
     };
 
     // Creating a new clip with the data

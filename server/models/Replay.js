@@ -18,6 +18,9 @@ const ReplaySchema = new mongoose.Schema({
   description: {
     type: String, required: true, trim: true,
   },
+  id: {
+    type: String, required: true,
+  },
   youtube: {
     type: String, required: true, trim: true,
   },
@@ -31,6 +34,9 @@ const ReplaySchema = new mongoose.Schema({
     type: String, required: true, trim: true, set: setName,
   },
   creatorPremStatus: {
+    type: Boolean, required: true, default: false,
+  },
+  faveStatus: {
     type: Boolean, required: true, default: false,
   },
   postDate: { type: Date, default: Date.now },
