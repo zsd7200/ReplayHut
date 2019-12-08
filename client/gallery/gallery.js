@@ -37,8 +37,8 @@ const formatDate = (date) => {
 
 const showClips = (csrf, e) =>{
     
+    // get account data so the username and favorites can be passed in
     sendAjax('GET', '/getMyAccount', null, (accdata) => {
-        console.log(accdata);
         // Retrieving the clips
         sendAjax('GET', '/getClips', null, (clipdata) => {
             ReactDOM.render(<ClipList clips={clipdata.clips} userfaves={accdata.account.favorites} user={accdata.account.username} csrf={csrf} />, document.querySelector("#clips"));
@@ -59,11 +59,6 @@ const showClips = (csrf, e) =>{
 
 const ClipList = function(props) 
 {
-    
-    for(let i = 0; i < props.clips.length; i++) {
-        props.clips[i].currUser = props.user;
-    }
-    console.log(props);
     checkPremium();
     numClips = 0;
     // If no clip have been made, show error
@@ -140,8 +135,7 @@ const ClipList = function(props)
         props.clips.sort(function(a,b) {return a.numFavorites-b.numFavorites});
     }
     
-
-    
+    // set faveStatus of all the clips
     for(let i = 0; i < props.userfaves.length; i++) {
         for(let j = 0; j < props.clips.length; j++) {
             if(props.userfaves[i] === props.clips[j].id) {
@@ -150,7 +144,11 @@ const ClipList = function(props)
             }
         }
     }
-
+    
+    // set current user to the active user
+    for(let i = 0; i < props.clips.length; i++) {
+        props.clips[i].currUser = props.user;
+    }
     
     // Displaying each clip
     const clipNodes = props.clips.map(function(clip){
@@ -158,9 +156,6 @@ const ClipList = function(props)
         let userCheck = true;
         let gameCheck = true;
         let charCheck = true;
-        
-        console.log("Title: " + clip.title);
-        console.log("Favorite?: " + clip.faveStatus);
 
         // Check if the search field is empty
         // If not empty, check against the search parameter

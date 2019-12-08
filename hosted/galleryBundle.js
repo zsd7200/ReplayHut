@@ -37,9 +37,9 @@ var formatDate = function formatDate(date) {
 };
 
 var showClips = function showClips(csrf, e) {
+  // get account data so the username and favorites can be passed in
   sendAjax('GET', '/getMyAccount', null, function (accdata) {
-    console.log(accdata); // Retrieving the clips
-
+    // Retrieving the clips
     sendAjax('GET', '/getClips', null, function (clipdata) {
       ReactDOM.render(React.createElement(ClipList, {
         clips: clipdata.clips,
@@ -58,11 +58,6 @@ var showClips = function showClips(csrf, e) {
 };
 
 var ClipList = function ClipList(props) {
-  for (var i = 0; i < props.clips.length; i++) {
-    props.clips[i].currUser = props.user;
-  }
-
-  console.log(props);
   checkPremium();
   numClips = 0; // If no clip have been made, show error
 
@@ -139,15 +134,21 @@ var ClipList = function ClipList(props) {
     props.clips.sort(function (a, b) {
       return a.numFavorites - b.numFavorites;
     });
-  }
+  } // set faveStatus of all the clips
 
-  for (var _i = 0; _i < props.userfaves.length; _i++) {
+
+  for (var i = 0; i < props.userfaves.length; i++) {
     for (var j = 0; j < props.clips.length; j++) {
-      if (props.userfaves[_i] === props.clips[j].id) {
+      if (props.userfaves[i] === props.clips[j].id) {
         props.clips[j].faveStatus = true;
         break;
       }
     }
+  } // set current user to the active user
+
+
+  for (var _i = 0; _i < props.clips.length; _i++) {
+    props.clips[_i].currUser = props.user;
   } // Displaying each clip
 
 
@@ -155,9 +156,7 @@ var ClipList = function ClipList(props) {
     // Checks to see if a clip should be posted based on search parameters 
     var userCheck = true;
     var gameCheck = true;
-    var charCheck = true;
-    console.log("Title: " + clip.title);
-    console.log("Favorite?: " + clip.faveStatus); // Check if the search field is empty
+    var charCheck = true; // Check if the search field is empty
     // If not empty, check against the search parameter
 
     if (userSearch !== '' && userSearch !== clip.creatorUN) userCheck = false;

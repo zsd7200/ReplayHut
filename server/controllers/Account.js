@@ -281,8 +281,8 @@ const addFavorite = (request, response) => {
       tempNumFav++;
 
       // add to favorites array
-      if (foundUser.favorites.indexOf(req.body._id) === -1) {
-        foundUser.favorites.push(req.body._id);
+      if (foundUser.favorites.indexOf(req.body.clipID) === -1) {
+        foundUser.favorites.push(req.body.clipID);
       } else {
         return res.status(400).json({ error: 'Already in favorites!' });
       }
@@ -331,7 +331,7 @@ const remFavorite = (request, response) => {
       let tempNumFav = foundClip.numFavorites;
       tempNumFav--;
       // removing from favorites array
-      const index = foundUser.favorites.indexOf(req.body._id);
+      const index = foundUser.favorites.indexOf(req.body.clipID);
       if (index !== -1) { // if req.body is found in array
         foundUser.favorites.splice(index, 1); // cut favorites out of array
       } else {
