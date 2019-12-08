@@ -218,13 +218,13 @@ const ClipList = function(props)
                                         </iframe>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
+
                                             <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                         </form>
                                     </div>
@@ -251,13 +251,12 @@ const ClipList = function(props)
                                         </iframe>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                         </form>
                                     </div>
@@ -285,13 +284,12 @@ const ClipList = function(props)
                                         </iframe>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                         </form>
                                     </div>
@@ -317,13 +315,12 @@ const ClipList = function(props)
                                         </iframe>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                         </form>
                                     </div>
@@ -352,13 +349,12 @@ const ClipList = function(props)
                                     </iframe>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                     </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                     </form>
                                 </div>
@@ -384,13 +380,12 @@ const ClipList = function(props)
                                     </iframe>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                     </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                     </form>
                                 </div>
@@ -417,13 +412,12 @@ const ClipList = function(props)
                                     </iframe>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <input name="id" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                     </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                     </form>
                                 </div>
@@ -448,13 +442,12 @@ const ClipList = function(props)
                                     </iframe>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <input name="id" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                     </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                     </form>
                                 </div>
@@ -489,13 +482,12 @@ const ClipList = function(props)
                                         </iframe>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                         </form>
                                     </div>
@@ -523,13 +515,12 @@ const ClipList = function(props)
                                         </iframe>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                         </form>
                                     </div>
@@ -558,13 +549,12 @@ const ClipList = function(props)
                                         </iframe>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                         </form>
                                     </div>
@@ -591,13 +581,12 @@ const ClipList = function(props)
                                         </iframe>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                         </form>
                                     </div>
@@ -627,13 +616,12 @@ const ClipList = function(props)
                                     </iframe>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                     </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                     </form>
                                 </div>
@@ -660,13 +648,12 @@ const ClipList = function(props)
                                     </iframe>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                     </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                     </form>
                                 </div>
@@ -694,13 +681,12 @@ const ClipList = function(props)
                                     </iframe>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                     </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                     </form>
                                 </div>
@@ -726,13 +712,12 @@ const ClipList = function(props)
                                     </iframe>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                     </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                     </form>
                                 </div>
@@ -768,7 +753,6 @@ const ClipList = function(props)
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                         </form>
                                     </div>
@@ -796,7 +780,6 @@ const ClipList = function(props)
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                         </form>
                                     </div>
@@ -825,7 +808,6 @@ const ClipList = function(props)
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                         </form>
                                     </div>
@@ -852,7 +834,6 @@ const ClipList = function(props)
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                         </form>
                                     </div>
@@ -882,7 +863,6 @@ const ClipList = function(props)
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                     </form>
                                 </div>
@@ -909,7 +889,6 @@ const ClipList = function(props)
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                     </form>
                                 </div>
@@ -937,7 +916,6 @@ const ClipList = function(props)
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                     </form>
                                 </div>
@@ -963,7 +941,6 @@ const ClipList = function(props)
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                     </form>
                                 </div>
@@ -999,7 +976,6 @@ const ClipList = function(props)
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                         </form>
                                     </div>
@@ -1028,7 +1004,6 @@ const ClipList = function(props)
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                         </form>
                                     </div>
@@ -1058,7 +1033,6 @@ const ClipList = function(props)
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                         </form>
                                     </div>
@@ -1086,7 +1060,6 @@ const ClipList = function(props)
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                            <input name="_id" type="hidden" value={clip._id}/>
                                             <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                         </form>
                                     </div>
@@ -1117,7 +1090,6 @@ const ClipList = function(props)
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                     </form>
                                 </div>
@@ -1145,7 +1117,6 @@ const ClipList = function(props)
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                     </form>
                                 </div>
@@ -1174,7 +1145,6 @@ const ClipList = function(props)
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                     </form>
                                 </div>
@@ -1201,7 +1171,6 @@ const ClipList = function(props)
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
-                                        <input name="_id" type="hidden" value={clip._id}/>
                                         <button className="fa-button" type="submit" title="Add Favorite"><i className="fas fa-heart fave"></i></button>
                                     </form>
                                 </div>

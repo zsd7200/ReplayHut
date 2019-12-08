@@ -260,12 +260,12 @@ const addFavorite = (request, response) => {
   const req = request;
   const res = response;
 
-  console.log('sss');
+  console.log('ss');
   // Finding the specific user so that they can be updated
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
-    Replays.ReplayModel.searchById(req.body._id, (err2, doc2) => {
+    Replays.ReplayModel.searchById(req.body.clipID, (err2, doc2) => {
       if (err2) return res.json({ error: err2 });
 
       if (!doc2) {
@@ -318,7 +318,7 @@ const remFavorite = (request, response) => {
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
-    Replays.ReplayModel.searchById(req.body._id, (err2, doc2) => {
+    Replays.ReplayModel.searchById(req.body.clipID, (err2, doc2) => {
       if (err2) return res.json({ error: err2 });
 
       if (!doc2) {

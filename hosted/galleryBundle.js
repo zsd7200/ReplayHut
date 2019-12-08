@@ -217,9 +217,9 @@ var ClipList = function ClipList(props) {
                   name: "_csrf",
                   value: props.csrf
                 }), React.createElement("input", {
-                  name: "_id",
+                  name: "clipID",
                   type: "hidden",
-                  value: clip._id
+                  value: clip.id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -241,10 +241,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -288,9 +284,9 @@ var ClipList = function ClipList(props) {
                   name: "_csrf",
                   value: props.csrf
                 }), React.createElement("input", {
-                  name: "_id",
+                  name: "clipID",
                   type: "hidden",
-                  value: clip._id
+                  value: clip.id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -312,10 +308,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -359,9 +351,9 @@ var ClipList = function ClipList(props) {
                   name: "_csrf",
                   value: props.csrf
                 }), React.createElement("input", {
-                  name: "_id",
+                  name: "clipID",
                   type: "hidden",
-                  value: clip._id
+                  value: clip.id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -383,10 +375,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -428,9 +416,9 @@ var ClipList = function ClipList(props) {
                   name: "_csrf",
                   value: props.csrf
                 }), React.createElement("input", {
-                  name: "_id",
+                  name: "clipID",
                   type: "hidden",
-                  value: clip._id
+                  value: clip.id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -452,10 +440,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -500,9 +484,9 @@ var ClipList = function ClipList(props) {
                 name: "_csrf",
                 value: props.csrf
               }), React.createElement("input", {
-                name: "_id",
+                name: "clipID",
                 type: "hidden",
-                value: clip._id
+                value: clip.id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -524,10 +508,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -569,9 +549,9 @@ var ClipList = function ClipList(props) {
                 name: "_csrf",
                 value: props.csrf
               }), React.createElement("input", {
-                name: "_id",
+                name: "clipID",
                 type: "hidden",
-                value: clip._id
+                value: clip.id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -593,10 +573,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -638,9 +614,9 @@ var ClipList = function ClipList(props) {
                 name: "_csrf",
                 value: props.csrf
               }), React.createElement("input", {
-                name: "_id",
+                name: "id",
                 type: "hidden",
-                value: clip._id
+                value: clip.id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -662,10 +638,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -705,9 +677,9 @@ var ClipList = function ClipList(props) {
                 name: "_csrf",
                 value: props.csrf
               }), React.createElement("input", {
-                name: "_id",
+                name: "id",
                 type: "hidden",
-                value: clip._id
+                value: clip.id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -729,10 +701,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -783,9 +751,9 @@ var ClipList = function ClipList(props) {
                   name: "_csrf",
                   value: props.csrf
                 }), React.createElement("input", {
-                  name: "_id",
+                  name: "clipID",
                   type: "hidden",
-                  value: clip._id
+                  value: clip.id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -807,10 +775,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -856,9 +820,9 @@ var ClipList = function ClipList(props) {
                   name: "_csrf",
                   value: props.csrf
                 }), React.createElement("input", {
-                  name: "_id",
+                  name: "clipID",
                   type: "hidden",
-                  value: clip._id
+                  value: clip.id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -880,10 +844,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -929,9 +889,9 @@ var ClipList = function ClipList(props) {
                   name: "_csrf",
                   value: props.csrf
                 }), React.createElement("input", {
-                  name: "_id",
+                  name: "clipID",
                   type: "hidden",
-                  value: clip._id
+                  value: clip.id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -953,10 +913,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1000,9 +956,9 @@ var ClipList = function ClipList(props) {
                   name: "_csrf",
                   value: props.csrf
                 }), React.createElement("input", {
-                  name: "_id",
+                  name: "clipID",
                   type: "hidden",
-                  value: clip._id
+                  value: clip.id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1024,10 +980,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1074,9 +1026,9 @@ var ClipList = function ClipList(props) {
                 name: "_csrf",
                 value: props.csrf
               }), React.createElement("input", {
-                name: "_id",
+                name: "clipID",
                 type: "hidden",
-                value: clip._id
+                value: clip.id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1098,10 +1050,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1145,9 +1093,9 @@ var ClipList = function ClipList(props) {
                 name: "_csrf",
                 value: props.csrf
               }), React.createElement("input", {
-                name: "_id",
+                name: "clipID",
                 type: "hidden",
-                value: clip._id
+                value: clip.id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1169,10 +1117,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1216,9 +1160,9 @@ var ClipList = function ClipList(props) {
                 name: "_csrf",
                 value: props.csrf
               }), React.createElement("input", {
-                name: "_id",
+                name: "clipID",
                 type: "hidden",
-                value: clip._id
+                value: clip.id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1240,10 +1184,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1285,9 +1225,9 @@ var ClipList = function ClipList(props) {
                 name: "_csrf",
                 value: props.csrf
               }), React.createElement("input", {
-                name: "_id",
+                name: "clipID",
                 type: "hidden",
-                value: clip._id
+                value: clip.id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1309,10 +1249,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1366,10 +1302,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1416,10 +1348,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1466,10 +1394,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1514,10 +1438,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1565,10 +1485,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1613,10 +1529,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1661,10 +1573,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1707,10 +1615,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -1764,10 +1668,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1816,10 +1716,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1868,10 +1764,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1918,10 +1810,6 @@ var ClipList = function ClipList(props) {
                   name: "clipID",
                   type: "hidden",
                   value: clip.id
-                }), React.createElement("input", {
-                  name: "_id",
-                  type: "hidden",
-                  value: clip._id
                 }), React.createElement("button", {
                   className: "fa-button",
                   type: "submit",
@@ -1971,10 +1859,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -2021,10 +1905,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -2071,10 +1951,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",
@@ -2119,10 +1995,6 @@ var ClipList = function ClipList(props) {
                 name: "clipID",
                 type: "hidden",
                 value: clip.id
-              }), React.createElement("input", {
-                name: "_id",
-                type: "hidden",
-                value: clip._id
               }), React.createElement("button", {
                 className: "fa-button",
                 type: "submit",

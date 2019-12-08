@@ -116,7 +116,7 @@ const deleteClips = (request, response) => {
     const foundUser = doc;
 
     // removing from favorites array
-    const index = foundUser.favorites.indexOf(req.body._id);
+    const index = foundUser.favorites.indexOf(req.body.clipID);
     if (index !== -1) { // if req.body is found in array
       foundUser.favorites.splice(index, 1); // cut favorites out of array
     }
@@ -125,7 +125,7 @@ const deleteClips = (request, response) => {
 
     // Deleting the clip from the database
     // Passed in ID needs to be converted to Mongo ObjectID
-    const deletePromise = app.mainDB.collection('replays').deleteOne({ _id: Replays.convertId(req.body._id) });
+    const deletePromise = app.mainDB.collection('replays').deleteOne({ id: req.body.clipID });
 
     deletePromise.then(() => {
       res.json({ message: 'Clip deleted!' });

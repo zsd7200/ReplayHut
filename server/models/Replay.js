@@ -5,7 +5,7 @@ const _ = require('underscore');
 
 let ReplayModel = {};
 
-const convertId = mongoose.Types.ObjectId;
+// const convertId = mongoose.Types.ObjectId;
 
 const setName = (name) => _.escape(name).trim();
 const ReplaySchema = new mongoose.Schema({
@@ -47,7 +47,7 @@ const ReplaySchema = new mongoose.Schema({
 });
 
 ReplaySchema.statics.searchById = (replayId, callback) => {
-  const searchParams = { _id: convertId(replayId) };
+  const searchParams = { id: replayId };
 
   // return ReplayModel.find(searchParams).select('_id').exec(callback);
   return ReplayModel.findOne(searchParams, callback);
@@ -58,5 +58,4 @@ ReplayModel = mongoose.model('Replay', ReplaySchema);
 module.exports = {
   ReplayModel,
   ReplaySchema,
-  convertId,
 };
