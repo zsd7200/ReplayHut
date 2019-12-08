@@ -21,18 +21,19 @@ nav {
   height: 100%;
   width: 160px;
   background-color: #A06E32;
-  border-top: 2px solid #422B12; }
+  border-top: 4px solid #422B12;
+  border-bottom: 4px solid #422B12; }
   nav:nth-child(1) {
     padding-left: 25px; }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], select {
   padding-left: 4px;
   padding-right: 4px;
   font-size: 12pt;
   width: 250px;
   border-radius: 6px; }
 
-input[type="text"]:focus, input[type="password"]:focus {
+input[type="text"]:focus, input[type="password"]:focus, select {
   outline: none;
   box-shadow: 0px 0px 1px 1px #55acee; }
 
@@ -106,9 +107,9 @@ li {
   margin-left: 40%; }
 
 .content-box {
+  position: relative;
   margin: auto;
   margin-top: 10%;
-  position: relative;
   left: 148px;
   width: 800px;
   border-radius: 25px;
@@ -160,16 +161,16 @@ li {
     margin-left: 180px;
     font-weight: normal;
     transition: .2s; }
-  .input-item input[type="text"], .input-item input[type="password"] {
+  .input-item input[type="text"], .input-item input[type="password"], .input-item select {
     margin: auto;
     margin-right: 180px;
     width: 250px;
     background-color: white;
     transition: .2s; }
-    .input-item input[type="text"]:focus, .input-item input[type="password"]:focus {
+    .input-item input[type="text"]:focus, .input-item input[type="password"]:focus, .input-item select:focus {
       background-color: #cfe6b8;
       transition: .2s; }
-      .input-item input[type="text"]:focus ~ label, .input-item input[type="password"]:focus ~ label {
+      .input-item input[type="text"]:focus ~ label, .input-item input[type="password"]:focus ~ label, .input-item select:focus ~ label {
         font-weight: bold; }
 
 /* Loader CSS modified from https://www.w3schools.com/howto/howto_css_loader.asp */
@@ -348,6 +349,11 @@ li {
 #premium-indicator {
   text-align: right;
   padding-right: 20px; }
+
+#search-button-container {
+  width: 100%;
+  margin-left: 146px;
+  text-align: center; }
 
 #terry {
   z-index: 225;

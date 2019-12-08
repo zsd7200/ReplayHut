@@ -2014,7 +2014,19 @@ var ClipList = function ClipList(props) {
 };
 
 var SearchBar = function SearchBar(props) {
-  return React.createElement("div", {
+  return React.createElement("div", null, React.createElement("div", {
+    id: "search-button-container"
+  }, React.createElement("button", {
+    type: "button",
+    className: "fa-button",
+    onClick: toggleSearch,
+    title: "Toggle Search"
+  }, React.createElement("i", {
+    className: "fas fa-search"
+  }))), React.createElement("div", {
+    className: "collapse",
+    id: "searchCollapse"
+  }, React.createElement("div", {
     id: "search",
     className: "content-box"
   }, React.createElement("h5", null, "Search: "), React.createElement("div", {
@@ -2043,21 +2055,15 @@ var SearchBar = function SearchBar(props) {
     id: "charSearch",
     type: "text",
     name: "charSearch",
-    placeholder: "marth, zelda"
+    placeholder: "Marth, Zelda"
   }), React.createElement("label", {
     className: "input-label help",
     title: "Seperate characters by commas!",
     htmlFor: "charSearch"
-  }, "Characters: ")), React.createElement("button", {
-    className: "formSubmit",
-    onClick: function onClick() {
-      return showClips(props.csrf);
-    }
-  }, "Search"), React.createElement("select", {
-    id: "sortList",
-    onChange: function onChange() {
-      return showClips(props.csrf);
-    }
+  }, "Characters: ")), React.createElement("div", {
+    className: "input-item"
+  }, React.createElement("select", {
+    id: "sortList"
   }, React.createElement("option", {
     value: "oldest"
   }, "Oldest First"), React.createElement("option", {
@@ -2070,7 +2076,20 @@ var SearchBar = function SearchBar(props) {
     value: "faveDown"
   }, "Number of Favorites (Highest first)"), React.createElement("option", {
     value: "faveUp"
-  }, "Number of Favorites (Lowest first)")));
+  }, "Number of Favorites (Lowest first)")), React.createElement("label", {
+    className: "input-label",
+    htmlFor: "sortList"
+  }, "Order By: ")), React.createElement("button", {
+    className: "formSubmit",
+    onClick: function onClick() {
+      return showClips(props.csrf);
+    }
+  }, "Search"))));
+}; // toggling in-line doesn't work, so this is required
+
+
+var toggleSearch = function toggleSearch(e) {
+  $("#searchCollapse").collapse('toggle');
 }; // check for issues with post; send ajax request if everything is all good
 
 

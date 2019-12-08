@@ -1194,37 +1194,54 @@ const ClipList = function(props)
 const SearchBar = function(props)
 {
     return(
-        <div id="search" className="content-box">
-            <h5>Search: </h5>
-            
-            <div className="input-item">
-                <input id="userSearch" type="text" name="userSearch" placeholder="MKLeo" /><br />
-                <label className="input-label" htmlFor="userSearch">User: </label>
+        <div>
+            <div id="search-button-container">
+                <button type="button" className="fa-button" onClick={toggleSearch} title="Toggle Search"><i className="fas fa-search"></i></button>
             </div>
             
-            <div className="input-item">
-                <input id="gameSearch" type="text" name="gameSearch" placeholder="Super Smash Bros. Ultimate" /><br />
-                <label className="input-label" htmlFor="gameSearch">Game: </label>
-            </div>
-            
-            <div className="input-item">
-                <input id="charSearch" type="text" name="charSearch" placeholder="marth, zelda" />
-                <label className="input-label help" title="Seperate characters by commas!" htmlFor="charSearch">Characters: </label>
-            </div>
+            <div className="collapse" id="searchCollapse">
+                <div id="search" className="content-box">
+                    <h5>Search: </h5>
+                    
+                    <div className="input-item">
+                        <input id="userSearch" type="text" name="userSearch" placeholder="MKLeo" /><br />
+                        <label className="input-label" htmlFor="userSearch">User: </label>
+                    </div>
+                    
+                    <div className="input-item">
+                        <input id="gameSearch" type="text" name="gameSearch" placeholder="Super Smash Bros. Ultimate" /><br />
+                        <label className="input-label" htmlFor="gameSearch">Game: </label>
+                    </div>
+                    
+                    <div className="input-item">
+                        <input id="charSearch" type="text" name="charSearch" placeholder="Marth, Zelda" />
+                        <label className="input-label help" title="Seperate characters by commas!" htmlFor="charSearch">Characters: </label>
+                    </div>
+                    
+                    <div className="input-item">
+                        <select id="sortList">
+                            <option value="oldest">Oldest First</option>
+                            <option value="newest">Newest First</option>
+                            <option value="alphabeticalDown">Alphabetical (A-Z)</option>
+                            <option value="alphabeticalUp">Alphabetical (Z-A)</option>
+                            <option value="faveDown">Number of Favorites (Highest first)</option>
+                            <option value="faveUp">Number of Favorites (Lowest first)</option>
+                        </select>
+                        <label className="input-label" htmlFor="sortList">Order By: </label>
+                    </div>
 
-            <button className="formSubmit" onClick={() => showClips(props.csrf)}>Search</button>     
-
-            <select id="sortList" onChange={() => showClips(props.csrf)}>
-                <option value="oldest">Oldest First</option>
-                <option value="newest">Newest First</option>
-                <option value="alphabeticalDown">Alphabetical (A-Z)</option>
-                <option value="alphabeticalUp">Alphabetical (Z-A)</option>
-                <option value="faveDown">Number of Favorites (Highest first)</option>
-                <option value="faveUp">Number of Favorites (Lowest first)</option>
-            </select>       
+                    <button className="formSubmit" onClick={() => showClips(props.csrf)}>Search</button>     
+            
+                </div>
+            </div>
         </div>
     );
 }
+
+// toggling in-line doesn't work, so this is required
+const toggleSearch = (e) => {
+    $("#searchCollapse").collapse('toggle');
+};
 
 // check for issues with post; send ajax request if everything is all good
 const makePost = (e) =>{

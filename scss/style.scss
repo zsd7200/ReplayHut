@@ -36,14 +36,15 @@ nav {
   height: 100%;
   width: $sidebarSize;
   background-color: $mediumBrown;
-  border-top: 2px solid $darkestBrown;
+  border-top: 4px solid $darkestBrown;
+  border-bottom: 4px solid $darkestBrown;
 
   &:nth-child(1) {
     padding-left: 25px;
   }
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], select {
   padding-left: 4px;
   padding-right: 4px;
   font-size: 12pt;
@@ -51,7 +52,7 @@ input[type="text"], input[type="password"] {
   border-radius: 6px;
 }
 
-input[type="text"]:focus, input[type="password"]:focus {
+input[type="text"]:focus, input[type="password"]:focus, select {
   outline: none;
   box-shadow: 0px 0px 1px 1px #55acee;
 }
@@ -130,9 +131,9 @@ li {
 }
 
 .content-box {
+  position: relative;
   margin: auto;
   margin-top: 10%;
-  position: relative;
   left: $sidebarSize - 12;
   width: 800px;
   border-radius: 25px;
@@ -198,7 +199,7 @@ li {
     transition: .2s;
   }
   
-  input[type="text"], input[type="password"] {
+  input[type="text"], input[type="password"], select {
     margin: auto;
     margin-right: 180px;
     width: 250px;
@@ -415,6 +416,12 @@ li {
 #premium-indicator {
   text-align: right;
   padding-right: 20px;
+}
+
+#search-button-container {
+  width: 100%;
+  margin-left: $sidebarSize - 14px;
+  text-align: center;
 }
 
 #terry {
