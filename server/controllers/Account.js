@@ -307,11 +307,9 @@ const addFavorite = (request, response) => {
     */
     const foundUser = doc;
     // add to favorites array
-    if (foundUser.favorites.indexOf(req.body.title) === -1) {
-      console.log('qq');
-      foundUser.favorites.push(req.body.title);
+    if (foundUser.favorites.indexOf(req.body.clipID) === -1) {
+      foundUser.favorites.push(req.body.clipID);
     } else {
-      console.log('vv');
       return res.json({ error: 'Already in favorites!' });
     }
     const updatePromise = foundUser.save();
@@ -340,7 +338,7 @@ const remFavorite = (request, response) => {
     const foundUser = doc;
 
     // removing from favorites array
-    const index = foundUser.favorites.indexOf(req.body.title);
+    const index = foundUser.favorites.indexOf(req.body.clipID);
     if (index !== -1) { // if req.body is found in array
       foundUser.favorites.splice(index, 1); // cut favorites out of array
     } else {
