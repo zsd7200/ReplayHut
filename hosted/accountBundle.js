@@ -121,7 +121,7 @@ var CancelPremium = function CancelPremium(props) {
     id: "csrf",
     value: props.csrf
   }), React.createElement("button", {
-    className: "formSubmit pointer premium-button",
+    className: "formSubmit pointer bottom-margin",
     onClick: cancelPremium
   }, "Cancel Subscription"));
 }; //Returns the content for the page regarding the premium membership
@@ -183,7 +183,7 @@ var PremiumInfo = function PremiumInfo(props) {
     name: "_csrf",
     value: props.csrf
   }), React.createElement("input", {
-    className: "formSubmit premium-button",
+    className: "formSubmit bottom-margin",
     type: "submit",
     value: "Activate Premium"
   })));
@@ -198,7 +198,9 @@ var DeleteInfo = function DeleteInfo(props) {
     onClick: showAccount
   }, "Go Back"), React.createElement("div", {
     className: "center-content"
-  }, React.createElement("h1", null, "Woah there!"), React.createElement("h2", null, "Are you really sure you want to delete your whole account?")), React.createElement("br", null), React.createElement("h1", null, "THIS CANNOT BE UNDONE!"), React.createElement("h3", null, "Once your account is deleted, you will lost all information within it - this includes your premium status and number of clips made."), React.createElement("h3", null, "Your clips will remain on the site - it is advised that you delete your clips before deleting your account if you do not wish them to stay."), React.createElement("br", null), React.createElement("h3", null, "If you are sure you want to do this, please input your password below, and click the button."), React.createElement("br", null), React.createElement("form", {
+  }, React.createElement("h1", null, "Woah there!"), React.createElement("h4", null, "Are you really sure you want to delete your whole account?")), React.createElement("br", null), React.createElement("h1", {
+    className: "center-content"
+  }, "THIS ", React.createElement("i", null, "CANNOT"), " BE UNDONE!"), React.createElement("br", null), React.createElement("h5", null, "Once your account is deleted, you will lost all information within it - this includes your premium status and number of clips made."), React.createElement("h5", null, "Your clips will remain on the site\u2014it is advised that you delete your clips before deleting your account if you do not wish them to stay, as there is no way to delete them after your account is deleted."), React.createElement("br", null), React.createElement("h5", null, "If you are sure you want to do this, please input your password below, and click the button."), React.createElement("br", null), React.createElement("form", {
     id: "delAccountForm",
     name: "delAccountForm",
     onSubmit: deleteAccount,
@@ -218,8 +220,8 @@ var DeleteInfo = function DeleteInfo(props) {
     type: "hidden",
     name: "_csrf",
     value: props.csrf
-  }), React.createElement("input", {
-    className: "formSubmit premium-button",
+  }), React.createElement("br", null), React.createElement("input", {
+    className: "formSubmit bottom-margin",
     type: "submit",
     value: "Delete Account"
   })));
@@ -278,7 +280,9 @@ var AccountInfo = function AccountInfo(props) {
       className: "formSubmit",
       type: "submit",
       value: "Change Password"
-    })), React.createElement("form", {
+    })), React.createElement("div", {
+      id: "bottom-acc-buttons"
+    }, React.createElement("form", {
       id: "premForm",
       onSubmit: showPremium
     }, React.createElement("input", {
@@ -286,7 +290,8 @@ var AccountInfo = function AccountInfo(props) {
       name: "_csrf",
       value: props.csrf
     }), React.createElement("input", {
-      className: "formSubmit pointer premium-button",
+      className: "formSubmit pointer bottom-margin flex-button",
+      id: "prem-button",
       type: "submit",
       value: "Sign up for Prime!"
     })), React.createElement("form", {
@@ -297,10 +302,11 @@ var AccountInfo = function AccountInfo(props) {
       name: "_csrf",
       value: props.csrf
     }), React.createElement("input", {
-      className: "formSubmit pointer premium-button",
+      className: "formSubmit pointer bottom-margin flex-button",
+      id: "del-button",
       type: "submit",
       value: "Delete Account?"
-    })));
+    }))));
   } else {
     return React.createElement("div", {
       className: "content-box"
@@ -352,7 +358,9 @@ var AccountInfo = function AccountInfo(props) {
       className: "formSubmit",
       type: "submit",
       value: "Change Password"
-    })), React.createElement("form", {
+    })), React.createElement("div", {
+      id: "bottom-acc-buttons"
+    }, React.createElement("form", {
       id: "premForm",
       onSubmit: showCancelPremium
     }, React.createElement("input", {
@@ -360,9 +368,9 @@ var AccountInfo = function AccountInfo(props) {
       name: "_csrf",
       value: props.csrf
     }), React.createElement("input", {
-      className: "formSubmit pointer premium-button",
+      className: "formSubmit pointer bottom-margin flex-button",
       type: "submit",
-      value: "Cancel Prime Membership"
+      value: "Cancel Prime"
     })), React.createElement("form", {
       id: "delForm",
       onSubmit: showDeleteAccount
@@ -371,10 +379,10 @@ var AccountInfo = function AccountInfo(props) {
       name: "_csrf",
       value: props.csrf
     }), React.createElement("input", {
-      className: "formSubmit pointer premium-button",
+      className: "formSubmit pointer bottom-margin flex-button",
       type: "submit",
       value: "Delete Account?"
-    })));
+    }))));
   }
 }; //Showing the account page upon loading
 

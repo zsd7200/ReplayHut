@@ -380,16 +380,22 @@ li {
 
 /* Classes one-liners */
 .back { margin: 0 0 0 10 !important; }
+.bottom-margin { margin-bottom: 30px; }
 .center-content { text-align: center; }
 .fake-input { background-color: #d6d6d6 !important; }
+.flex-button { width: 175px; }
 .float-right { float: right; }
 .help { cursor: help; }
 .game, .description, .char1, .char2 { margin-bottom: 0px; }
 .pointer { cursor: pointer; }
 .post-date { margin-bottom: 8px; }
-.premium-button { margin-bottom: 30px; }
 
 /* IDs */
+#bottom-acc-buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 #errorMessage {
   font-size: 1.2em;
   font-weight: bold;

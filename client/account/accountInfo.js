@@ -120,7 +120,7 @@ const CancelPremium = function(props)
             <h3>If you're really sure, click below to cancel your subscription.</h3>
             <p className="center-content">(Changes will take effect at the end of your subscription cycle)</p>
             <input type="hidden" name="_csrf" id="csrf" value={props.csrf} />
-            <button className="formSubmit pointer premium-button" onClick={cancelPremium}>Cancel Subscription</button>
+            <button className="formSubmit pointer bottom-margin" onClick={cancelPremium}>Cancel Subscription</button>
         </div>
     )
 };
@@ -160,7 +160,7 @@ const PremiumInfo = function(props)
                 </div>
                 
                 <input type="hidden" name="_csrf" value={props.csrf} />
-                <input className="formSubmit premium-button" type="submit" value="Activate Premium"/>
+                <input className="formSubmit bottom-margin" type="submit" value="Activate Premium"/>
             </form>
         </div>
     )
@@ -174,14 +174,16 @@ const DeleteInfo = function(props)
             <button className="back pointer" onClick={showAccount}>Go Back</button>
             <div className="center-content">
                 <h1>Woah there!</h1>
-                <h2>Are you really sure you want to delete your whole account?</h2>
+                <h4>Are you really sure you want to delete your whole account?</h4>
             </div><br />
             
-            <h1>THIS CANNOT BE UNDONE!</h1>
-            <h3>Once your account is deleted, you will lost all information within it - this includes your premium status and number of clips made.</h3>
-            <h3>Your clips will remain on the site - it is advised that you delete your clips before deleting your account if you do not wish them to stay.</h3>
+            <h1 className="center-content">THIS <i>CANNOT</i> BE UNDONE!</h1>
             <br />
-            <h3>If you are sure you want to do this, please input your password below, and click the button.</h3>
+            
+            <h5>Once your account is deleted, you will lost all information within it - this includes your premium status and number of clips made.</h5>
+            <h5>Your clips will remain on the site—it is advised that you delete your clips before deleting your account if you do not wish them to stay, as there is no way to delete them after your account is deleted.</h5>
+            <br />
+            <h5>If you are sure you want to do this, please input your password below, and click the button.</h5>
             <br />
             <form id="delAccountForm" name="delAccountForm" onSubmit={deleteAccount} action="/deleteAccount" method="POST">
                 <div className="input-item">
@@ -189,7 +191,8 @@ const DeleteInfo = function(props)
                     <label className="input-label" htmlFor="currentPass">Current Password: </label>
                 </div>
                 <input type="hidden" name="_csrf" value={props.csrf} />
-                <input className="formSubmit premium-button" type="submit" value="Delete Account"/>
+                <br />
+                <input className="formSubmit bottom-margin" type="submit" value="Delete Account"/>
             </form>
         </div>
     );
@@ -233,15 +236,18 @@ const AccountInfo = function(props)
                     <input className="formSubmit" type="submit" value="Change Password"/>
                 </form>
 
-                <form id="premForm" onSubmit={showPremium}>
-                    <input type="hidden" name="_csrf" value={props.csrf} />
-                    <input className="formSubmit pointer premium-button" type="submit" value="Sign up for Prime!" />
-                </form>
 
-                <form  id="delForm" onSubmit={showDeleteAccount} >
-                    <input type="hidden" name="_csrf" value={props.csrf} />
-                    <input className="formSubmit pointer premium-button" type="submit" value="Delete Account?"/>
-                </form>
+                <div id="bottom-acc-buttons">
+                    <form id="premForm" onSubmit={showPremium}>
+                        <input type="hidden" name="_csrf" value={props.csrf} />
+                        <input className="formSubmit pointer bottom-margin flex-button" id="prem-button" type="submit" value="Sign up for Prime!" />
+                    </form>
+
+                    <form  id="delForm" onSubmit={showDeleteAccount} >
+                        <input type="hidden" name="_csrf" value={props.csrf} />
+                        <input className="formSubmit pointer bottom-margin flex-button" id="del-button" type="submit" value="Delete Account?"/>
+                    </form>
+                </div>
             </div>
         )
     }
@@ -276,14 +282,17 @@ const AccountInfo = function(props)
                     <input type="hidden" name="_csrf" value={props.csrf} />
                     <input className="formSubmit" type="submit" value="Change Password"/>
                 </form>
-                <form id="premForm" onSubmit={showCancelPremium}>
-                    <input type="hidden" name="_csrf" value={props.csrf} />
-                    <input className="formSubmit pointer premium-button" type="submit" value="Cancel Prime Membership" />
-                </form>
-                <form  id="delForm" onSubmit={showDeleteAccount} >
-                    <input type="hidden" name="_csrf" value={props.csrf}/>
-                    <input className="formSubmit pointer premium-button" type="submit" value="Delete Account?"/>
-                </form>
+                
+                <div id="bottom-acc-buttons">
+                    <form id="premForm" onSubmit={showCancelPremium}>
+                        <input type="hidden" name="_csrf" value={props.csrf} />
+                        <input className="formSubmit pointer bottom-margin flex-button" type="submit" value="Cancel Prime" />
+                    </form>
+                    <form  id="delForm" onSubmit={showDeleteAccount} >
+                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                        <input className="formSubmit pointer bottom-margin flex-button" type="submit" value="Delete Account?"/>
+                    </form>
+                </div>
             </div>
         )
     }
