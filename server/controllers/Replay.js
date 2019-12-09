@@ -12,7 +12,7 @@ const app = require('../app.js');
 
 // Rendering pages
 const createPage = (req, res) => res.render('create', { csrfToken: req.csrfToken() });
-const galleryPage = (req, res) => { res.render('gallery', { csrfToken: req.csrfToken() }); };
+const galleryPage = (req, res) => { res.render('gallery', {  }); };
 
 // Used to create a 'clip' which is saved in the database
 const createClip = (req, res) => {

@@ -20,6 +20,11 @@ const router = (app) => {
   app.post('/changePassword', mid.requiresLogin, controllers.Account.changePassword);
   app.get('/info', mid.requiresSecure, controllers.Info.infoPage);
 
+  app.post('/createPlaylist', mid.requiresLogin, controllers.Playlist.createPlaylist);
+  app.get('/getPlaylists', mid.requiresLogin, controllers.Playlist.getPlaylists);
+  app.get('/playlists', mid.requiresSecure, mid.requiresLogin, controllers.Playlist.playlistPage);
+  app.post('/addToPlaylist', mid.requiresLogin, controllers.Playlist.addToPlaylist);
+
   app.post('/deleteClips', mid.requiresLogin, controllers.Replay.deleteClips);
   app.post('/createClip', mid.requiresLogin, controllers.Replay.createClip);
   app.get('/create', mid.requiresLogin, controllers.Replay.createPage);
