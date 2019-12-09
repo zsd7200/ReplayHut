@@ -61,9 +61,7 @@ var showClips = function showClips(csrf, e) {
 var ClipList = function ClipList(props) {
   checkPremium();
   props.userfaves = remDeletedFavorites(props.clips, props.userfaves);
-  numClips = 0;
-  console.log(props.userfaves);
-  console.log(favesOnly); // If no clip have been made, show error
+  numClips = 0; // If no clip have been made, show error
 
   if (props.clips.length === 0 || props.userfaves.length === 0 && favesOnly === true) {
     return React.createElement("div", {
