@@ -3,6 +3,7 @@
 var ytWidth = 430;
 var ytHeight = 242;
 var numClips = 0;
+var favesOnly = false;
 
 var formatDate = function formatDate(date) {
   // save a new date based on UTC date
@@ -248,7 +249,7 @@ var ClipList = function ClipList(props) {
                 }, React.createElement("i", {
                   className: "fas fa-heart-broken un-fave"
                 }))));
-              } else {
+              } else if (favesOnly === false) {
                 return React.createElement("div", {
                   className: "clip"
                 }, React.createElement("h4", {
@@ -382,7 +383,7 @@ var ClipList = function ClipList(props) {
                 }, React.createElement("i", {
                   className: "fas fa-heart-broken un-fave"
                 }))));
-              } else {
+              } else if (favesOnly === false) {
                 return React.createElement("div", {
                   className: "clip"
                 }, React.createElement("h4", {
@@ -515,7 +516,7 @@ var ClipList = function ClipList(props) {
               }, React.createElement("i", {
                 className: "fas fa-heart-broken un-fave"
               }))));
-            } else {
+            } else if (favesOnly === false) {
               return React.createElement("div", {
                 className: "clip"
               }, React.createElement("h4", {
@@ -645,7 +646,7 @@ var ClipList = function ClipList(props) {
               }, React.createElement("i", {
                 className: "fas fa-heart-broken un-fave"
               }))));
-            } else {
+            } else if (favesOnly === false) {
               return React.createElement("div", {
                 className: "clip"
               }, React.createElement("h4", {
@@ -782,7 +783,7 @@ var ClipList = function ClipList(props) {
                 }, React.createElement("i", {
                   className: "fas fa-heart-broken un-fave"
                 }))));
-              } else {
+              } else if (favesOnly === false) {
                 return React.createElement("div", {
                   className: "clip"
                 }, React.createElement("h4", {
@@ -920,7 +921,7 @@ var ClipList = function ClipList(props) {
                 }, React.createElement("i", {
                   className: "fas fa-heart-broken un-fave"
                 }))));
-              } else {
+              } else if (favesOnly === false) {
                 return React.createElement("div", {
                   className: "clip"
                 }, React.createElement("h4", {
@@ -1057,7 +1058,7 @@ var ClipList = function ClipList(props) {
               }, React.createElement("i", {
                 className: "fas fa-heart-broken un-fave"
               }))));
-            } else {
+            } else if (favesOnly === false) {
               return React.createElement("div", {
                 className: "clip"
               }, React.createElement("h4", {
@@ -1191,7 +1192,7 @@ var ClipList = function ClipList(props) {
               }, React.createElement("i", {
                 className: "fas fa-heart-broken un-fave"
               }))));
-            } else {
+            } else if (favesOnly === false) {
               return React.createElement("div", {
                 className: "clip"
               }, React.createElement("h4", {
@@ -1309,7 +1310,7 @@ var ClipList = function ClipList(props) {
                 }, React.createElement("i", {
                   className: "fas fa-heart-broken un-fave"
                 }))));
-              } else {
+              } else if (favesOnly === false) {
                 return React.createElement("div", {
                   className: "clip"
                 }, React.createElement("h4", {
@@ -1401,7 +1402,7 @@ var ClipList = function ClipList(props) {
                 }, React.createElement("i", {
                   className: "fas fa-heart-broken un-fave"
                 }))));
-              } else {
+              } else if (favesOnly === false) {
                 return React.createElement("div", {
                   className: "clip"
                 }, React.createElement("h4", {
@@ -1492,7 +1493,7 @@ var ClipList = function ClipList(props) {
               }, React.createElement("i", {
                 className: "fas fa-heart-broken un-fave"
               }))));
-            } else {
+            } else if (favesOnly === false) {
               return React.createElement("div", {
                 className: "clip"
               }, React.createElement("h4", {
@@ -1580,7 +1581,7 @@ var ClipList = function ClipList(props) {
               }, React.createElement("i", {
                 className: "fas fa-heart-broken un-fave"
               }))));
-            } else {
+            } else if (favesOnly === false) {
               return React.createElement("div", {
                 className: "clip"
               }, React.createElement("h4", {
@@ -1675,7 +1676,7 @@ var ClipList = function ClipList(props) {
                 }, React.createElement("i", {
                   className: "fas fa-heart-broken un-fave"
                 }))));
-              } else {
+              } else if (favesOnly === false) {
                 return React.createElement("div", {
                   className: "clip"
                 }, React.createElement("h4", {
@@ -1771,7 +1772,7 @@ var ClipList = function ClipList(props) {
                 }, React.createElement("i", {
                   className: "fas fa-heart-broken un-fave"
                 }))));
-              } else {
+              } else if (favesOnly === false) {
                 return React.createElement("div", {
                   className: "clip"
                 }, React.createElement("h4", {
@@ -1866,7 +1867,7 @@ var ClipList = function ClipList(props) {
               }, React.createElement("i", {
                 className: "fas fa-heart-broken un-fave"
               }))));
-            } else {
+            } else if (favesOnly === false) {
               return React.createElement("div", {
                 className: "clip"
               }, React.createElement("h4", {
@@ -1958,7 +1959,7 @@ var ClipList = function ClipList(props) {
               }, React.createElement("i", {
                 className: "fas fa-heart-broken un-fave"
               }))));
-            } else {
+            } else if (favesOnly === false) {
               return React.createElement("div", {
                 className: "clip"
               }, React.createElement("h4", {
@@ -2015,7 +2016,7 @@ var ClipList = function ClipList(props) {
 
 var SearchBar = function SearchBar(props) {
   return React.createElement("div", null, React.createElement("div", {
-    id: "search-button-container"
+    id: "gallery-button-container"
   }, React.createElement("button", {
     type: "button",
     className: "fa-button",
@@ -2023,6 +2024,15 @@ var SearchBar = function SearchBar(props) {
     title: "Toggle Search"
   }, React.createElement("i", {
     className: "fas fa-search"
+  })), React.createElement("button", {
+    type: "button",
+    className: "fa-button",
+    onClick: function onClick() {
+      return toggleFavorites(props.csrf);
+    },
+    title: "Toggle Favorites"
+  }, React.createElement("i", {
+    className: "fas fa-heart fave"
   }))), React.createElement("div", {
     className: "collapse",
     id: "searchCollapse"
@@ -2085,11 +2095,26 @@ var SearchBar = function SearchBar(props) {
       return showClips(props.csrf);
     }
   }, "Search"))));
+}; // toggle if the user is viewing only their favorites
+
+
+var toggleFavorites = function toggleFavorites(csrf) {
+  // change favesOnly
+  favesOnly = !favesOnly; // show a message
+
+  if (favesOnly === true) {
+    showMessage("Now showing only favorited clips! Okay!", "good");
+  } else {
+    showMessage("Hey! Now showing all clips!", "good");
+  } // show clips
+
+
+  showClips(csrf);
 }; // toggling in-line doesn't work, so this is required
 
 
 var toggleSearch = function toggleSearch(e) {
-  $("#searchCollapse").collapse('toggle');
+  $("#searchCollapse").collapse('toggle'); // toggles the search box
 }; // check for issues with post; send ajax request if everything is all good
 
 
@@ -2129,12 +2154,18 @@ var getToken = function getToken() {
 
 $(document).ready(function () {
   getToken();
-}); // show error message
+}); // terry bool gets modified in showMessage to stop any weirdness with
+// a lot of messages being activated at once
+
+var firstTerry = true; // show error message
 
 var showMessage = function showMessage(message) {
   var terry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "bad";
+  // hide terry first
+  $("#terryMessage").animate({
+    width: 'hide'
+  }, 0); // switch terry pic based on param
 
-  // switch terry pic based on param
   switch (terry) {
     case "bad":
       $("#terry").attr("src", "/assets/img/terry_bad.png");
@@ -2157,13 +2188,21 @@ var showMessage = function showMessage(message) {
   $("#innerMessage").text(message);
   $("#terryMessage").animate({
     width: 'toggle'
-  }, 350); // disappear terry after 4s
+  }, 350); // disappear terry after 4s only if firstTerry is active
+  // this prevents multiple setTimeout functions running at the same
+  // time, which causes weirdness
 
-  setTimeout(function () {
-    $("#terryMessage").animate({
-      width: 'hide'
-    }, 350);
-  }, 4000);
+  if (firstTerry === true) {
+    setTimeout(function () {
+      $("#terryMessage").animate({
+        width: 'hide'
+      }, 350);
+      firstTerry = true;
+    }, 4000);
+  } // set firstTerry to false
+
+
+  firstTerry = false;
 }; // redirect user to a page
 
 

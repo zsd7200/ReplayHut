@@ -175,12 +175,18 @@ var getToken = function getToken() {
 
 $(document).ready(function () {
   getToken();
-}); // show error message
+}); // terry bool gets modified in showMessage to stop any weirdness with
+// a lot of messages being activated at once
+
+var firstTerry = true; // show error message
 
 var showMessage = function showMessage(message) {
   var terry = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "bad";
+  // hide terry first
+  $("#terryMessage").animate({
+    width: 'hide'
+  }, 0); // switch terry pic based on param
 
-  // switch terry pic based on param
   switch (terry) {
     case "bad":
       $("#terry").attr("src", "/assets/img/terry_bad.png");
@@ -203,13 +209,21 @@ var showMessage = function showMessage(message) {
   $("#innerMessage").text(message);
   $("#terryMessage").animate({
     width: 'toggle'
-  }, 350); // disappear terry after 4s
+  }, 350); // disappear terry after 4s only if firstTerry is active
+  // this prevents multiple setTimeout functions running at the same
+  // time, which causes weirdness
 
-  setTimeout(function () {
-    $("#terryMessage").animate({
-      width: 'hide'
-    }, 350);
-  }, 4000);
+  if (firstTerry === true) {
+    setTimeout(function () {
+      $("#terryMessage").animate({
+        width: 'hide'
+      }, 350);
+      firstTerry = true;
+    }, 4000);
+  } // set firstTerry to false
+
+
+  firstTerry = false;
 }; // redirect user to a page
 
 

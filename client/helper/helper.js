@@ -1,5 +1,12 @@
+// terry bool gets modified in showMessage to stop any weirdness with
+// a lot of messages being activated at once
+let firstTerry = true;
+
 // show error message
 const showMessage = (message, terry = "bad") => {
+    
+    // hide terry first
+    $("#terryMessage").animate({width:'hide'}, 0);
     
     // switch terry pic based on param
     switch(terry) {
@@ -21,10 +28,18 @@ const showMessage = (message, terry = "bad") => {
     $("#innerMessage").text(message);
     $("#terryMessage").animate({width:'toggle'}, 350);
     
-    // disappear terry after 4s
-    setTimeout(() => {
-        $("#terryMessage").animate({width:'hide'}, 350);
-    }, 4000);
+    // disappear terry after 4s only if firstTerry is active
+    // this prevents multiple setTimeout functions running at the same
+    // time, which causes weirdness
+    if(firstTerry === true) {
+        setTimeout(() => {
+            $("#terryMessage").animate({width:'hide'}, 350);
+            firstTerry = true;
+        }, 4000);
+    }
+    
+    // set firstTerry to false
+    firstTerry = false;
 };
 
 // redirect user to a page

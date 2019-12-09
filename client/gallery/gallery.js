@@ -2,6 +2,7 @@ const ytWidth = 430;
 const ytHeight = 242;
 
 let numClips = 0;
+let favesOnly = false;
 
 const formatDate = (date) => {
     // save a new date based on UTC date
@@ -229,7 +230,7 @@ const ClipList = function(props)
                                         </form>
                                     </div>
                                 );
-                            } else {
+                            } else if(favesOnly === false) {
                                 return(
                                     <div className="clip">
                                         <h4 className="clip-title"><u>{clip.title}</u>
@@ -294,7 +295,7 @@ const ClipList = function(props)
                                         </form>
                                     </div>
                                 );
-                            } else {
+                            } else if(favesOnly === false) {
                                 return(
                                     <div className="clip">
                                         <h4 className="clip-title"><u>{clip.title}</u>
@@ -359,7 +360,7 @@ const ClipList = function(props)
                                     </form>
                                 </div>
                             );
-                        } else {
+                        } else if(favesOnly === false) {
                             return(
                                 <div className="clip">
                                     <h4 className="clip-title"><u>{clip.title}</u>
@@ -422,7 +423,7 @@ const ClipList = function(props)
                                     </form>
                                 </div>
                             );
-                        } else {
+                        } else if(favesOnly === false) {
                             return(
                                 <div className="clip">
                                     <h4 className="clip-title"><u>{clip.title}</u>
@@ -492,7 +493,7 @@ const ClipList = function(props)
                                         </form>
                                     </div>
                                 );
-                            } else {
+                            } else if(favesOnly === false) {
                                 return(
                                     <div className="clip">
                                         <h4 className="clip-title"><u>{clip.title}</u>
@@ -559,7 +560,7 @@ const ClipList = function(props)
                                         </form>
                                     </div>
                                 );
-                            } else {
+                            } else if(favesOnly === false) {
                                 return(
                                     <div className="clip">
                                         <h4 className="clip-title"><u>{clip.title}</u>
@@ -626,7 +627,7 @@ const ClipList = function(props)
                                     </form>
                                 </div>
                             );
-                        } else {
+                        } else if(favesOnly === false) {
                             return(
                                 <div className="clip">
                                     <h4 className="clip-title"><u>{clip.title}</u>
@@ -691,7 +692,7 @@ const ClipList = function(props)
                                     </form>
                                 </div>
                             );
-                        } else {
+                        } else if(favesOnly === false) {
                             return(
                                 <div className="clip">
                                     <h4 className="clip-title"><u>{clip.title}</u>
@@ -757,7 +758,7 @@ const ClipList = function(props)
                                         </form>
                                     </div>
                                 );
-                            } else {
+                            } else if(favesOnly === false) {
                                 return(
                                     <div className="clip">
                                         <h4 className="clip-title"><u>{clip.title}</u>
@@ -812,7 +813,7 @@ const ClipList = function(props)
                                         </form>
                                     </div>
                                 );
-                            } else {
+                            } else if(favesOnly === false) {
                                 return(
                                     <div className="clip">
                                         <h4 className="clip-title"><u>{clip.title}</u>
@@ -867,7 +868,7 @@ const ClipList = function(props)
                                     </form>
                                 </div>
                             );
-                        } else {
+                        } else if(favesOnly === false) {
                             return(
                                 <div className="clip">
                                     <h4 className="clip-title"><u>{clip.title}</u>
@@ -920,7 +921,7 @@ const ClipList = function(props)
                                     </form>
                                 </div>
                             );
-                        } else {
+                        } else if(favesOnly === false) {
                             return(
                                 <div className="clip">
                                     <h4 className="clip-title"><u>{clip.title}</u>
@@ -980,7 +981,7 @@ const ClipList = function(props)
                                         </form>
                                     </div>
                                 );
-                            } else {
+                            } else if(favesOnly === false) {
                                 return(
                                     <div className="clip">
                                         <h4 className="clip-title"><u>{clip.title}</u>
@@ -1037,7 +1038,7 @@ const ClipList = function(props)
                                         </form>
                                     </div>
                                 );
-                            } else {
+                            } else if(favesOnly === false) {
                                 return(
                                     <div className="clip">
                                         <h4 className="clip-title"><u>{clip.title}</u>
@@ -1094,7 +1095,7 @@ const ClipList = function(props)
                                     </form>
                                 </div>
                             );
-                        } else {
+                        } else if(favesOnly === false) {
                             return(
                                 <div className="clip">
                                     <h4 className="clip-title"><u>{clip.title}</u>
@@ -1149,7 +1150,7 @@ const ClipList = function(props)
                                     </form>
                                 </div>
                             );
-                        } else {
+                        } else if(favesOnly === false) {
                             return(
                                 <div className="clip">
                                     <h4 className="clip-title"><u>{clip.title}</u>
@@ -1195,8 +1196,9 @@ const SearchBar = function(props)
 {
     return(
         <div>
-            <div id="search-button-container">
+            <div id="gallery-button-container">
                 <button type="button" className="fa-button" onClick={toggleSearch} title="Toggle Search"><i className="fas fa-search"></i></button>
+                <button type="button" className="fa-button" onClick={() => toggleFavorites(props.csrf)} title="Toggle Favorites"><i className="fas fa-heart fave"></i></button>
             </div>
             
             <div className="collapse" id="searchCollapse">
@@ -1238,9 +1240,25 @@ const SearchBar = function(props)
     );
 }
 
+// toggle if the user is viewing only their favorites
+const toggleFavorites = (csrf) => {
+    // change favesOnly
+    favesOnly = !favesOnly;
+    
+    // show a message
+    if(favesOnly === true) {
+        showMessage("Now showing only favorited clips! Okay!", "good");
+    } else {
+        showMessage("Hey! Now showing all clips!", "good");
+    }
+    
+    // show clips
+    showClips(csrf);
+};
+
 // toggling in-line doesn't work, so this is required
 const toggleSearch = (e) => {
-    $("#searchCollapse").collapse('toggle');
+    $("#searchCollapse").collapse('toggle'); // toggles the search box
 };
 
 // check for issues with post; send ajax request if everything is all good
