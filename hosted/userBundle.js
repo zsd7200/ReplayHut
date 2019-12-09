@@ -2,6 +2,7 @@
 
 // UserList to be rendered
 var UserList = function UserList(props) {
+  console.log(props);
   checkPremium(); //If no users have been made (Should not happen becuase need to be logged in), show error
 
   if (props.users.length === 0) {
@@ -14,28 +15,32 @@ var UserList = function UserList(props) {
 
 
   props.users.sort(function (a, b) {
-    return b.createdClips - a.createdClips;
+    return b.timesFavorited - a.timesFavorited;
   }); //Displaying each user
 
   var userNodes = props.users.map(function (user) {
     if (user.premiumStatus === false) {
       return React.createElement("div", {
         className: "user"
-      }, React.createElement("h3", {
+      }, React.createElement("h4", {
         className: "userName"
-      }, "Username: ", user.username), React.createElement("h3", {
+      }, "Username: ", user.username), React.createElement("h4", {
         className: "clipsMade"
-      }, "Clips Posted: ", user.createdClips));
+      }, "Clips Posted: ", user.createdClips), React.createElement("h4", {
+        className: "timesFavorited"
+      }, "Clip Popularity: ", user.timesFavorited, " Favorites"));
     } else {
       return React.createElement("div", {
         className: "user"
-      }, React.createElement("h3", {
+      }, React.createElement("h4", {
         className: "userName"
       }, "Username: ", user.username, " ", React.createElement("span", {
         className: "float-right"
-      }, "\u2B50")), React.createElement("h3", {
+      }, "\u2B50")), React.createElement("h4", {
         className: "clipsMade"
-      }, "Clips Posted: ", user.createdClips));
+      }, "Clips Posted: ", user.createdClips), React.createElement("h4", {
+        className: "timesFavorited"
+      }, "Clip Popularity: ", user.timesFavorited, " Favorites"));
     }
   });
   return React.createElement("div", {

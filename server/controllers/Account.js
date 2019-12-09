@@ -275,6 +275,21 @@ const addFavorite = (request, response) => {
         return res.status(401).json({ error: 'Clip not found' });
       }
 
+      // increment timesfavorited if creator account exists
+      Account.AccountModel.findByUsername(doc2.creatorUN, (err3, doc3) => {
+        if (err3) return res.json({ error: err3 });
+
+        // increment timesfavorited
+        if (doc3) {
+          const creator = doc3;
+          creator.timesFavorited++;
+          creator.save();
+        }
+
+        // always return true since there's no need to inform the user
+        // if the creator has deleted their account
+        return true;
+      });
 
       // If no error, create temp variables to store changes
       const foundUser = doc;
@@ -333,6 +348,22 @@ const remFavorite = (request, response) => {
       if (!doc2) {
         return res.status(401).json({ error: 'Clip not found' });
       }
+
+      // decrement timesfavorited if creator account exists
+      Account.AccountModel.findByUsername(doc2.creatorUN, (err3, doc3) => {
+        if (err3) return res.json({ error: err3 });
+
+        // increment timesfavorited
+        if (doc3) {
+          const creator = doc3;
+          creator.timesFavorited--;
+          creator.save();
+        }
+
+        // always return true since there's no need to inform the user
+        // if the creator has deleted their account
+        return true;
+      });
 
       // If no error, create temp variables to store changes
       const foundUser = doc;

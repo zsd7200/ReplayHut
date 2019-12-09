@@ -26,6 +26,7 @@ const AccountSchema = new mongoose.Schema({
     required: true,
   },
   createdClips: { type: Number, required: true, default: 0 },
+  timesFavorited: { type: Number, required: true, default: 0 },
   premiumStatus: { type: Boolean, required: true, default: false },
   favorites: { type: Array, required: true, default: [] },
   createdDate: {
