@@ -400,6 +400,19 @@ li {
   width: 100%;
   margin-left: $sidebarSize - 14px;
   text-align: center;
+  
+  i {
+    transition: .5s;
+    color: black;
+    
+    &:hover {
+      color: #858585;
+    }
+    
+    &:active {
+      color: #616161;  
+    }
+  }
 }
 
 #hut {

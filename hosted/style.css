@@ -335,6 +335,13 @@ li {
   width: 100%;
   margin-left: 146px;
   text-align: center; }
+  #gallery-button-container i {
+    transition: .5s;
+    color: black; }
+    #gallery-button-container i:hover {
+      color: #858585; }
+    #gallery-button-container i:active {
+      color: #616161; }
 
 #hut {
   position: absolute;
