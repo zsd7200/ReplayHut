@@ -58,6 +58,7 @@ const showClips = (csrf) =>{
 const showPlaylists = (csrf) =>{
     // get account data so the username and favorites can be passed in
     sendAjax('GET', '/getMyAccount', null, (accdata) => {
+        console.log(accdata.account.savedPlaylists);
         // Retrieving the clips
         sendAjax('GET', '/getPlaylists', null, (playlistData) => {
             ReactDOM.render(<PlaylistList playlists={playlistData.playlists} listCount={accdata.account.numPlaylists} user={accdata.account.username} csrf={csrf}  />, document.querySelector("#playlists"));
@@ -86,7 +87,15 @@ const displayPlaylist = (e) =>{
         console.log(accdata.account.savedPlaylists);
         // Retrieving the clips
         sendAjax('GET', '/getClips', null, (clipdata) => {
-            ReactDOM.render(<ClipList clips={clipdata.clips} userfaves={accdata.account.favorites} user={accdata.account.username} userPlaylists={accdata.account.savedPlaylists} currentList={curList} use="playlist" />, document.querySelector("#playlists"));
+            sendAjax('GET', '/getPlaylists', null, (playlistData) => {
+                //ReactDOM.render(<PlaylistList playlists={playlistData.playlists} listCount={accdata.account.numPlaylists} user={accdata.account.username} csrf={csrf}  />, document.querySelector("#playlists"));
+                ReactDOM.render(<ClipList clips={clipdata.clips} userfaves={accdata.account.favorites} user={accdata.account.username} userPlaylists={accdata.account.savedPlaylists} currentList={curList} playlists={playlistData.playlists} use="playlist" />, document.querySelector("#playlists"));
+
+            },
+            (xhr, status, error) =>{
+                var messageObj = JSON.parse(xhr.responseText);
+                showMessage(messageObj.error);
+            });
         },
         (xhr, status, error) =>{
             var messageObj = JSON.parse(xhr.responseText);
@@ -249,46 +258,7 @@ const PlaylistList = function(props)
         </div>
     );
 }
-/*
-const PlaylistDisplay = function(props)
-{
-    if(props.userPlaylists.length === 0)
-    {
-        return(
-            <div className="loader-container">
-                <h3>Playlist is empty!</h3>
-            </div>
-        )
-    }
 
-    let thisList;
-    for (let i = 0; i < props.userPlaylists.length; i++) 
-    {
-      if(props.userPlaylists[i].id === props.currentList)
-        thisList = props.userPlaylists[i];
-    }
-    const clipNodes = props.clips.map(function(clip){
-        let playlsitCheck = false;
-
-        for (let i = 0; i < thisList.clips.length; i++) {
-            if(thisList.clips[i].id === clip.id)
-                playlsitCheck = true;
-        }
-
-        if(playlsitCheck)
-        {
-
-        }
-    });
-
-   
-    return(
-        <div className="clipList">
-            {clipNodes}
-        </div>
-    )
-}
-*/
 const PlaylistAddDisplay = function(props)
 {
     
@@ -408,8 +378,13 @@ const ClipList = function(props)
     }
     else
     {
-        console.log(props.userPlaylists);
-        if(props.userPlaylists.length === 0)
+        for (let i = 0; i < props.playlists.length; i++) 
+        {
+            if(props.playlists[i].id == props.currentList)
+                thisList = props.playlists[i];
+        }
+        //console.log(props.userPlaylists);
+        if(thisList.clips.length === 0)
         {
             return(
                 <div className="loader-container">
@@ -417,12 +392,13 @@ const ClipList = function(props)
                 </div>
             )
         }
-
+        /*
         for (let i = 0; i < props.userPlaylists.length; i++) 
         {
             if(props.userPlaylists[i].id === props.currentList)
                 thisList = props.userPlaylists[i];
         }
+        */
     }
     console.log(thisList);
     // set faveStatus of all the clips

@@ -31,7 +31,7 @@ const AccountSchema = new mongoose.Schema({
   favorites: { type: Array, required: true, default: [] },
   savedPlaylists: { type: Array, required: true, default: [] },
 
-  numPlaylists:{ type: Number, required: true, default: 0 },
+  numPlaylists: { type: Number, required: true, default: 0 },
 
   createdDate: {
     type: Date,

@@ -64,7 +64,8 @@ var showClips = function showClips(csrf) {
 var showPlaylists = function showPlaylists(csrf) {
   // get account data so the username and favorites can be passed in
   sendAjax('GET', '/getMyAccount', null, function (accdata) {
-    // Retrieving the clips
+    console.log(accdata.account.savedPlaylists); // Retrieving the clips
+
     sendAjax('GET', '/getPlaylists', null, function (playlistData) {
       ReactDOM.render(React.createElement(PlaylistList, {
         playlists: playlistData.playlists,
@@ -97,14 +98,21 @@ var displayPlaylist = function displayPlaylist(e) {
     console.log(accdata.account.savedPlaylists); // Retrieving the clips
 
     sendAjax('GET', '/getClips', null, function (clipdata) {
-      ReactDOM.render(React.createElement(ClipList, {
-        clips: clipdata.clips,
-        userfaves: accdata.account.favorites,
-        user: accdata.account.username,
-        userPlaylists: accdata.account.savedPlaylists,
-        currentList: curList,
-        use: "playlist"
-      }), document.querySelector("#playlists"));
+      sendAjax('GET', '/getPlaylists', null, function (playlistData) {
+        //ReactDOM.render(<PlaylistList playlists={playlistData.playlists} listCount={accdata.account.numPlaylists} user={accdata.account.username} csrf={csrf}  />, document.querySelector("#playlists"));
+        ReactDOM.render(React.createElement(ClipList, {
+          clips: clipdata.clips,
+          userfaves: accdata.account.favorites,
+          user: accdata.account.username,
+          userPlaylists: accdata.account.savedPlaylists,
+          currentList: curList,
+          playlists: playlistData.playlists,
+          use: "playlist"
+        }), document.querySelector("#playlists"));
+      }, function (xhr, status, error) {
+        var messageObj = JSON.parse(xhr.responseText);
+        showMessage(messageObj.error);
+      });
     }, function (xhr, status, error) {
       var messageObj = JSON.parse(xhr.responseText);
       showMessage(messageObj.error);
@@ -310,47 +318,6 @@ var PlaylistList = function PlaylistList(props) {
     className: "playlistList"
   }, listNodes);
 };
-/*
-const PlaylistDisplay = function(props)
-{
-    if(props.userPlaylists.length === 0)
-    {
-        return(
-            <div className="loader-container">
-                <h3>Playlist is empty!</h3>
-            </div>
-        )
-    }
-
-    let thisList;
-    for (let i = 0; i < props.userPlaylists.length; i++) 
-    {
-      if(props.userPlaylists[i].id === props.currentList)
-        thisList = props.userPlaylists[i];
-    }
-    const clipNodes = props.clips.map(function(clip){
-        let playlsitCheck = false;
-
-        for (let i = 0; i < thisList.clips.length; i++) {
-            if(thisList.clips[i].id === clip.id)
-                playlsitCheck = true;
-        }
-
-        if(playlsitCheck)
-        {
-
-        }
-    });
-
-   
-    return(
-        <div className="clipList">
-            {clipNodes}
-        </div>
-    )
-}
-*/
-
 
 var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
   var listSelect = React.createElement("option", {
@@ -481,17 +448,24 @@ var ClipList = function ClipList(props) {
       });
     }
   } else {
-    console.log(props.userPlaylists);
+    for (var i = 0; i < props.playlists.length; i++) {
+      if (props.playlists[i].id == props.currentList) thisList = props.playlists[i];
+    } //console.log(props.userPlaylists);
 
-    if (props.userPlaylists.length === 0) {
+
+    if (thisList.clips.length === 0) {
       return React.createElement("div", {
         className: "loader-container"
       }, React.createElement("h3", null, "Playlist is empty!"));
     }
-
-    for (var i = 0; i < props.userPlaylists.length; i++) {
-      if (props.userPlaylists[i].id === props.currentList) thisList = props.userPlaylists[i];
+    /*
+    for (let i = 0; i < props.userPlaylists.length; i++) 
+    {
+        if(props.userPlaylists[i].id === props.currentList)
+            thisList = props.userPlaylists[i];
     }
+    */
+
   }
 
   console.log(thisList); // set faveStatus of all the clips

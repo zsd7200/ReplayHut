@@ -12,7 +12,7 @@ const { Playlist } = models;
 const app = require('../app.js');
 
 // Rendering pages
-const playlistPage = (req, res) => { res.render('playlist', { csrfToken: req.csrfToken()}); };
+const playlistPage = (req, res) => { res.render('playlist', { csrfToken: req.csrfToken() }); };
 
 // Used to create a 'clip' which is saved in the database
 const createPlaylist = (req, res) => {
@@ -32,39 +32,36 @@ const createPlaylist = (req, res) => {
     foundUser.numPlaylists++;
     console.log(req.body.clipID);
     let playlistData;
-    if(req.body.clipID)
-    {
-        const tempclips = [req.body.clipID];
-        // Creating the necessary information for a new clip
-        playlistData = {
-            title: req.body.title,
-            id: uuidv4(),
-            creatorUN: req.session.account.username,
-            currUser: '',
-            clips: tempclips,
-            numEntries: 1
-        };
+    if (req.body.clipID) {
+      const tempclips = [req.body.clipID];
+      // Creating the necessary information for a new clip
+      playlistData = {
+        title: req.body.title,
+        id: uuidv4(),
+        creatorUN: req.session.account.username,
+        currUser: '',
+        clips: tempclips,
+        numEntries: 1,
+      };
+    } else {
+      playlistData = {
+        title: req.body.title,
+        id: uuidv4(),
+        creatorUN: req.session.account.username,
+        currUser: '',
+      };
     }
-    else
-    {
-        playlistData = {
-            title: req.body.title,
-            id: uuidv4(),
-            creatorUN: req.session.account.username,
-            currUser: '',
-        };
-    }
-    
+
     // Creating a new clip with the data
     const newList = new Playlist.PlaylistModel(playlistData);
 
     foundUser.savedPlaylists.push(newList);
     // Saving the clip to the database
     const listPromise = newList.save();
-    
-    listPromise.then(() => res.json({message: "Playlist created!"}));
 
-    listPromise.catch((err3)=> res.status(400).json({error: err3}));
+    listPromise.then(() => res.json({ message: 'Playlist created!' }));
+
+    listPromise.catch((err3) => res.status(400).json({ error: err3 }));
 
     // Handling promise to reassign the user's info
     const updatePromise = foundUser.save();
@@ -78,18 +75,16 @@ const createPlaylist = (req, res) => {
   return true;
 };
 
-const addToPlaylist = (req, res) =>{
-
-  //Finding the current account
+const addToPlaylist = (req, res) => {
+  // Finding the current account
   Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
     // Error check
     if (err) return res.json({ error: err });
 
-    Playlist.PlaylistModel.searchById(req.body.playlistID, (err2, doc2) =>{
-      
+    Playlist.PlaylistModel.searchById(req.body.playlistID, (err2, doc2) => {
       if (err2) return res.status(400).json({ error: err2 });
 
-      if(!doc2) return res.status(400).json({error: "No playlist with that name found"});
+      if (!doc2) return res.status(400).json({ error: 'No playlist with that name found' });
 
       // If no error, create a temp variable to store changes
       const foundUser = doc;
@@ -97,27 +92,43 @@ const addToPlaylist = (req, res) =>{
       foundList.clips.push(req.body.clipID);
       foundList.numEntries++;
 
-      for (let i = 0; i < foundUser.savedPlaylists.length; i++) 
-      {
-        console.log(foundUser.savedPlaylists[i]);
-        if(foundUser.savedPlaylists[i].id = foundList.id)
+      
+      //console.log(foundUser.savedPlaylists);
+      /*let tempArray = foundUser.savedPlaylists;
+      console.log(tempArray);
+      for (let i = 0; i < tempArray.length; i++) {
+        if (tempArray[i].id = foundList.id) 
         {
-          foundUser.savedPlaylists[i] = foundList;
-          console.log("break");
-          console.log(foundUser.savedPlaylists[i]);
-
+          tempArray[i] = foundList;
+          //foundUser.savedPlaylists.updateOne({id:foundList.id}, foundList);
+          //console.log('break');
+          //console.log(foundUser.savedPlaylists[i]);
         }
       }
+      console.log(tempArray);
+      console.log("1");
+      foundUser.savedPlaylists.push(tempArray);
+      //foundUser.savedPlaylists.splice(0,1);
+      console.log(foundUser.savedPlaylists);
+      console.log("2");
+
+      
+      console.log(foundUser.savedPlaylists);
+
+      console.log("3");
+
+      console.log(foundUser.savedPlaylists);
+      */
       // Saving the clip to the database
       const listPromise = foundList.save();
 
-      listPromise.then(() => res.json({message: "Clip added to Playlist!"}));
+      listPromise.then(() => res.json({ message: 'Clip added to Playlist!' }));
 
-      listPromise.catch((err3)=> res.status(400).json({error: err3}));
+      listPromise.catch((err3) => res.status(400).json({ error: err3 }));
 
       // Handling promise to reassign the user's info
       const updatePromise = foundUser.save();
-      updatePromise.then(()=>console.log("done"));
+      updatePromise.then(() => Account.AccountModel.findByUsername(req.session.account.username, (err, doc3) => {console.log(doc3)}));
 
       // Catching errors with the user's data
       updatePromise.catch((err4) => res.json({ err4 }));
@@ -125,10 +136,9 @@ const addToPlaylist = (req, res) =>{
       // Must return true to comply with
       return true;
     });
-    
   });
   return true;
-}
+};
 
 // Retrieves all clips
 const getPlaylists = (request, response) => {
