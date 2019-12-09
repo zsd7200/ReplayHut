@@ -61,9 +61,14 @@ const showClips = (csrf, e) =>{
 const ClipList = function(props) 
 {
     checkPremium();
+    props.userfaves = remDeletedFavorites(props.clips, props.userfaves);
     numClips = 0;
+    
+    console.log(props.userfaves);
+    console.log(favesOnly);
+    
     // If no clip have been made, show error
-    if(props.clips.length === 0)
+    if(props.clips.length === 0 || (props.userfaves.length === 0 && favesOnly === true))
     {
         return(
             <div className="loader-container">
@@ -1239,6 +1244,41 @@ const SearchBar = function(props)
         </div>
     );
 }
+
+// remove deleted clips from favorites
+const remDeletedFavorites = (clips, userfaves) => {
+    // empty array to store indexes
+    let indexesToDelete = [];
+    
+    // loop through user favorites
+    for(let i = 0; i < userfaves.length; i++) {
+        // create a new doesExist every loop
+        let doesExist = false;
+        
+        // loop through clips, if doesExist = true, break out of loop
+        for(let j = 0; j < clips.length; j++) {
+            if(userfaves[i] === clips[j].id) {
+                doesExist = true;
+                break;
+            }
+        }
+        
+        // if doesExist = false, add index to indexesToDelete
+        if (doesExist === false) {
+            indexesToDelete.unshift(i);
+        }
+    }
+    
+    // loop through indexesToDelete if it has a length of 1+ and remove ids from userFaves
+    if(indexesToDelete.length > 0) {
+        for(let i = 0; i < indexesToDelete.length; i++) {
+            userfaves.splice(indexesToDelete[i], 1);
+        }
+    }
+    
+    // return userfaves
+    return userfaves;
+};
 
 // toggle if the user is viewing only their favorites
 const toggleFavorites = (csrf) => {

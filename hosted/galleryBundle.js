@@ -60,9 +60,12 @@ var showClips = function showClips(csrf, e) {
 
 var ClipList = function ClipList(props) {
   checkPremium();
-  numClips = 0; // If no clip have been made, show error
+  props.userfaves = remDeletedFavorites(props.clips, props.userfaves);
+  numClips = 0;
+  console.log(props.userfaves);
+  console.log(favesOnly); // If no clip have been made, show error
 
-  if (props.clips.length === 0) {
+  if (props.clips.length === 0 || props.userfaves.length === 0 && favesOnly === true) {
     return React.createElement("div", {
       className: "loader-container"
     }, React.createElement("h3", null, "No clips found!"));
@@ -2095,6 +2098,39 @@ var SearchBar = function SearchBar(props) {
       return showClips(props.csrf);
     }
   }, "Search"))));
+}; // remove deleted clips from favorites
+
+
+var remDeletedFavorites = function remDeletedFavorites(clips, userfaves) {
+  // empty array to store indexes
+  var indexesToDelete = []; // loop through user favorites
+
+  for (var i = 0; i < userfaves.length; i++) {
+    // create a new doesExist every loop
+    var doesExist = false; // loop through clips, if doesExist = true, break out of loop
+
+    for (var j = 0; j < clips.length; j++) {
+      if (userfaves[i] === clips[j].id) {
+        doesExist = true;
+        break;
+      }
+    } // if doesExist = false, add index to indexesToDelete
+
+
+    if (doesExist === false) {
+      indexesToDelete.unshift(i);
+    }
+  } // loop through indexesToDelete if it has a length of 1+ and remove ids from userFaves
+
+
+  if (indexesToDelete.length > 0) {
+    for (var _i2 = 0; _i2 < indexesToDelete.length; _i2++) {
+      userfaves.splice(indexesToDelete[_i2], 1);
+    }
+  } // return userfaves
+
+
+  return userfaves;
 }; // toggle if the user is viewing only their favorites
 
 
