@@ -277,7 +277,7 @@ const PlaylistForm = function(props)
                     <input type="hidden" name="_csrf" value={props.csrf}/>
                     <input type="hidden" name="clipID" value={props.clipID} />
                     <input className="back pointer" type="submit" value="Go back"/>
-                </form>
+            </form>
                 <form id="createForm" onSubmit={createPlaylist} name="createForm" action="/createPlaylist" method="POST" classname="createForm">
                     <h3 id="requiredHeader">Name your new playlist: </h3>
                     
@@ -304,7 +304,6 @@ const PlaylistList = function(props)
         return(
             <div className="loader-container">
                 <h3>No playlists found!</h3>
-                <button onClick={() => showCreatePlaylist(props.csrf)}>Make one now!</button>
             </div>
         )
     }
@@ -322,8 +321,8 @@ const PlaylistList = function(props)
         {   playlistCount++;
             return(
             <div className="playlist">
-                <h4 className="playlist-title"><u>{list.title}</u></h4>
-                <h3 classname="playlistClipCount">Number of clips: {list.numEntries}</h3>
+                <h3 className="playlist-title"><u>{list.title}</u></h3>
+                <h5 classname="playlistClipCount">Number of clips: {list.numEntries}</h5>
                 <form id={"showList" + playlistCount} onSubmit={displayPlaylist} name="showList" className="showList">
                     <input type="hidden" name="_csrf" value={props.csrf}/>
                     <input name="listID" type="hidden" value={list.id}/>
