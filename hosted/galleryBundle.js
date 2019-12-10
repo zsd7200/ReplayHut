@@ -125,8 +125,7 @@ var displayPlaylist = function displayPlaylist(e) {
 
 
 var showAddPlaylist = function showAddPlaylist(e) {
-  e.preventDefault();
-  console.log(e.target._csrf); //Temporary variables to be used later
+  e.preventDefault(); //Temporary variables to be used later
 
   var csrf = e.target._csrf.value;
   var id = e.target.clipID.value; // get account data so the username can be used 
@@ -252,8 +251,6 @@ var removeFromPlaylist = function removeFromPlaylist(e) {
 
 
 var PlaylistForm = function PlaylistForm(props) {
-  console.log(props.csrf);
-
   if (!props.clipID) {
     return React.createElement("div", {
       className: "content-box"
@@ -261,7 +258,7 @@ var PlaylistForm = function PlaylistForm(props) {
       className: "playlistList"
     }, React.createElement("form", {
       id: "backForm",
-      onSubmit: showPlaylists,
+      onSubmit: showAddPlaylist,
       name: "backForm"
     }, React.createElement("input", {
       type: "hidden",
@@ -304,10 +301,23 @@ var PlaylistForm = function PlaylistForm(props) {
       className: "content-box"
     }, React.createElement("div", {
       className: "playlistList"
-    }, React.createElement("button", {
+    }, React.createElement("form", {
+      id: "backForm",
+      onSubmit: showAddPlaylist,
+      name: "backForm"
+    }, React.createElement("input", {
+      type: "hidden",
+      name: "_csrf",
+      value: props.csrf
+    }), React.createElement("input", {
+      type: "hidden",
+      name: "clipID",
+      value: props.clipID
+    }), React.createElement("input", {
       className: "back pointer",
-      onClick: showAddPlaylist
-    }, "Go back"), React.createElement("form", {
+      type: "submit",
+      value: "Go back"
+    })), React.createElement("form", {
       id: "createForm",
       onSubmit: createPlaylist,
       name: "createForm",
@@ -407,10 +417,13 @@ var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
 
 
   var listAddNodes = props.playlists.map(function (list) {
-    var showLists = true; //Checking if the current clip is in the array of playlists the clip is in
+    var showLists = true;
 
-    for (var _i = 0; _i < thisClipPlaylists.length; _i++) {
-      if (thisClipPlaylists[_i] === list.id) if (list.creatorUN === props.user) showLists = false;
+    if (thisClipPlaylists.length !== 0) {
+      //Checking if the current clip is in the array of playlists the clip is in
+      for (var _i = 0; _i < thisClipPlaylists.length; _i++) {
+        if (thisClipPlaylists[_i] === list.id) if (list.creatorUN === props.user) showLists = false;
+      }
     }
 
     if (showLists) return React.createElement("option", {
@@ -418,16 +431,20 @@ var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
     }, list.title);
   }); //Setting up the list of playlists that can be rmeoved
 
-  var listRemNodes = ""; //Getting options to be removed from
-  //Will only show up if the clip is in any playlists
+  var listRemNodes = "";
 
-  listRemNodes = props.playlists.map(function (list) {
-    for (var _i2 = 0; _i2 < thisClipPlaylists.length; _i2++) {
-      if (thisClipPlaylists[_i2] === list.id) if (list.creatorUN === props.user) return React.createElement("option", {
-        value: list.title
-      }, list.title);
-    }
-  });
+  if (thisClipPlaylists.length !== 0) {
+    //Getting options to be removed from
+    //Will only show up if the clip is in any playlists
+    listRemNodes = props.playlists.map(function (list) {
+      for (var _i2 = 0; _i2 < thisClipPlaylists.length; _i2++) {
+        if (thisClipPlaylists[_i2] === list.id) if (list.creatorUN === props.user) return React.createElement("option", {
+          value: list.title
+        }, list.title);
+      }
+    });
+  }
+
   var playlistAddDrop = React.createElement("div", {
     className: "content-box"
   }, React.createElement("div", {
@@ -590,28 +607,21 @@ var ClipList = function ClipList(props) {
         return a.numFavorites - b.numFavorites;
       });
     }
-  } else {
-    for (var i = 0; i < props.playlists.length; i++) {
-      if (props.playlists[i].id == props.currentList) thisList = props.playlists[i];
-    } //console.log(props.userPlaylists);
+  } //If showing the playlist, load in other things
+  else {
+      //Find what the current plaulist is based on id
+      for (var i = 0; i < props.playlists.length; i++) {
+        if (props.playlists[i].id == props.currentList) thisList = props.playlists[i];
+      } //If there are no clips in the playlist, don't show anything
 
 
-    if (thisList.clips.length === 0) {
-      return React.createElement("div", {
-        className: "loader-container"
-      }, React.createElement("h3", null, "Playlist is empty!"));
-    }
-    /*
-    for (let i = 0; i < props.userPlaylists.length; i++) 
-    {
-        if(props.userPlaylists[i].id === props.currentList)
-            thisList = props.userPlaylists[i];
-    }
-    */
+      if (thisList.clips.length === 0) {
+        return React.createElement("div", {
+          className: "loader-container"
+        }, React.createElement("h3", null, "Playlist is empty!"));
+      }
+    } // set faveStatus of all the clips
 
-  }
-
-  console.log(thisList); // set faveStatus of all the clips
 
   for (var _i3 = 0; _i3 < props.userfaves.length; _i3++) {
     for (var j = 0; j < props.clips.length; j++) {
@@ -3263,7 +3273,6 @@ var makePost = function makePost(e) {
     showMessage(result.message);
     showClips(csrf);
   }, function (xhr, status, error) {
-    console.log(xhr);
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);
   });

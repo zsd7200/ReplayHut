@@ -114,7 +114,6 @@ const displayPlaylist = (e) =>{
 //Displaying the area which allows the user to add or remove a clip from a playlist
 const showAddPlaylist = (e) =>{
     e.preventDefault();
-    console.log(e.target._csrf);
     
     //Temporary variables to be used later
     let csrf = e.target._csrf.value;
@@ -247,13 +246,12 @@ const removeFromPlaylist = (e) =>{
 // Form for creating a new playlist
 const PlaylistForm = function(props)
 {
-    console.log(props.csrf);
     if(!props.clipID)
     {
         return(
             <div className="content-box">
             <div className="playlistList">
-                <form id="backForm" onSubmit={showPlaylists} name="backForm">
+                <form id="backForm" onSubmit={showAddPlaylist} name="backForm">
                     <input type="hidden" name="_csrf" value={props.csrf}/>
                     <input className="back pointer" type="submit" value="Go back"/>
                 </form>
@@ -278,7 +276,11 @@ const PlaylistForm = function(props)
         return(
             <div className="content-box">
             <div className="playlistList">
-                <button className="back pointer" onClick={showAddPlaylist}>Go back</button>
+            <form id="backForm" onSubmit={showAddPlaylist} name="backForm">
+                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                    <input type="hidden" name="clipID" value={props.clipID} />
+                    <input className="back pointer" type="submit" value="Go back"/>
+                </form>
                 <form id="createForm" onSubmit={createPlaylist} name="createForm" action="/createPlaylist" method="POST" classname="createForm">
                     <h3 id="requiredHeader">Name your new playlist: </h3>
                     
@@ -359,16 +361,18 @@ const PlaylistAddDisplay = function(props)
     //Cannot be ones that it is already in
     const listAddNodes = props.playlists.map(function(list)
     {
-
-       let showLists = true;
-
-       //Checking if the current clip is in the array of playlists the clip is in
-        for (let i = 0; i < thisClipPlaylists.length; i++) 
+        let showLists = true;
+        if(thisClipPlaylists.length !== 0)
         {
-            if(thisClipPlaylists[i] === list.id)
-                if(list.creatorUN === props.user)
-                    showLists = false;
+            //Checking if the current clip is in the array of playlists the clip is in
+            for (let i = 0; i < thisClipPlaylists.length; i++) 
+            {
+                if(thisClipPlaylists[i] === list.id)
+                    if(list.creatorUN === props.user)
+                        showLists = false;
+            }
         }
+       
         if(showLists)
             return(<option value={list.title}>{list.title}</option>)
     });
@@ -376,19 +380,20 @@ const PlaylistAddDisplay = function(props)
     //Setting up the list of playlists that can be rmeoved
     let listRemNodes = "";
 
-    //Getting options to be removed from
-    //Will only show up if the clip is in any playlists
-    listRemNodes = props.playlists.map(function(list)
+    if(thisClipPlaylists.length !== 0)
     {
-        for (let i = 0; i < thisClipPlaylists.length; i++) 
+        //Getting options to be removed from
+        //Will only show up if the clip is in any playlists
+        listRemNodes = props.playlists.map(function(list)
         {
-            if(thisClipPlaylists[i] === list.id)
-                if(list.creatorUN === props.user)
-                    return(<option value={list.title}>{list.title}</option>)
-        }
-    });
-
-
+            for (let i = 0; i < thisClipPlaylists.length; i++) 
+            {
+                if(thisClipPlaylists[i] === list.id)
+                    if(list.creatorUN === props.user)
+                        return(<option value={list.title}>{list.title}</option>)
+            }
+        });
+    }
     let playlistAddDrop = 
     <div className="content-box">
         <div className="input-item">
@@ -521,14 +526,16 @@ const ClipList = function(props)
             props.clips.sort(function(a,b) {return a.numFavorites-b.numFavorites});
         }
     }
+    //If showing the playlist, load in other things
     else
     {
+        //Find what the current plaulist is based on id
         for (let i = 0; i < props.playlists.length; i++) 
         {
             if(props.playlists[i].id == props.currentList)
                 thisList = props.playlists[i];
         }
-        //console.log(props.userPlaylists);
+        //If there are no clips in the playlist, don't show anything
         if(thisList.clips.length === 0)
         {
             return(
@@ -537,15 +544,8 @@ const ClipList = function(props)
                 </div>
             )
         }
-        /*
-        for (let i = 0; i < props.userPlaylists.length; i++) 
-        {
-            if(props.userPlaylists[i].id === props.currentList)
-                thisList = props.userPlaylists[i];
-        }
-        */
     }
-    console.log(thisList);
+    
     // set faveStatus of all the clips
     for(let i = 0; i < props.userfaves.length; i++) {
         for(let j = 0; j < props.clips.length; j++) {
@@ -1906,7 +1906,6 @@ const makePost = (e) =>{
         showClips(csrf);
     }, 
     (xhr, status, error) =>{
-        console.log(xhr);
         var messageObj = JSON.parse(xhr.responseText);
         showMessage(messageObj.error);
     });
