@@ -693,6 +693,8 @@ var ClipList = function ClipList(props) {
             }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
               className: "game"
             }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
               className: "description"
             }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
               className: "char1"
@@ -718,6 +720,8 @@ var ClipList = function ClipList(props) {
             }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
               className: "game"
             }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
               className: "description"
             }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
               className: "char1"
@@ -742,6 +746,8 @@ var ClipList = function ClipList(props) {
           }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
             className: "game"
           }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
             className: "description"
           }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
             className: "char2"
@@ -765,6 +771,8 @@ var ClipList = function ClipList(props) {
           }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
             className: "game"
           }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
             className: "description"
           }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
             className: "post-date"
@@ -789,6 +797,8 @@ var ClipList = function ClipList(props) {
             }, "Creator: ", clip.creatorUN)), React.createElement("p", {
               className: "game"
             }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
               className: "description"
             }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
               className: "char1"
@@ -814,6 +824,8 @@ var ClipList = function ClipList(props) {
             }, "Creator: ", clip.creatorUN)), React.createElement("p", {
               className: "game"
             }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
               className: "description"
             }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
               className: "char1"
@@ -838,6 +850,8 @@ var ClipList = function ClipList(props) {
           }, "Creator: ", clip.creatorUN)), React.createElement("p", {
             className: "game"
           }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
             className: "description"
           }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
             className: "char2"
@@ -861,6 +875,8 @@ var ClipList = function ClipList(props) {
           }, "Creator: ", clip.creatorUN)), React.createElement("p", {
             className: "game"
           }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
             className: "description"
           }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
             className: "post-date"
@@ -892,6 +908,8 @@ var ClipList = function ClipList(props) {
                 }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                   className: "game"
                 }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                   className: "description"
                 }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                   className: "char1"
@@ -978,6 +996,8 @@ var ClipList = function ClipList(props) {
                 }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                   className: "game"
                 }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                   className: "description"
                 }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                   className: "char1"
@@ -1066,6 +1086,8 @@ var ClipList = function ClipList(props) {
                 }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                   className: "game"
                 }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                   className: "description"
                 }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                   className: "char1"
@@ -1150,6 +1172,8 @@ var ClipList = function ClipList(props) {
                 }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                   className: "game"
                 }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                   className: "description"
                 }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                   className: "char1"
@@ -1237,6 +1261,8 @@ var ClipList = function ClipList(props) {
               }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                 className: "game"
               }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                 className: "description"
               }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                 className: "char2"
@@ -1321,6 +1347,8 @@ var ClipList = function ClipList(props) {
               }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                 className: "game"
               }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                 className: "description"
               }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                 className: "char2"
@@ -1407,6 +1435,8 @@ var ClipList = function ClipList(props) {
               }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                 className: "game"
               }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                 className: "description"
               }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                 className: "post-date"
@@ -1429,7 +1459,7 @@ var ClipList = function ClipList(props) {
                 name: "_csrf",
                 value: props.csrf
               }), React.createElement("input", {
-                name: "id",
+                name: "clipID",
                 type: "hidden",
                 value: clip.id
               }), React.createElement("button", {
@@ -1489,6 +1519,8 @@ var ClipList = function ClipList(props) {
               }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                 className: "game"
               }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                 className: "description"
               }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                 className: "post-date"
@@ -1511,7 +1543,7 @@ var ClipList = function ClipList(props) {
                 name: "_csrf",
                 value: props.csrf
               }), React.createElement("input", {
-                name: "id",
+                name: "clipID",
                 type: "hidden",
                 value: clip.id
               }), React.createElement("button", {
@@ -2278,6 +2310,8 @@ var ClipList = function ClipList(props) {
                 }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                   className: "game"
                 }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                   className: "description"
                 }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                   className: "char1"
@@ -2343,6 +2377,8 @@ var ClipList = function ClipList(props) {
                 }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                   className: "game"
                 }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                   className: "description"
                 }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                   className: "char1"
@@ -2410,6 +2446,8 @@ var ClipList = function ClipList(props) {
                 }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                   className: "game"
                 }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                   className: "description"
                 }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                   className: "char1"
@@ -2473,6 +2511,8 @@ var ClipList = function ClipList(props) {
                 }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                   className: "game"
                 }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                  className: "game"
+                }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                   className: "description"
                 }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                   className: "char1"
@@ -2539,6 +2579,8 @@ var ClipList = function ClipList(props) {
               }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                 className: "game"
               }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                 className: "description"
               }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                 className: "char2"
@@ -2602,6 +2644,8 @@ var ClipList = function ClipList(props) {
               }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                 className: "game"
               }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                 className: "description"
               }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                 className: "char2"
@@ -2667,6 +2711,8 @@ var ClipList = function ClipList(props) {
               }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                 className: "game"
               }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                 className: "description"
               }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                 className: "post-date"
@@ -2728,6 +2774,8 @@ var ClipList = function ClipList(props) {
               }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
                 className: "game"
               }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+                className: "game"
+              }, React.createElement("b", null, "Number of Favorites:"), " ", clip.numFavorites), React.createElement("p", {
                 className: "description"
               }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
                 className: "post-date"
@@ -3475,7 +3523,9 @@ var makePost = function makePost(e) {
   }, 350); // create variables to make this slightly more readable
 
   var id = "#" + e.target.id;
-  var csrf = "".concat(e.target._csrf.value); // e.target.id will be the ID of the form that called makePost in the first place
+  var csrf = "".concat(e.target._csrf.value);
+  console.log(id);
+  console.log($(id).serialize()); // e.target.id will be the ID of the form that called makePost in the first place
 
   sendAjax('POST', $(id).attr("action"), $(id).serialize(), function (result) {
     showMessage(result.message);

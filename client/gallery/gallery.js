@@ -640,6 +640,7 @@ const ClipList = function(props)
                                     <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                 </h4>
                                 <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                 <p className="description"><b>Description:</b> {clip.description}</p>
                                 <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                 <p className="char2"><b>Character 2:</b> {clip.character2}</p>
@@ -662,6 +663,7 @@ const ClipList = function(props)
                                     <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                 </h4>
                                 <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                 <p className="description"><b>Description:</b> {clip.description}</p>
                                 <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                 <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -684,6 +686,7 @@ const ClipList = function(props)
                                 <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                             </h4>
                             <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                             <p className="description"><b>Description:</b> {clip.description}</p>
                             <p className="char2"><b>Character 2:</b> {clip.character2}</p>
                             <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -705,6 +708,7 @@ const ClipList = function(props)
                                 <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                             </h4>
                             <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                             <p className="description"><b>Description:</b> {clip.description}</p>
                             <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                             <iframe 
@@ -728,6 +732,7 @@ const ClipList = function(props)
                                     <span className="creator">Creator: {clip.creatorUN}</span>
                                 </h4>
                                 <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                 <p className="description"><b>Description:</b> {clip.description}</p>
                                 <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                 <p className="char2"><b>Character 2:</b> {clip.character2}</p>
@@ -750,6 +755,7 @@ const ClipList = function(props)
                                     <span className="creator">Creator: {clip.creatorUN}</span>
                                 </h4>
                                 <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                 <p className="description"><b>Description:</b> {clip.description}</p>
                                 <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                 <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -772,6 +778,7 @@ const ClipList = function(props)
                                 <span className="creator">Creator: {clip.creatorUN}</span>
                             </h4>
                             <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                             <p className="description"><b>Description:</b> {clip.description}</p>
                             <p className="char2"><b>Character 2:</b> {clip.character2}</p>
                             <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -793,6 +800,7 @@ const ClipList = function(props)
                                 <span className="creator">Creator: {clip.creatorUN}</span>
                             </h4>
                             <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                             <p className="description"><b>Description:</b> {clip.description}</p>
                             <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                             <iframe 
@@ -824,6 +832,7 @@ const ClipList = function(props)
                                             <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="char2"><b>Character 2:</b> {clip.character2}</p>
@@ -861,6 +870,7 @@ const ClipList = function(props)
                                             <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="char2"><b>Character 2:</b> {clip.character2}</p>
@@ -900,6 +910,7 @@ const ClipList = function(props)
                                             <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -936,6 +947,7 @@ const ClipList = function(props)
                                             <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -975,6 +987,7 @@ const ClipList = function(props)
                                         <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                     </h4>
                                     <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                     <p className="description"><b>Description:</b> {clip.description}</p>
                                     <p className="char2"><b>Character 2:</b> {clip.character2}</p>
                                     <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -1011,6 +1024,7 @@ const ClipList = function(props)
                                         <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                     </h4>
                                     <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                     <p className="description"><b>Description:</b> {clip.description}</p>
                                     <p className="char2"><b>Character 2:</b> {clip.character2}</p>
                                     <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -1049,6 +1063,7 @@ const ClipList = function(props)
                                         <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                     </h4>
                                     <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                     <p className="description"><b>Description:</b> {clip.description}</p>
                                     <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                                     <iframe 
@@ -1062,7 +1077,7 @@ const ClipList = function(props)
                                     </iframe>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
-                                        <input name="id" type="hidden" value={clip.id}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                     </form>
                                     <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
@@ -1084,6 +1099,7 @@ const ClipList = function(props)
                                         <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                     </h4>
                                     <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                     <p className="description"><b>Description:</b> {clip.description}</p>
                                     <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                                     <iframe 
@@ -1097,7 +1113,7 @@ const ClipList = function(props)
                                     </iframe>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
-                                        <input name="id" type="hidden" value={clip.id}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                     </form>
                                     <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
@@ -1165,6 +1181,7 @@ const ClipList = function(props)
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
                                         <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="char2"><b>Character 2:</b> {clip.character2}</p>
@@ -1205,6 +1222,7 @@ const ClipList = function(props)
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
                                         <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -1242,6 +1260,7 @@ const ClipList = function(props)
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
                                         <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
+
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -1437,6 +1456,7 @@ const ClipList = function(props)
                                             <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="char2"><b>Character 2:</b> {clip.character2}</p>
@@ -1469,6 +1489,7 @@ const ClipList = function(props)
                                             <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="char2"><b>Character 2:</b> {clip.character2}</p>
@@ -1503,6 +1524,7 @@ const ClipList = function(props)
                                             <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -1534,6 +1556,7 @@ const ClipList = function(props)
                                             <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                         </h4>
                                         <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                         <p className="description"><b>Description:</b> {clip.description}</p>
                                         <p className="char1"><b>Character 1:</b> {clip.character1}</p>
                                         <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -1568,6 +1591,7 @@ const ClipList = function(props)
                                         <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                     </h4>
                                     <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                     <p className="description"><b>Description:</b> {clip.description}</p>
                                     <p className="char2"><b>Character 2:</b> {clip.character2}</p>
                                     <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -1599,6 +1623,7 @@ const ClipList = function(props)
                                         <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                     </h4>
                                     <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                     <p className="description"><b>Description:</b> {clip.description}</p>
                                     <p className="char2"><b>Character 2:</b> {clip.character2}</p>
                                     <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
@@ -1632,6 +1657,7 @@ const ClipList = function(props)
                                         <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                     </h4>
                                     <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                     <p className="description"><b>Description:</b> {clip.description}</p>
                                     <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                                     <iframe 
@@ -1662,6 +1688,7 @@ const ClipList = function(props)
                                         <span className="creator">Creator: {clip.creatorUN} ⭐</span>
                                     </h4>
                                     <p className="game"><b>Game:</b> {clip.game}</p>
+                                        <p className="game"><b>Number of Favorites:</b> {clip.numFavorites}</p>
                                     <p className="description"><b>Description:</b> {clip.description}</p>
                                     <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
                                     <iframe 
@@ -2091,7 +2118,8 @@ const makePost = (e) =>{
     // create variables to make this slightly more readable
     const id = "#" + e.target.id;
     const csrf = `${e.target._csrf.value}`;
-
+    console.log(id);
+    console.log($(id).serialize());
     // e.target.id will be the ID of the form that called makePost in the first place
     sendAjax('POST', $(id).attr("action"), $(id).serialize(), (result) => {
         showMessage(result.message);
