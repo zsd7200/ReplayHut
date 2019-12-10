@@ -159,10 +159,10 @@ const deleteClips = (request, response) => {
       deletePromise.then(() => { res.json({ message: 'Clip deleted!' }); });
 
       // Error with deleting the clip
-      deletePromise.catch((err2) => res.json({ err2 }));
+      deletePromise.catch((err3) => res.json({ err3 }));
 
       // Return an error back if one is found
-      updatePromise.catch((err3) => res.json({ error: err3 }));
+      updatePromise.catch((err4) => res.json({ error: err4 }));
       return true;
     });
     // Returning to satisfy ESLint

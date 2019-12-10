@@ -44,7 +44,7 @@ const showClips = (csrf) =>{
     sendAjax('GET', '/getMyAccount', null, (accdata) => {
         // Retrieving the clips
         sendAjax('GET', '/getClips', null, (clipdata) => {
-            ReactDOM.render(<ClipList clips={clipdata.clips} userfaves={accdata.account.favorites} user={accdata.account.username} csrf={csrf} use="gallery" />, document.querySelector("#clips"));
+            ReactDOM.render(<ClipList clips={clipdata.clips} userfaves={accdata.account.favorites} user={accdata.account.username} csrf={csrf}  use="gallery" />, document.querySelector("#clips"));
         },
         (xhr, status, error) =>{
             var messageObj = JSON.parse(xhr.responseText);
@@ -255,13 +255,11 @@ const removeFromPlaylist = (e) =>{
 // Form for creating a new playlist
 const PlaylistForm = function(props)
 {
-    checkPremium();
-    
     if(!props.clipID)
     {
         return(
             <div className="content-box">
-                <form id="backForm" onSubmit={showAddPlaylist} name="backForm">
+            <form id="backForm" onSubmit={showAddPlaylist} name="backForm">
                     <input type="hidden" name="_csrf" value={props.csrf}/>
                     <input className="back pointer" type="submit" value="Go back"/>
                 </form>
@@ -284,12 +282,11 @@ const PlaylistForm = function(props)
     {
         return(
             <div className="content-box">
-                <form id="backForm" onSubmit={showAddPlaylist} name="backForm">
+            <form id="backForm" onSubmit={showAddPlaylist} name="backForm">
                     <input type="hidden" name="_csrf" value={props.csrf}/>
                     <input type="hidden" name="clipID" value={props.clipID} />
                     <input className="back pointer" type="submit" value="Go back"/>
                 </form>
-                
                 <form id="createForm" onSubmit={createPlaylist} name="createForm" action="/createPlaylist" method="POST" classname="createForm">
                     <h3 id="requiredHeader">Name your new playlist: </h3>
                     
@@ -310,8 +307,6 @@ const PlaylistForm = function(props)
 // List of playlists
 const PlaylistList = function(props)
 {
-    checkPremium();
-    
     //If there are no playlists on the user's account, display that there are none
     if(props.listCount === 0)
     {
@@ -618,22 +613,204 @@ const ClipList = function(props)
                     playlistCheck = true;
             }
         }
-
+        
         let clipCheck = false;
         if(props.use === 'gallery')
         {
-
             if(userCheck && gameCheck && charCheck) {
                 clipCheck = true;
-            
-            // increment numclips for every clip so every fav/rem/delete form has a unique ID
-            numClips++;
+                
+                // increment numclips for every clip so every fav/rem/delete form has a unique ID
+                numClips++;
             }
         }
         else
         {
-            if(playlistCheck)
+            if(playlistCheck) {
                 clipCheck = true;
+                numClips++;
+            }
+        }
+
+        // if playlist check passes, don't add any of the bottom buttons
+        if(playlistCheck) {
+            if(clip.creatorPremStatus) {
+                if(clip.character1 !== '') {
+                    if(clip.character2 !== '') {
+                        return(
+                            <div className="clip">
+                                <h4 className="clip-title"><u>{clip.title}</u>
+                                    <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                </h4>
+                                <p className="game"><b>Game:</b> {clip.game}</p>
+                                <p className="description"><b>Description:</b> {clip.description}</p>
+                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                <iframe 
+                                    width={ytWidth} 
+                                    height={ytHeight} 
+                                    src={clip.youtube} 
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                    >
+                                </iframe>
+                            </div>
+                        );
+                    } else {
+                        return(
+                            <div className="clip">
+                                <h4 className="clip-title"><u>{clip.title}</u>
+                                    <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                                </h4>
+                                <p className="game"><b>Game:</b> {clip.game}</p>
+                                <p className="description"><b>Description:</b> {clip.description}</p>
+                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                <iframe 
+                                    width={ytWidth} 
+                                    height={ytHeight} 
+                                    src={clip.youtube} 
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                    >
+                                </iframe>
+                            </div>
+                        );
+                    }
+                } else if (clip.character2 !== '') {
+                    return(
+                        <div className="clip">
+                            <h4 className="clip-title"><u>{clip.title}</u>
+                                <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                            </h4>
+                            <p className="game"><b>Game:</b> {clip.game}</p>
+                            <p className="description"><b>Description:</b> {clip.description}</p>
+                            <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                            <iframe 
+                                width={ytWidth} 
+                                height={ytHeight} 
+                                src={clip.youtube} 
+                                frameBorder="0" 
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                allowFullScreen
+                                >
+                            </iframe>
+                        </div>
+                    );
+                } else {
+                    return(
+                        <div className="clip">
+                            <h4 className="clip-title"><u>{clip.title}</u>
+                                <span className="creator">Creator: {clip.creatorUN} ⭐</span>
+                            </h4>
+                            <p className="game"><b>Game:</b> {clip.game}</p>
+                            <p className="description"><b>Description:</b> {clip.description}</p>
+                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                            <iframe 
+                                width={ytWidth} 
+                                height={ytHeight} 
+                                src={clip.youtube} 
+                                frameBorder="0" 
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                allowFullScreen
+                                >
+                            </iframe>
+                        </div>
+                    );
+                }
+            } else {
+                if(clip.character1 !== '') {
+                    if(clip.character2 !== '') {
+                        return(
+                            <div className="clip">
+                                <h4 className="clip-title"><u>{clip.title}</u>
+                                    <span className="creator">Creator: {clip.creatorUN}</span>
+                                </h4>
+                                <p className="game"><b>Game:</b> {clip.game}</p>
+                                <p className="description"><b>Description:</b> {clip.description}</p>
+                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                <iframe 
+                                    width={ytWidth} 
+                                    height={ytHeight} 
+                                    src={clip.youtube} 
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                    >
+                                </iframe>
+                            </div>
+                        );
+                    } else {
+                        return(
+                            <div className="clip">
+                                <h4 className="clip-title"><u>{clip.title}</u>
+                                    <span className="creator">Creator: {clip.creatorUN}</span>
+                                </h4>
+                                <p className="game"><b>Game:</b> {clip.game}</p>
+                                <p className="description"><b>Description:</b> {clip.description}</p>
+                                <p className="char1"><b>Character 1:</b> {clip.character1}</p>
+                                <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                                <iframe 
+                                    width={ytWidth} 
+                                    height={ytHeight} 
+                                    src={clip.youtube} 
+                                    frameBorder="0" 
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowFullScreen
+                                    >
+                                </iframe>
+                            </div>
+                        );
+                    }
+                } else if (clip.character2 !== '') {
+                    return(
+                        <div className="clip">
+                            <h4 className="clip-title"><u>{clip.title}</u>
+                                <span className="creator">Creator: {clip.creatorUN}</span>
+                            </h4>
+                            <p className="game"><b>Game:</b> {clip.game}</p>
+                            <p className="description"><b>Description:</b> {clip.description}</p>
+                            <p className="char2"><b>Character 2:</b> {clip.character2}</p>
+                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                            <iframe 
+                                width={ytWidth} 
+                                height={ytHeight} 
+                                src={clip.youtube} 
+                                frameBorder="0" 
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                allowFullScreen
+                                >
+                            </iframe>
+                        </div>
+                    );
+                } else {
+                    return(
+                        <div className="clip">
+                            <h4 className="clip-title"><u>{clip.title}</u>
+                                <span className="creator">Creator: {clip.creatorUN}</span>
+                            </h4>
+                            <p className="game"><b>Game:</b> {clip.game}</p>
+                            <p className="description"><b>Description:</b> {clip.description}</p>
+                            <p className="post-date"><b>Posted:</b> {formatDate(clip.postDate)}</p>
+                            <iframe 
+                                width={ytWidth} 
+                                height={ytHeight} 
+                                src={clip.youtube} 
+                                frameBorder="0" 
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                                allowFullScreen
+                                >
+                            </iframe>
+                        </div>
+                    );
+                }
+            }
         }
 
         // If all the checks pass, display that clip
@@ -1801,8 +1978,8 @@ const ClipList = function(props)
         <div className="clipList">
             {clipNodes}
         </div>
-    );
-};
+    )
+}
 
 
 const SearchBar = function(props)
