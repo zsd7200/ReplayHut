@@ -167,16 +167,18 @@ const addToPlaylist = (e) =>{
     e.preventDefault();
 
     //Storing temporary values to be changed and sent
-    let playlistValue = $("#playlistDropList").val();
+    let playlistValue = $("#playlistAddDropList").val();
     let title = e.target.title;
     let playlistid = e.target.playlistID;
     let csrf = e.target._csrf.value;
+    console.log(playlistValue);
 
     //If a new playlist is not going to be created
     if(playlistValue !== 'newList')
     {
         //Changing the value that is going to be sent
         title.value = playlistValue;
+        console.log(title.value);
         //Getting the account to get the id of the playlist selected
         sendAjax('GET', '/getMyAccount', null, (accdata) => {
 
@@ -185,8 +187,15 @@ const addToPlaylist = (e) =>{
             {
                 //If the title of the playlist is the same as the current one, save the ID
                 if(accdata.account.savedPlaylists[i].title = playlistValue)
-                    playlistid.value = accdata.account.savedPlaylists[i].id;
+                {
+                    console.log(accdata.account.savedPlaylists[i].title);
+                    console.log(accdata.account.savedPlaylists[i].id);
+
+                    playlistid.value = accdata.account.savedPlaylists[i].id; 
+                    break;
+                }
             }
+            console.log(document.querySelector("#submitAddPlaylist"));
             //Send the request
             sendAjax('POST', '/addToPlaylist', $("#submitAddPlaylist").serialize(), (result) => {
                 showMessage(result.message)
@@ -215,7 +224,7 @@ const removeFromPlaylist = (e) =>{
     e.preventDefault();
 
     //Temporary variables to be changed and sent
-    let playlistValue = $("#playlistDropList").val();
+    let playlistValue = $("#playlistRemDropList").val();
     let title = e.target.title;
     let playlistid = e.target.playlistID;
     let csrf = e.target._csrf.value;
@@ -392,11 +401,11 @@ const PlaylistAddDisplay = function(props)
     let playlistAddDrop = 
     <div className="content-box">
         <div className="input-item">
-            <select id="playlistDropList">
+            <select id="playlistAddDropList">
                 <option value="newList">Create new Playlist</option>
                 {listAddNodes}
             </select>
-            <label className="input-label" htmlFor="playlistDropList">Select Playlist to Add to: </label>
+            <label className="input-label" htmlFor="playlistAddDropList">Select Playlist to Add to: </label>
         </div>        
         
         <form id="submitAddPlaylist" onSubmit={addToPlaylist} name="playAddForm">
@@ -413,10 +422,10 @@ const PlaylistAddDisplay = function(props)
         playlistRemDrop =
         <div className="content-box">
             <div className="input-item">
-                <select id="playlistDropList">
+                <select id="playlistRemDropList">
                     {listRemNodes}
                 </select>
-                <label className="input-label" htmlFor="playlistDropList">Select Playlist to Remove from: </label>
+                <label className="input-label" htmlFor="playlistRemDropList">Select Playlist to Remove from: </label>
             </div>
         
             <form id="submitRemPlaylist" onSubmit={removeFromPlaylist} name="playRemForm">

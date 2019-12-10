@@ -184,22 +184,30 @@ var createPlaylist = function createPlaylist(e) {
 var addToPlaylist = function addToPlaylist(e) {
   e.preventDefault(); //Storing temporary values to be changed and sent
 
-  var playlistValue = $("#playlistDropList").val();
+  var playlistValue = $("#playlistAddDropList").val();
   var title = e.target.title;
   var playlistid = e.target.playlistID;
-  var csrf = e.target._csrf.value; //If a new playlist is not going to be created
+  var csrf = e.target._csrf.value;
+  console.log(playlistValue); //If a new playlist is not going to be created
 
   if (playlistValue !== 'newList') {
     //Changing the value that is going to be sent
-    title.value = playlistValue; //Getting the account to get the id of the playlist selected
+    title.value = playlistValue;
+    console.log(title.value); //Getting the account to get the id of the playlist selected
 
     sendAjax('GET', '/getMyAccount', null, function (accdata) {
       //Looping through the saved playlists on the account to check which playlist is being sent
       for (var i = 0; i < accdata.account.savedPlaylists.length; i++) {
         //If the title of the playlist is the same as the current one, save the ID
-        if (accdata.account.savedPlaylists[i].title = playlistValue) playlistid.value = accdata.account.savedPlaylists[i].id;
-      } //Send the request
+        if (accdata.account.savedPlaylists[i].title = playlistValue) {
+          console.log(accdata.account.savedPlaylists[i].title);
+          console.log(accdata.account.savedPlaylists[i].id);
+          playlistid.value = accdata.account.savedPlaylists[i].id;
+          break;
+        }
+      }
 
+      console.log(document.querySelector("#submitAddPlaylist")); //Send the request
 
       sendAjax('POST', '/addToPlaylist', $("#submitAddPlaylist").serialize(), function (result) {
         showMessage(result.message);
@@ -225,7 +233,7 @@ var addToPlaylist = function addToPlaylist(e) {
 var removeFromPlaylist = function removeFromPlaylist(e) {
   e.preventDefault(); //Temporary variables to be changed and sent
 
-  var playlistValue = $("#playlistDropList").val();
+  var playlistValue = $("#playlistRemDropList").val();
   var title = e.target.title;
   var playlistid = e.target.playlistID;
   var csrf = e.target._csrf.value;
@@ -443,12 +451,12 @@ var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
   }, React.createElement("div", {
     className: "input-item"
   }, React.createElement("select", {
-    id: "playlistDropList"
+    id: "playlistAddDropList"
   }, React.createElement("option", {
     value: "newList"
   }, "Create new Playlist"), listAddNodes), React.createElement("label", {
     className: "input-label",
-    htmlFor: "playlistDropList"
+    htmlFor: "playlistAddDropList"
   }, "Select Playlist to Add to: ")), React.createElement("form", {
     id: "submitAddPlaylist",
     onSubmit: addToPlaylist,
@@ -482,10 +490,10 @@ var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
     }, React.createElement("div", {
       className: "input-item"
     }, React.createElement("select", {
-      id: "playlistDropList"
+      id: "playlistRemDropList"
     }, listRemNodes), React.createElement("label", {
       className: "input-label",
-      htmlFor: "playlistDropList"
+      htmlFor: "playlistRemDropList"
     }, "Select Playlist to Remove from: ")), React.createElement("form", {
       id: "submitRemPlaylist",
       onSubmit: removeFromPlaylist,
