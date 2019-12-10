@@ -24,6 +24,7 @@ const router = (app) => {
   app.get('/getPlaylists', mid.requiresLogin, controllers.Playlist.getPlaylists);
   app.get('/playlists', mid.requiresSecure, mid.requiresLogin, controllers.Playlist.playlistPage);
   app.post('/addToPlaylist', mid.requiresLogin, controllers.Playlist.addToPlaylist);
+  app.post('/removeFromPlaylist', mid.requiresLogin, controllers.Playlist.removeFromPlaylist);
 
   app.post('/deleteClips', mid.requiresLogin, controllers.Replay.deleteClips);
   app.post('/createClip', mid.requiresLogin, controllers.Replay.createClip);

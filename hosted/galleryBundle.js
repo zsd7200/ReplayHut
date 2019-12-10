@@ -5,7 +5,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var ytWidth = 430;
 var ytHeight = 242;
 var numClips = 0;
-var favesOnly = false;
+var favesOnly = false; //Format date for use in displaying on the clip
 
 var formatDate = function formatDate(date) {
   // save a new date based on UTC date
@@ -37,7 +37,8 @@ var formatDate = function formatDate(date) {
   newDate += hour + ":" + minute + ":" + second + " " + amPm; // time
 
   return newDate;
-};
+}; //Show the clips in the gallery
+
 
 var showClips = function showClips(csrf) {
   // get account data so the username and favorites can be passed in
@@ -59,13 +60,13 @@ var showClips = function showClips(csrf) {
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);
   });
-};
+}; //Show the playlists on the playlists page
+
 
 var showPlaylists = function showPlaylists(csrf) {
-  // get account data so the username and favorites can be passed in
+  // get account data so the username can be used
   sendAjax('GET', '/getMyAccount', null, function (accdata) {
-    console.log(accdata.account.savedPlaylists); // Retrieving the clips
-
+    // Retrieving the playlists so they can be shown
     sendAjax('GET', '/getPlaylists', null, function (playlistData) {
       ReactDOM.render(React.createElement(PlaylistList, {
         playlists: playlistData.playlists,
@@ -81,25 +82,26 @@ var showPlaylists = function showPlaylists(csrf) {
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);
   });
-};
+}; //Showing the page to create a playlist for the first time, no clip 
+
 
 var showCreatePlaylist = function showCreatePlaylist(csrf) {
   ReactDOM.render(React.createElement(PlaylistForm, {
     csrf: csrf
   }), document.querySelector("#playlists"));
-};
+}; //Used to display a specific playlist
+
 
 var displayPlaylist = function displayPlaylist(e) {
-  e.preventDefault();
-  var curList = e.target.listID.value; //console.log(curList);
-  // get account data so the username and favorites can be passed in
+  e.preventDefault(); //Temporary variable to be used
+
+  var curList = e.target.listID.value; // get account data so the username and favorites can be passed in
 
   sendAjax('GET', '/getMyAccount', null, function (accdata) {
-    console.log(accdata.account.savedPlaylists); // Retrieving the clips
-
+    // Retrieving the clips so they can be displayed
     sendAjax('GET', '/getClips', null, function (clipdata) {
+      //Retrieving the playlists to be used in displaying the correct clips
       sendAjax('GET', '/getPlaylists', null, function (playlistData) {
-        //ReactDOM.render(<PlaylistList playlists={playlistData.playlists} listCount={accdata.account.numPlaylists} user={accdata.account.username} csrf={csrf}  />, document.querySelector("#playlists"));
         ReactDOM.render(React.createElement(ClipList, {
           clips: clipdata.clips,
           userfaves: accdata.account.favorites,
@@ -121,38 +123,54 @@ var displayPlaylist = function displayPlaylist(e) {
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);
   });
-};
+}; //Displaying the area which allows the user to add or remove a clip from a playlist
+
 
 var showAddPlaylist = function showAddPlaylist(e) {
-  e.preventDefault();
+  e.preventDefault(); //Temporary variables to be used later
+
   var csrf = e.target._csrf.value;
-  var id = e.target.clipID.value; // get account data so the username and favorites can be passed in
+  var id = e.target.clipID.value; // get account data so the username can be used 
 
   sendAjax('GET', '/getMyAccount', null, function (accdata) {
-    console.log("here");
-    ReactDOM.render(React.createElement(PlaylistAddDisplay, {
-      csrf: csrf,
-      clipID: id,
-      userLists: accdata.account.savedPlaylists
-    }), document.querySelector("#clips"));
-    document.querySelector("#search").innerHTML = "";
+    // Getting the clips to be checked against
+    sendAjax('GET', '/getClips', null, function (clipdata) {
+      //Getting the playlists so they can be added to
+      sendAjax('GET', '/getPlaylists', null, function (playlistData) {
+        ReactDOM.render(React.createElement(PlaylistAddDisplay, {
+          playlists: playlistData.playlists,
+          csrf: csrf,
+          clipID: id,
+          user: accdata.account.username,
+          clips: clipdata.clips
+        }), document.querySelector("#clips"));
+        document.querySelector("#search").innerHTML = "";
+      }, function (xhr, status, error) {
+        var messageObj = JSON.parse(xhr.responseText);
+        showMessage(messageObj.error);
+      });
+    }, function (xhr, status, error) {
+      var messageObj = JSON.parse(xhr.responseText);
+      showMessage(messageObj.error);
+    });
   }, function (xhr, status, error) {
-    console.log("there");
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);
   });
-};
+}; //Creating a new playlist
+
 
 var createPlaylist = function createPlaylist(e) {
   e.preventDefault();
   $("#terryMessage").animate({
     width: 'hide'
-  }, 350);
+  }, 350); //Making sure the fields are filled out
 
   if ($("#clipTitle").val() == '') {
     showMessage("Hey! Make sure you fill out all the fields!");
     return false;
-  }
+  } //Sending the request to add the playlist
+
 
   sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), function (result) {
     showMessage(result.message);
@@ -160,21 +178,28 @@ var createPlaylist = function createPlaylist(e) {
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);
   });
-};
+}; //Adding a clip to a playlist
+
 
 var addToPlaylist = function addToPlaylist(e) {
-  e.preventDefault();
+  e.preventDefault(); //Storing temporary values to be changed and sent
+
   var playlistValue = $("#playlistDropList").val();
   var title = e.target.title;
   var playlistid = e.target.playlistID;
-  var csrf = e.target._csrf.value;
+  var csrf = e.target._csrf.value; //If a new playlist is not going to be created
 
   if (playlistValue !== 'newList') {
-    title.value = playlistValue;
+    //Changing the value that is going to be sent
+    title.value = playlistValue; //Getting the account to get the id of the playlist selected
+
     sendAjax('GET', '/getMyAccount', null, function (accdata) {
+      //Looping through the saved playlists on the account to check which playlist is being sent
       for (var i = 0; i < accdata.account.savedPlaylists.length; i++) {
+        //If the title of the playlist is the same as the current one, save the ID
         if (accdata.account.savedPlaylists[i].title = playlistValue) playlistid.value = accdata.account.savedPlaylists[i].id;
-      }
+      } //Send the request
+
 
       sendAjax('POST', '/addToPlaylist', $("#submitAddPlaylist").serialize(), function (result) {
         showMessage(result.message);
@@ -187,13 +212,43 @@ var addToPlaylist = function addToPlaylist(e) {
       var messageObj = JSON.parse(xhr.responseText);
       showMessage(messageObj.error);
     });
-  } else {
-    ReactDOM.render(React.createElement(PlaylistForm, {
-      csrf: e.target._csrf.value,
-      clipID: e.target.clipID.value
-    }), document.querySelector("#clips"));
-  }
-};
+  } //If a new playlist is being created, render the page for it
+  else {
+      ReactDOM.render(React.createElement(PlaylistForm, {
+        csrf: e.target._csrf.value,
+        clipID: e.target.clipID.value
+      }), document.querySelector("#clips"));
+    }
+}; //Removing a clip from a playlist
+
+
+var removeFromPlaylist = function removeFromPlaylist(e) {
+  e.preventDefault(); //Temporary variables to be changed and sent
+
+  var playlistValue = $("#playlistDropList").val();
+  var title = e.target.title;
+  var playlistid = e.target.playlistID;
+  var csrf = e.target._csrf.value;
+  title.value = playlistValue; //Getting the account to check for the specific playlist
+
+  sendAjax('GET', '/getMyAccount', null, function (accdata) {
+    for (var i = 0; i < accdata.account.savedPlaylists.length; i++) {
+      if (accdata.account.savedPlaylists[i].title = playlistValue) playlistid.value = accdata.account.savedPlaylists[i].id;
+    }
+
+    sendAjax('POST', '/removeFromPlaylist', $("#submitRemPlaylist").serialize(), function (result) {
+      showMessage(result.message);
+      setup(csrf);
+    }, function (xhr, status, error) {
+      var messageObj = JSON.parse(xhr.responseText);
+      showMessage(messageObj.error);
+    });
+  }, function (xhr, status, error) {
+    var messageObj = JSON.parse(xhr.responseText);
+    showMessage(messageObj.error);
+  });
+}; // Form for creating a new playlist
+
 
 var PlaylistForm = function PlaylistForm(props) {
   if (!props.clipID) {
@@ -269,9 +324,11 @@ var PlaylistForm = function PlaylistForm(props) {
       value: "Submit Clip"
     })));
   }
-};
+}; // List of playlists
+
 
 var PlaylistList = function PlaylistList(props) {
+  //If there are no playlists on the user's account, display that there are none
   if (props.listCount === 0) {
     return React.createElement("div", {
       className: "loader-container"
@@ -280,10 +337,13 @@ var PlaylistList = function PlaylistList(props) {
         return showCreatePlaylist(props.csrf);
       }
     }, "Make one now!"));
-  }
+  } //Variable to increment the number of playlists being shown
 
-  var playlistCount = 0;
+
+  var playlistCount = 0; //Making elements to show the playlists
+
   var listNodes = props.playlists.map(function (list) {
+    //Making sure that the playlist is made by the current user
     var userCheck = false;
     if (props.user === list.creatorUN) userCheck = true;
 
@@ -317,23 +377,48 @@ var PlaylistList = function PlaylistList(props) {
   return React.createElement("div", {
     className: "playlistList"
   }, listNodes);
-};
+}; // Displaying the ability to add or remove a clip from playlists
+
 
 var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
-  var listSelect = React.createElement("option", {
-    value: "newList"
-  }, "Create new Playlist");
-  var listNodes = props.userLists.map(function (list) {
-    return React.createElement("option", {
+  //Storing the current playlists from a clip
+  var thisClipPlaylists; // Finding the current clip's list of playlists
+
+  for (var i = 0; i < props.clips.length; i++) {
+    if (props.clips[i].id === props.clipID) thisClipPlaylists = props.clips[i].inPlaylists;
+  } //Getting the options for playlists to be added to
+  //Cannot be ones that it is already in
+
+
+  var listAddNodes = props.playlists.map(function (list) {
+    var showLists = true; //Checking if the current clip is in the array of playlists the clip is in
+
+    for (var _i = 0; _i < thisClipPlaylists.length; _i++) {
+      if (thisClipPlaylists[_i] === list.id) if (list.creatorUN === props.user) showLists = false;
+    }
+
+    if (showLists) return React.createElement("option", {
       value: list.title
     }, list.title);
+  }); //Setting up the list of playlists that can be rmeoved
+
+  var listRemNodes = ""; //Getting options to be removed from
+  //Will only show up if the clip is in any playlists
+
+  listRemNodes = props.playlists.map(function (list) {
+    for (var _i2 = 0; _i2 < thisClipPlaylists.length; _i2++) {
+      if (thisClipPlaylists[_i2] === list.id) if (list.creatorUN === props.user) return React.createElement("option", {
+        value: list.title
+      }, list.title);
+    }
   });
-  console.log(props.clipID);
-  var playlistDrop = React.createElement("div", {
+  var playlistAddDrop = React.createElement("div", {
     className: "input-item"
   }, React.createElement("select", {
     id: "playlistDropList"
-  }, listSelect, listNodes), React.createElement("label", {
+  }, React.createElement("option", {
+    value: "newList"
+  }, "Create new Playlist"), listAddNodes), React.createElement("label", {
     className: "input-label",
     htmlFor: "playlistDropList"
   }, "Select Playlist to Add to: "), React.createElement("form", _defineProperty({
@@ -360,9 +445,45 @@ var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
     type: "submit",
     title: "Add to Playlist"
   }, "Add to Playlist")));
+  var playlistRemDrop = "";
+
+  if (listRemNodes != "") {
+    playlistRemDrop = React.createElement("div", {
+      className: "input-item"
+    }, React.createElement("select", {
+      id: "playlistDropList"
+    }, listRemNodes), React.createElement("label", {
+      className: "input-label",
+      htmlFor: "playlistDropList"
+    }, "Select Playlist to Remove from: "), React.createElement("form", _defineProperty({
+      id: "submitRemPlaylist",
+      onSubmit: removeFromPlaylist,
+      name: "playRemForm"
+    }, "name", "clipForm"), React.createElement("input", {
+      type: "hidden",
+      name: "_csrf",
+      value: props.csrf
+    }), React.createElement("input", {
+      name: "clipID",
+      type: "hidden",
+      value: props.clipID
+    }), React.createElement("input", {
+      name: "title",
+      type: "hidden",
+      value: ""
+    }), React.createElement("input", {
+      name: "playlistID",
+      type: "hidden",
+      value: ""
+    }), React.createElement("button", {
+      type: "submit",
+      title: "Add to Playlist"
+    }, "Remove From Playlist")));
+  }
+
   return React.createElement("div", {
     id: "playlistAdd"
-  }, playlistDrop);
+  }, playlistAddDrop, playlistRemDrop);
 };
 
 var ClipList = function ClipList(props) {
@@ -470,9 +591,9 @@ var ClipList = function ClipList(props) {
 
   console.log(thisList); // set faveStatus of all the clips
 
-  for (var _i = 0; _i < props.userfaves.length; _i++) {
+  for (var _i3 = 0; _i3 < props.userfaves.length; _i3++) {
     for (var j = 0; j < props.clips.length; j++) {
-      if (props.userfaves[_i] === props.clips[j].id) {
+      if (props.userfaves[_i3] === props.clips[j].id) {
         props.clips[j].faveStatus = true;
         break;
       }
@@ -480,8 +601,8 @@ var ClipList = function ClipList(props) {
   } // set current user to the active user
 
 
-  for (var _i2 = 0; _i2 < props.clips.length; _i2++) {
-    props.clips[_i2].currUser = props.user;
+  for (var _i4 = 0; _i4 < props.clips.length; _i4++) {
+    props.clips[_i4].currUser = props.user;
   } // Displaying each clip
 
 
@@ -509,8 +630,8 @@ var ClipList = function ClipList(props) {
         }
       }
     } else {
-      for (var _i3 = 0; _i3 < thisList.clips.length; _i3++) {
-        if (thisList.clips[_i3] === clip.id) playlistCheck = true;
+      for (var _i5 = 0; _i5 < thisList.clips.length; _i5++) {
+        if (thisList.clips[_i5] === clip.id) playlistCheck = true;
       }
     } // increment numclips for every clip so every fav/rem/delete form has a unique ID
 
@@ -2934,8 +3055,8 @@ var remDeletedFavorites = function remDeletedFavorites(clips, userfaves) {
 
 
   if (indexesToDelete.length > 0) {
-    for (var _i4 = 0; _i4 < indexesToDelete.length; _i4++) {
-      userfaves.splice(indexesToDelete[_i4], 1);
+    for (var _i6 = 0; _i6 < indexesToDelete.length; _i6++) {
+      userfaves.splice(indexesToDelete[_i6], 1);
     }
   } // return userfaves
 

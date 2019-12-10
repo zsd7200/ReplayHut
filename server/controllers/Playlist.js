@@ -9,12 +9,12 @@ const { Replays } = models;
 const { Account } = models;
 const { Playlist } = models;
 
-const app = require('../app.js');
+// const app = require('../app.js');
 
 // Rendering pages
 const playlistPage = (req, res) => { res.render('playlist', { csrfToken: req.csrfToken() }); };
 
-// Used to create a 'clip' which is saved in the database
+// Used to create a playlist which is saved in the database
 const createPlaylist = (req, res) => {
   // Making sure all of the required fields are filled out
   if (!req.body.title) {
@@ -30,9 +30,13 @@ const createPlaylist = (req, res) => {
 
     // Increasing their amount of clips
     foundUser.numPlaylists++;
-    console.log(req.body.clipID);
+
+    // Creating a var to hold the new playlist data
     let playlistData;
+
+    // If this is being created with a clip already selected, add that to the list
     if (req.body.clipID) {
+      // Temporary array
       const tempclips = [req.body.clipID];
       // Creating the necessary information for a new clip
       playlistData = {
@@ -43,6 +47,20 @@ const createPlaylist = (req, res) => {
         clips: tempclips,
         numEntries: 1,
       };
+
+      // Finding the clip in question to update its array of the playlists its included in
+      Replays.ReplayModel.searchById(req.body.clipID, (err3, doc3) => {
+        if (err3) return res.status(400).json({ error: err3 });
+        // If the clip is found, add this playlists to its array of playlists
+        if (doc3) {
+          const tempClip = doc3;
+          tempClip.inPlaylists.push(playlistData.id);
+          tempClip.save();
+        }
+        return true;
+      });
+
+      // If there is no clip being used to create this playlist, do not ad it initially
     } else {
       playlistData = {
         title: req.body.title,
@@ -55,8 +73,10 @@ const createPlaylist = (req, res) => {
     // Creating a new clip with the data
     const newList = new Playlist.PlaylistModel(playlistData);
 
+    // Saving the basic info of playlists created by this account
     foundUser.savedPlaylists.push(newList);
-    // Saving the clip to the database
+
+    // Saving the playlist to the database
     const listPromise = newList.save();
 
     listPromise.then(() => res.json({ message: 'Playlist created!' }));
@@ -69,86 +89,110 @@ const createPlaylist = (req, res) => {
     // Catching errors with the user's data
     updatePromise.catch((err2) => res.json({ err2 }));
 
+    // Must return true to comply with ESLint
+    return true;
+  });
+  return true;
+};
+
+// Adding a clip to a playlist and updating both the clip and playlsit
+const addToPlaylist = (req, res) => {
+  // Finding the current Playlist
+  Playlist.PlaylistModel.searchById(req.body.playlistID, (err, doc) => {
+    // Error checks
+    if (err) return res.status(400).json({ error: err });
+    if (!doc) return res.status(400).json({ error: 'No playlist with that name found' });
+
+    // If no error, create a temp variable to store changes
+    const foundList = doc;
+
+    // Add the clip to the array stored in the playlist
+    foundList.clips.push(req.body.clipID);
+
+    // Increase the count of clips
+    foundList.numEntries++;
+
+    // Finding the clip in question to update its array of the playlists its included in
+    Replays.ReplayModel.searchById(req.body.clipID, (err2, doc2) => {
+      if (err2) return res.status(400).json({ error: err2 });
+      if (doc2) {
+        const tempClip = doc2;
+        tempClip.inPlaylists.push(foundList.id);
+        tempClip.save();
+      }
+      return true;
+    });
+
+    // Saving the list to the database
+    const listPromise = foundList.save();
+
+    listPromise.then(() => res.json({ message: 'Clip added to Playlist!' }));
+
+    listPromise.catch((err3) => res.status(400).json({ error: err3 }));
+
     // Must return true to comply with
     return true;
   });
   return true;
 };
 
-const addToPlaylist = (req, res) => {
-  // Finding the current account
-  Account.AccountModel.findByUsername(req.session.account.username, (err, doc) => {
-    // Error check
-    if (err) return res.json({ error: err });
+// Used to remove a clip from a playlist and update both the list and clip
+const removeFromPlaylist = (req, res) => {
+  // Finding the current Playlist
+  Playlist.PlaylistModel.searchById(req.body.playlistID, (err, doc) => {
+    if (err) return res.status(400).json({ error: err });
 
-    Playlist.PlaylistModel.searchById(req.body.playlistID, (err2, doc2) => {
+    if (!doc) return res.status(400).json({ error: 'No playlist with that name found' });
+
+    // If no error, create a temp variable to store changes
+    const foundList = doc;
+
+    // Finding the index of the clip being removed from the playlist
+    const index = foundList.clips.indexOf(req.body.clipID);
+    if (index !== -1) { // if req.body is found in array
+      foundList.clips.splice(index, 1); // cut favorites out of array
+    }
+
+    // Decrementing the number of entries in the playlist
+    foundList.numEntries--;
+
+    // Finding the clip in question to update its array of the playlists its included in
+    Replays.ReplayModel.searchById(req.body.clipID, (err2, doc2) => {
+      // Error check
       if (err2) return res.status(400).json({ error: err2 });
-
-      if (!doc2) return res.status(400).json({ error: 'No playlist with that name found' });
-
-      // If no error, create a temp variable to store changes
-      const foundUser = doc;
-      const foundList = doc2;
-      foundList.clips.push(req.body.clipID);
-      foundList.numEntries++;
-
-      
-      //console.log(foundUser.savedPlaylists);
-      /*let tempArray = foundUser.savedPlaylists;
-      console.log(tempArray);
-      for (let i = 0; i < tempArray.length; i++) {
-        if (tempArray[i].id = foundList.id) 
-        {
-          tempArray[i] = foundList;
-          //foundUser.savedPlaylists.updateOne({id:foundList.id}, foundList);
-          //console.log('break');
-          //console.log(foundUser.savedPlaylists[i]);
+      // If the clip is found, update its array
+      if (doc2) {
+        const tempClip = doc;
+        const index2 = tempClip.inPlaylists.indexOf(foundList.id);
+        if (index2 !== -1) { // if the playlist is in the array
+          tempClip.inPlaylists.splice(index, 1); // cut playlist out of array
         }
+        tempClip.save();
       }
-      console.log(tempArray);
-      console.log("1");
-      foundUser.savedPlaylists.push(tempArray);
-      //foundUser.savedPlaylists.splice(0,1);
-      console.log(foundUser.savedPlaylists);
-      console.log("2");
-
-      
-      console.log(foundUser.savedPlaylists);
-
-      console.log("3");
-
-      console.log(foundUser.savedPlaylists);
-      */
-      // Saving the clip to the database
-      const listPromise = foundList.save();
-
-      listPromise.then(() => res.json({ message: 'Clip added to Playlist!' }));
-
-      listPromise.catch((err3) => res.status(400).json({ error: err3 }));
-
-      // Handling promise to reassign the user's info
-      const updatePromise = foundUser.save();
-      updatePromise.then(() => Account.AccountModel.findByUsername(req.session.account.username, (err, doc3) => {console.log(doc3)}));
-
-      // Catching errors with the user's data
-      updatePromise.catch((err4) => res.json({ err4 }));
-
-      // Must return true to comply with
       return true;
     });
+
+    // Saving the playlist to the database
+    const listPromise = foundList.save();
+
+    listPromise.then(() => res.json({ message: 'Clip removed from Playlist!' }));
+
+    listPromise.catch((err3) => res.status(400).json({ error: err3 }));
+
+    // Must return true to comply with ESLint
+    return true;
   });
   return true;
 };
 
-// Retrieves all clips
+// Retrieves all playlists
 const getPlaylists = (request, response) => {
   // Set up the response
   const res = response;
 
-  // Sending back users
+  // Sending back playlists
   return Playlist.PlaylistModel.find((err, docs) => {
     if (err) return res.status(400).json({ err });
-
     return res.json({ playlists: docs });
   });
 };
@@ -158,3 +202,4 @@ module.exports.createPlaylist = createPlaylist;
 module.exports.playlistPage = playlistPage;
 module.exports.getPlaylists = getPlaylists;
 module.exports.addToPlaylist = addToPlaylist;
+module.exports.removeFromPlaylist = removeFromPlaylist;

@@ -44,6 +44,8 @@ const ReplaySchema = new mongoose.Schema({
   },
   postDate: { type: Date, default: Date.now },
   numFavorites: { type: Number, required: true, default: 0 },
+  inPlaylists: { type: Array, required: true, default: [] },
+
 });
 
 ReplaySchema.statics.searchById = (replayId, callback) => {

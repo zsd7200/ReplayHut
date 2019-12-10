@@ -4,6 +4,7 @@ const ytHeight = 242;
 let numClips = 0;
 let favesOnly = false;
 
+//Format date for use in displaying on the clip
 const formatDate = (date) => {
     // save a new date based on UTC date
     const localDate = new Date(date);
@@ -36,6 +37,7 @@ const formatDate = (date) => {
     return newDate;
 };
 
+//Show the clips in the gallery
 const showClips = (csrf) =>{
     
     // get account data so the username and favorites can be passed in
@@ -55,11 +57,11 @@ const showClips = (csrf) =>{
     });
 };
 
+//Show the playlists on the playlists page
 const showPlaylists = (csrf) =>{
-    // get account data so the username and favorites can be passed in
+    // get account data so the username can be used
     sendAjax('GET', '/getMyAccount', null, (accdata) => {
-        console.log(accdata.account.savedPlaylists);
-        // Retrieving the clips
+        // Retrieving the playlists so they can be shown
         sendAjax('GET', '/getPlaylists', null, (playlistData) => {
             ReactDOM.render(<PlaylistList playlists={playlistData.playlists} listCount={accdata.account.numPlaylists} user={accdata.account.username} csrf={csrf}  />, document.querySelector("#playlists"));
         },
@@ -74,23 +76,24 @@ const showPlaylists = (csrf) =>{
     });
 }
 
+//Showing the page to create a playlist for the first time, no clip 
 const showCreatePlaylist = (csrf) =>{
     ReactDOM.render(<PlaylistForm csrf={csrf} />, document.querySelector("#playlists"));
 };
 
+//Used to display a specific playlist
 const displayPlaylist = (e) =>{
     e.preventDefault();
+
+    //Temporary variable to be used
     let curList = e.target.listID.value;
-    //console.log(curList);
     // get account data so the username and favorites can be passed in
     sendAjax('GET', '/getMyAccount', null, (accdata) => {
-        console.log(accdata.account.savedPlaylists);
-        // Retrieving the clips
+        // Retrieving the clips so they can be displayed
         sendAjax('GET', '/getClips', null, (clipdata) => {
+            //Retrieving the playlists to be used in displaying the correct clips
             sendAjax('GET', '/getPlaylists', null, (playlistData) => {
-                //ReactDOM.render(<PlaylistList playlists={playlistData.playlists} listCount={accdata.account.numPlaylists} user={accdata.account.username} csrf={csrf}  />, document.querySelector("#playlists"));
                 ReactDOM.render(<ClipList clips={clipdata.clips} userfaves={accdata.account.favorites} user={accdata.account.username} userPlaylists={accdata.account.savedPlaylists} currentList={curList} playlists={playlistData.playlists} use="playlist" />, document.querySelector("#playlists"));
-
             },
             (xhr, status, error) =>{
                 var messageObj = JSON.parse(xhr.responseText);
@@ -108,52 +111,80 @@ const displayPlaylist = (e) =>{
     });
 }
 
+//Displaying the area which allows the user to add or remove a clip from a playlist
 const showAddPlaylist = (e) =>{
     e.preventDefault();
+
+    //Temporary variables to be used later
     let csrf = e.target._csrf.value;
     let id = e.target.clipID.value;
-    // get account data so the username and favorites can be passed in
+    // get account data so the username can be used 
     sendAjax('GET', '/getMyAccount', null, (accdata) => {
-        console.log("here");
-        ReactDOM.render(<PlaylistAddDisplay csrf={csrf} clipID={id} userLists={accdata.account.savedPlaylists} />, document.querySelector("#clips"));
-        document.querySelector("#search").innerHTML = "";
+        // Getting the clips to be checked against
+        sendAjax('GET', '/getClips', null, (clipdata) => {
+            //Getting the playlists so they can be added to
+            sendAjax('GET', '/getPlaylists', null, (playlistData) => {
+                ReactDOM.render(<PlaylistAddDisplay playlists={playlistData.playlists} csrf={csrf} clipID={id} user={accdata.account.username} clips={clipdata.clips} />, document.querySelector("#clips"));
+                document.querySelector("#search").innerHTML = "";
+            },
+            (xhr, status, error) =>{
+                var messageObj = JSON.parse(xhr.responseText);
+                showMessage(messageObj.error);
+            });
+        },
+        (xhr, status, error) =>{
+            var messageObj = JSON.parse(xhr.responseText);
+            showMessage(messageObj.error);
+        });
+
     },
     (xhr, status, error) =>{
-        console.log("there");
         var messageObj = JSON.parse(xhr.responseText);
         showMessage(messageObj.error);
     });
 };
 
-
+//Creating a new playlist
 const createPlaylist = (e) =>{
     e.preventDefault();
     $("#terryMessage").animate({width:'hide'}, 350);
+
+    //Making sure the fields are filled out
     if($("#clipTitle").val() == '') {
         showMessage("Hey! Make sure you fill out all the fields!");
         return false;
     }
-
+    //Sending the request to add the playlist
     sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), (result)=>{showMessage(result.message);}, 
     (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
         showMessage(messageObj.error);});
 }
-
+//Adding a clip to a playlist
 const addToPlaylist = (e) =>{
     e.preventDefault();
+
+    //Storing temporary values to be changed and sent
     let playlistValue = $("#playlistDropList").val();
     let title = e.target.title;
     let playlistid = e.target.playlistID;
     let csrf = e.target._csrf.value;
+
+    //If a new playlist is not going to be created
     if(playlistValue !== 'newList')
     {
+        //Changing the value that is going to be sent
         title.value = playlistValue;
+        //Getting the account to get the id of the playlist selected
         sendAjax('GET', '/getMyAccount', null, (accdata) => {
+
+            //Looping through the saved playlists on the account to check which playlist is being sent
             for (let i = 0; i < accdata.account.savedPlaylists.length; i++) 
             {
+                //If the title of the playlist is the same as the current one, save the ID
                 if(accdata.account.savedPlaylists[i].title = playlistValue)
                     playlistid.value = accdata.account.savedPlaylists[i].id;
             }
+            //Send the request
             sendAjax('POST', '/addToPlaylist', $("#submitAddPlaylist").serialize(), (result) => {
                 showMessage(result.message)
                 setup(csrf);
@@ -169,12 +200,47 @@ const addToPlaylist = (e) =>{
         });
     
     }
+    //If a new playlist is being created, render the page for it
     else
     {
         ReactDOM.render(<PlaylistForm csrf={e.target._csrf.value} clipID={e.target.clipID.value} />,document.querySelector("#clips"));
     }
 };
 
+//Removing a clip from a playlist
+const removeFromPlaylist = (e) =>{
+    e.preventDefault();
+
+    //Temporary variables to be changed and sent
+    let playlistValue = $("#playlistDropList").val();
+    let title = e.target.title;
+    let playlistid = e.target.playlistID;
+    let csrf = e.target._csrf.value;
+    title.value = playlistValue;
+
+    //Getting the account to check for the specific playlist
+    sendAjax('GET', '/getMyAccount', null, (accdata) => {
+        for (let i = 0; i < accdata.account.savedPlaylists.length; i++) 
+        {
+            if(accdata.account.savedPlaylists[i].title = playlistValue)
+                playlistid.value = accdata.account.savedPlaylists[i].id;
+        }
+        sendAjax('POST', '/removeFromPlaylist', $("#submitRemPlaylist").serialize(), (result) => {
+            showMessage(result.message)
+            setup(csrf);
+        },
+        (xhr, status, error) =>{
+            var messageObj = JSON.parse(xhr.responseText);
+            showMessage(messageObj.error);
+        });
+    },
+    (xhr, status, error) =>{
+        var messageObj = JSON.parse(xhr.responseText);
+        showMessage(messageObj.error);
+    });
+};
+
+// Form for creating a new playlist
 const PlaylistForm = function(props)
 {
     if(!props.clipID)
@@ -218,8 +284,10 @@ const PlaylistForm = function(props)
     }
 }
 
+// List of playlists
 const PlaylistList = function(props)
 {
+    //If there are no playlists on the user's account, display that there are none
     if(props.listCount === 0)
     {
         return(
@@ -229,9 +297,12 @@ const PlaylistList = function(props)
             </div>
         )
     }
+    //Variable to increment the number of playlists being shown
     let playlistCount = 0; 
-    const listNodes =  props.playlists.map(function(list){
 
+    //Making elements to show the playlists
+    const listNodes =  props.playlists.map(function(list){
+        //Making sure that the playlist is made by the current user
         let userCheck = false;
         if(props.user === list.creatorUN)
             userCheck = true;
@@ -259,21 +330,57 @@ const PlaylistList = function(props)
     );
 }
 
+// Displaying the ability to add or remove a clip from playlists
 const PlaylistAddDisplay = function(props)
 {
-    
-    let listSelect = <option value="newList">Create new Playlist</option>;
+    //Storing the current playlists from a clip
+    let thisClipPlaylists;
+    // Finding the current clip's list of playlists
+    for (let i = 0; i < props.clips.length; i++) 
+    {
+        if(props.clips[i].id === props.clipID)
+            thisClipPlaylists = props.clips[i].inPlaylists;    
+    }
 
-   const listNodes = props.userLists.map(function(list)
-   {
-    return(<option value={list.title}>{list.title}</option> )
-   });
-   console.log(props.clipID);
-    let playlistDrop = 
+    //Getting the options for playlists to be added to
+    //Cannot be ones that it is already in
+    const listAddNodes = props.playlists.map(function(list)
+    {
+
+       let showLists = true;
+
+       //Checking if the current clip is in the array of playlists the clip is in
+        for (let i = 0; i < thisClipPlaylists.length; i++) 
+        {
+            if(thisClipPlaylists[i] === list.id)
+                if(list.creatorUN === props.user)
+                    showLists = false;
+        }
+        if(showLists)
+            return(<option value={list.title}>{list.title}</option>)
+    });
+
+    //Setting up the list of playlists that can be rmeoved
+    let listRemNodes = "";
+
+    //Getting options to be removed from
+    //Will only show up if the clip is in any playlists
+    listRemNodes = props.playlists.map(function(list)
+    {
+        for (let i = 0; i < thisClipPlaylists.length; i++) 
+        {
+            if(thisClipPlaylists[i] === list.id)
+                if(list.creatorUN === props.user)
+                    return(<option value={list.title}>{list.title}</option>)
+        }
+    });
+
+
+    let playlistAddDrop = 
     <div className="input-item">
         <select id="playlistDropList">
-            {listSelect}
-            {listNodes}
+            <option value="newList">Create new Playlist</option>
+            {listAddNodes}
         </select>
         <label className="input-label" htmlFor="playlistDropList">Select Playlist to Add to: </label>
         <form id="submitAddPlaylist" onSubmit={addToPlaylist} name="playAddForm" name="clipForm">
@@ -284,10 +391,29 @@ const PlaylistAddDisplay = function(props)
             <button  type="submit" title="Add to Playlist">Add to Playlist</button>
         </form>
     </div>;
+    let playlistRemDrop = "";
+    if(listRemNodes != "")
+    {
+        playlistRemDrop =
+        <div className="input-item">
+            <select id="playlistDropList">
+                {listRemNodes}
+            </select>
+            <label className="input-label" htmlFor="playlistDropList">Select Playlist to Remove from: </label>
+            <form id="submitRemPlaylist" onSubmit={removeFromPlaylist} name="playRemForm" name="clipForm">
+                <input type="hidden" name="_csrf" value={props.csrf}/>
+                <input name="clipID" type="hidden" value={props.clipID}/>
+                <input name="title" type="hidden" value=""/>
+                <input name="playlistID" type="hidden" value=""/>
+                <button  type="submit" title="Add to Playlist">Remove From Playlist</button>
+            </form>
+        </div>;
+    }
 
     return(
         <div id="playlistAdd">
-            {playlistDrop}
+            {playlistAddDrop}
+            {playlistRemDrop}
         </div>
     )
 }
