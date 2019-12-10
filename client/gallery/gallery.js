@@ -171,7 +171,6 @@ const addToPlaylist = (e) =>{
     let title = e.target.title;
     let playlistid = e.target.playlistID;
     let csrf = e.target._csrf.value;
-    console.log(playlistValue);
 
     //If a new playlist is not going to be created
     if(playlistValue !== 'newList')
@@ -181,12 +180,12 @@ const addToPlaylist = (e) =>{
         console.log(title.value);
         //Getting the account to get the id of the playlist selected
         sendAjax('GET', '/getMyAccount', null, (accdata) => {
-
+            console.log(accdata.account.savedPlaylists);
             //Looping through the saved playlists on the account to check which playlist is being sent
             for (let i = 0; i < accdata.account.savedPlaylists.length; i++) 
             {
                 //If the title of the playlist is the same as the current one, save the ID
-                if(accdata.account.savedPlaylists[i].title = playlistValue)
+                if(accdata.account.savedPlaylists[i].title === playlistValue)
                 {
                     console.log(accdata.account.savedPlaylists[i].title);
                     console.log(accdata.account.savedPlaylists[i].id);
@@ -233,7 +232,7 @@ const removeFromPlaylist = (e) =>{
     sendAjax('GET', '/getMyAccount', null, (accdata) => {
         for (let i = 0; i < accdata.account.savedPlaylists.length; i++) 
         {
-            if(accdata.account.savedPlaylists[i].title = playlistValue)
+            if(accdata.account.savedPlaylists[i].title === playlistValue)
                 playlistid.value = accdata.account.savedPlaylists[i].id;
         }
         sendAjax('POST', '/removeFromPlaylist', $("#submitRemPlaylist").serialize(), (result) => {
