@@ -384,10 +384,11 @@ var PlaylistList = function PlaylistList(props) {
         name: "listID",
         type: "hidden",
         value: list.id
-      }), React.createElement("button", {
+      }), React.createElement("input", {
+        className: "formSubmit",
         type: "submit",
-        title: "Go to Playlist"
-      }, "Go to Playlist")));
+        value: "Go to Playlist"
+      })));
     }
   });
   return React.createElement("div", {

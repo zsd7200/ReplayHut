@@ -88,7 +88,7 @@ li {
   transition: .5s;
 }
 
-.clip:hover, .playlist::hover{
+.clip:hover, .playlist:hover{
     box-shadow: 7px 7px 4px #73c9e6;
     transition: .5s;
 }
@@ -118,7 +118,7 @@ li {
 }
 
 
-.clipList, .playlists {
+.clipList, .playlistList {
   width: 100%;
   margin-left: $sidebarSize;
   margin-top: 20px;
