@@ -44,7 +44,7 @@ const showClips = (csrf) =>{
     sendAjax('GET', '/getMyAccount', null, (accdata) => {
         // Retrieving the clips
         sendAjax('GET', '/getClips', null, (clipdata) => {
-            ReactDOM.render(<ClipList clips={clipdata.clips} userfaves={accdata.account.favorites} user={accdata.account.username} csrf={csrf}  use="gallery" />, document.querySelector("#clips"));
+            ReactDOM.render(<ClipList clips={clipdata.clips} userfaves={accdata.account.favorites} user={accdata.account.username} csrf={csrf} use="gallery" />, document.querySelector("#clips"));
         },
         (xhr, status, error) =>{
             var messageObj = JSON.parse(xhr.responseText);
@@ -246,11 +246,12 @@ const removeFromPlaylist = (e) =>{
 // Form for creating a new playlist
 const PlaylistForm = function(props)
 {
+    checkPremium();
+    
     if(!props.clipID)
     {
         return(
             <div className="content-box">
-            <div className="playlistList">
                 <form id="backForm" onSubmit={showAddPlaylist} name="backForm">
                     <input type="hidden" name="_csrf" value={props.csrf}/>
                     <input className="back pointer" type="submit" value="Go back"/>
@@ -268,19 +269,18 @@ const PlaylistForm = function(props)
                     <input className="formSubmit" type="submit" value="Submit Clip"/>
                 </form>
             </div>
-            </div>
         );
     }
     else
     {
         return(
             <div className="content-box">
-            <div className="playlistList">
-            <form id="backForm" onSubmit={showAddPlaylist} name="backForm">
+                <form id="backForm" onSubmit={showAddPlaylist} name="backForm">
                     <input type="hidden" name="_csrf" value={props.csrf}/>
                     <input type="hidden" name="clipID" value={props.clipID} />
                     <input className="back pointer" type="submit" value="Go back"/>
                 </form>
+                
                 <form id="createForm" onSubmit={createPlaylist} name="createForm" action="/createPlaylist" method="POST" classname="createForm">
                     <h3 id="requiredHeader">Name your new playlist: </h3>
                     
@@ -294,7 +294,6 @@ const PlaylistForm = function(props)
                     <input className="formSubmit" type="submit" value="Submit Clip"/>
                 </form>
             </div>
-            </div>
         );
     }
 }
@@ -302,6 +301,8 @@ const PlaylistForm = function(props)
 // List of playlists
 const PlaylistList = function(props)
 {
+    checkPremium();
+    
     //If there are no playlists on the user's account, display that there are none
     if(props.listCount === 0)
     {
@@ -608,16 +609,17 @@ const ClipList = function(props)
                     playlistCheck = true;
             }
         }
-        
-        // increment numclips for every clip so every fav/rem/delete form has a unique ID
-        numClips++;
 
         let clipCheck = false;
         if(props.use === 'gallery')
         {
 
-            if(userCheck && gameCheck && charCheck)
+            if(userCheck && gameCheck && charCheck) {
                 clipCheck = true;
+            
+            // increment numclips for every clip so every fav/rem/delete form has a unique ID
+            numClips++;
+            }
         }
         else
         {
@@ -1778,13 +1780,20 @@ const ClipList = function(props)
         }
     });
     
+    if(numClips === 0) {
+        return(
+            <div className="clipList">
+                <h3 className="no-clips">No clips found!</h3>
+            </div>
+        );
+    }
     
     return(
         <div className="clipList">
             {clipNodes}
         </div>
-    )
-}
+    );
+};
 
 
 const SearchBar = function(props)

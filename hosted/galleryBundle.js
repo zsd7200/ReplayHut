@@ -251,11 +251,11 @@ var removeFromPlaylist = function removeFromPlaylist(e) {
 
 
 var PlaylistForm = function PlaylistForm(props) {
+  checkPremium();
+
   if (!props.clipID) {
     return React.createElement("div", {
       className: "content-box"
-    }, React.createElement("div", {
-      className: "playlistList"
     }, React.createElement("form", {
       id: "backForm",
       onSubmit: showAddPlaylist,
@@ -295,12 +295,10 @@ var PlaylistForm = function PlaylistForm(props) {
       className: "formSubmit",
       type: "submit",
       value: "Submit Clip"
-    }))));
+    })));
   } else {
     return React.createElement("div", {
       className: "content-box"
-    }, React.createElement("div", {
-      className: "playlistList"
     }, React.createElement("form", {
       id: "backForm",
       onSubmit: showAddPlaylist,
@@ -348,13 +346,14 @@ var PlaylistForm = function PlaylistForm(props) {
       className: "formSubmit",
       type: "submit",
       value: "Submit Clip"
-    }))));
+    })));
   }
 }; // List of playlists
 
 
 var PlaylistList = function PlaylistList(props) {
-  //If there are no playlists on the user's account, display that there are none
+  checkPremium(); //If there are no playlists on the user's account, display that there are none
+
   if (props.listCount === 0) {
     return React.createElement("div", {
       className: "loader-container"
@@ -666,14 +665,16 @@ var ClipList = function ClipList(props) {
       for (var _i5 = 0; _i5 < thisList.clips.length; _i5++) {
         if (thisList.clips[_i5] === clip.id) playlistCheck = true;
       }
-    } // increment numclips for every clip so every fav/rem/delete form has a unique ID
+    }
 
-
-    numClips++;
     var clipCheck = false;
 
     if (props.use === 'gallery') {
-      if (userCheck && gameCheck && charCheck) clipCheck = true;
+      if (userCheck && gameCheck && charCheck) {
+        clipCheck = true; // increment numclips for every clip so every fav/rem/delete form has a unique ID
+
+        numClips++;
+      }
     } else {
       if (playlistCheck) clipCheck = true;
     } // If all the checks pass, display that clip
@@ -3119,6 +3120,15 @@ var ClipList = function ClipList(props) {
       }
     }
   });
+
+  if (numClips === 0) {
+    return React.createElement("div", {
+      className: "clipList"
+    }, React.createElement("h3", {
+      className: "no-clips"
+    }, "No clips found!"));
+  }
+
   return React.createElement("div", {
     className: "clipList"
   }, clipNodes);
