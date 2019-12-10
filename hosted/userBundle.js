@@ -2,7 +2,6 @@
 
 // UserList to be rendered
 var UserList = function UserList(props) {
-  console.log(props);
   checkPremium(); //If no users have been made (Should not happen becuase need to be logged in), show error
 
   if (props.users.length === 0) {

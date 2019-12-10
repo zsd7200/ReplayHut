@@ -177,23 +177,22 @@ const addToPlaylist = (e) =>{
     {
         //Changing the value that is going to be sent
         title.value = playlistValue;
-        console.log(title.value);
+
         //Getting the account to get the id of the playlist selected
         sendAjax('GET', '/getMyAccount', null, (accdata) => {
-            console.log(accdata.account.savedPlaylists);
+
             //Looping through the saved playlists on the account to check which playlist is being sent
             for (let i = 0; i < accdata.account.savedPlaylists.length; i++) 
             {
                 //If the title of the playlist is the same as the current one, save the ID
                 if(accdata.account.savedPlaylists[i].title === playlistValue)
                 {
-                    console.log(accdata.account.savedPlaylists[i].title);
-                    console.log(accdata.account.savedPlaylists[i].id);
+
                     playlistid.value = accdata.account.savedPlaylists[i].id; 
                     break;
                 }
             }
-            console.log($("#submitAddPlaylist").serialize());
+
             //Send the request
             sendAjax('POST', '/addToPlaylist', $("#submitAddPlaylist").serialize(), (result) => {
                 showMessage(result.message)

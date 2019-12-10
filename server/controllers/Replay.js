@@ -116,7 +116,7 @@ const deleteClips = (request, response) => {
     if (index !== -1) { // if req.body is found in array
       foundUser.favorites.splice(index, 1); // cut favorites out of array
     }
-    console.log(req.body.clipID);
+
     // Remove the clip from any playlists it was in
     Replays.ReplayModel.searchById(req.body.clipID, (err2, doc2) => {
       // Error check
