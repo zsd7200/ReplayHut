@@ -7,6 +7,7 @@ const models = require('../models');
 // Setting up models so that they can be accessed
 const { Replays } = models;
 const { Account } = models;
+const { Playlist } = models;
 
 const app = require('../app.js');
 
@@ -115,21 +116,55 @@ const deleteClips = (request, response) => {
     if (index !== -1) { // if req.body is found in array
       foundUser.favorites.splice(index, 1); // cut favorites out of array
     }
-    // Handling promise to reassign the user's info
-    const updatePromise = foundUser.save();
+    console.log(req.body.clipID);
+    // Remove the clip from any playlists it was in
+    Replays.ReplayModel.searchById(req.body.clipID, (err2, doc2) => {
+      // Error check
+      if (err2) return res.json({ error: err2 });
+      // Only attempting to delete if the clip is inside of playlists
+      if (doc2.inPlaylists.length !== 0) {
+        // Looping through the list of playlists the clip was in, and removing it from them
+        for (let i = 0; i < doc2.inPlaylists.length; i++) {
+        // Finding the playlist and removing the clip from it
+          Playlist.PlaylistModel.searchById(doc2.inPlaylists[i], (err3, doc3) => {
+            // Error check
+            if (err3) return res.json({ error: err3 });
+            // If no error, create a temp variable to store changes
+            const foundList = doc3;
 
-    // Deleting the clip from the database
-    const deletePromise = app.mainDB.collection('replays').deleteOne({ id: req.body.clipID });
+            // Finding the index of the clip being removed from the playlist
+            const index2 = foundList.clips.indexOf(req.body.clipID);
+            if (index2 !== -1) { // if current clip is found in playlist
+              foundList.clips.splice(index, 1); // cut clip out of array
+            }
 
-    // Show message upon successful deletion
-    deletePromise.then(() => { res.json({ message: 'Clip deleted!' }); });
+            // Decrementing the number of entries in the playlist
+            foundList.numEntries--;
+            // Saving the playlist to the database
+            const listPromise = foundList.save();
 
-    // Error with deleting the clip
-    deletePromise.catch((err2) => res.json({ err2 }));
+            listPromise.catch((err4) => res.status(400).json({ error: err4 }));
+            return true;
+          });
+        }
+      }
 
-    // Return an error back if one is found
-    updatePromise.catch((err3) => res.json({ error: err3 }));
+      // Handling promise to reassign the user's info
+      const updatePromise = foundUser.save();
 
+      // Deleting the clip from the database
+      const deletePromise = app.mainDB.collection('replays').deleteOne({ id: req.body.clipID });
+
+      // Show message upon successful deletion
+      deletePromise.then(() => { res.json({ message: 'Clip deleted!' }); });
+
+      // Error with deleting the clip
+      deletePromise.catch((err2) => res.json({ err2 }));
+
+      // Return an error back if one is found
+      updatePromise.catch((err3) => res.json({ error: err3 }));
+      return true;
+    });
     // Returning to satisfy ESLint
     return true;
   });
