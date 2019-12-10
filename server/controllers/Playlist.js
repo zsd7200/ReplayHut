@@ -33,7 +33,7 @@ const createPlaylist = (req, res) => {
       if (foundUser.savedPlaylists[i].title === req.body.title) { return res.status(400).json({ error: 'A playlist with that title already exists' }); }
     }
 
-    // Making sure the user does not create a title which could mess with ater playlists
+    // Making sure the user does not create a title which could mess with later playlists
     if (req.body.title === 'newList') { return res.status(400).json({ error: 'Invalid name, please choose another' }); }
     // Increasing their amount of clips
     foundUser.numPlaylists++;
