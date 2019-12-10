@@ -331,7 +331,7 @@ const PlaylistList = function(props)
                 <form id={"showList" + playlistCount} onSubmit={displayPlaylist} name="showList" className="showList">
                     <input type="hidden" name="_csrf" value={props.csrf}/>
                     <input name="listID" type="hidden" value={list.id}/>
-                    <button type="submit" title="Go to Playlist">Go to Playlist</button>
+                    <input className="formSubmit" type="submit" value="Go to Playlist"/>
                 </form>
             </div>
             )

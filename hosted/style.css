@@ -61,7 +61,7 @@ li {
   display: inline-block;
   transition: .5s; }
 
-.clip:hover, .playlist::hover {
+.clip:hover, .playlist:hover {
   box-shadow: 7px 7px 4px #73c9e6;
   transition: .5s; }
 
@@ -94,7 +94,7 @@ li {
   .clipForm .un-fave:active {
     color: #400000; }
 
-.clipList, .playlists {
+.clipList, .playlistList {
   width: 100%;
   margin-left: 160px;
   margin-top: 20px;
