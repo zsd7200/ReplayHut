@@ -1,7 +1,5 @@
 "use strict";
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 var ytWidth = 430;
 var ytHeight = 242;
 var numClips = 0;
@@ -127,7 +125,8 @@ var displayPlaylist = function displayPlaylist(e) {
 
 
 var showAddPlaylist = function showAddPlaylist(e) {
-  e.preventDefault(); //Temporary variables to be used later
+  e.preventDefault();
+  console.log(e.target._csrf); //Temporary variables to be used later
 
   var csrf = e.target._csrf.value;
   var id = e.target.clipID.value; // get account data so the username can be used 
@@ -253,13 +252,26 @@ var removeFromPlaylist = function removeFromPlaylist(e) {
 
 
 var PlaylistForm = function PlaylistForm(props) {
+  console.log(props.csrf);
+
   if (!props.clipID) {
     return React.createElement("div", {
-      classname: "playlistList"
-    }, React.createElement("button", {
+      className: "content-box"
+    }, React.createElement("div", {
+      className: "playlistList"
+    }, React.createElement("form", {
+      id: "backForm",
+      onSubmit: showPlaylists,
+      name: "backForm"
+    }, React.createElement("input", {
+      type: "hidden",
+      name: "_csrf",
+      value: props.csrf
+    }), React.createElement("input", {
       className: "back pointer",
-      onClick: showPlaylists
-    }, "Go back"), React.createElement("form", {
+      type: "submit",
+      value: "Go back"
+    })), React.createElement("form", {
       id: "createForm",
       onSubmit: createPlaylist,
       name: "createForm",
@@ -286,10 +298,12 @@ var PlaylistForm = function PlaylistForm(props) {
       className: "formSubmit",
       type: "submit",
       value: "Submit Clip"
-    })));
+    }))));
   } else {
     return React.createElement("div", {
-      classname: "playlistList"
+      className: "content-box"
+    }, React.createElement("div", {
+      className: "playlistList"
     }, React.createElement("button", {
       className: "back pointer",
       onClick: showAddPlaylist
@@ -324,7 +338,7 @@ var PlaylistForm = function PlaylistForm(props) {
       className: "formSubmit",
       type: "submit",
       value: "Submit Clip"
-    })));
+    }))));
   }
 }; // List of playlists
 
@@ -415,6 +429,8 @@ var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
     }
   });
   var playlistAddDrop = React.createElement("div", {
+    className: "content-box"
+  }, React.createElement("div", {
     className: "input-item"
   }, React.createElement("select", {
     id: "playlistDropList"
@@ -423,11 +439,11 @@ var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
   }, "Create new Playlist"), listAddNodes), React.createElement("label", {
     className: "input-label",
     htmlFor: "playlistDropList"
-  }, "Select Playlist to Add to: "), React.createElement("form", _defineProperty({
+  }, "Select Playlist to Add to: ")), React.createElement("form", {
     id: "submitAddPlaylist",
     onSubmit: addToPlaylist,
     name: "playAddForm"
-  }, "name", "clipForm"), React.createElement("input", {
+  }, React.createElement("input", {
     type: "hidden",
     name: "_csrf",
     value: props.csrf
@@ -443,25 +459,28 @@ var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
     name: "playlistID",
     type: "hidden",
     value: ""
-  }), React.createElement("button", {
+  }), React.createElement("input", {
+    className: "formSubmit",
     type: "submit",
-    title: "Add to Playlist"
-  }, "Add to Playlist")));
+    value: "Add to Playlist"
+  })));
   var playlistRemDrop = "";
 
   if (listRemNodes != "") {
     playlistRemDrop = React.createElement("div", {
+      className: "content-box"
+    }, React.createElement("div", {
       className: "input-item"
     }, React.createElement("select", {
       id: "playlistDropList"
     }, listRemNodes), React.createElement("label", {
       className: "input-label",
       htmlFor: "playlistDropList"
-    }, "Select Playlist to Remove from: "), React.createElement("form", _defineProperty({
+    }, "Select Playlist to Remove from: ")), React.createElement("form", {
       id: "submitRemPlaylist",
       onSubmit: removeFromPlaylist,
       name: "playRemForm"
-    }, "name", "clipForm"), React.createElement("input", {
+    }, React.createElement("input", {
       type: "hidden",
       name: "_csrf",
       value: props.csrf
@@ -477,10 +496,11 @@ var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
       name: "playlistID",
       type: "hidden",
       value: ""
-    }), React.createElement("button", {
+    }), React.createElement("input", {
+      className: "formSubmit",
       type: "submit",
-      title: "Add to Playlist"
-    }, "Remove From Playlist")));
+      value: "Remove from Playlist"
+    })));
   }
 
   return React.createElement("div", {
@@ -677,22 +697,7 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
-                  id: "playAddForm" + numClips,
-                  onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
-                  type: "hidden",
-                  name: "_csrf",
-                  value: props.csrf
-                }), React.createElement("input", {
-                  name: "clipID",
-                  type: "hidden",
-                  value: clip.id
-                }), React.createElement("button", {
-                  type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                }), React.createElement("form", {
                   id: "delForm" + numClips,
                   onSubmit: makePost,
                   name: "delForm",
@@ -713,6 +718,25 @@ var ClipList = function ClipList(props) {
                   title: "Delete Clip"
                 }, React.createElement("i", {
                   className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "playAddForm" + numClips,
+                  onSubmit: showAddPlaylist,
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
                 }))), React.createElement("form", {
                   id: "remForm" + numClips,
                   onSubmit: makePost,
@@ -759,22 +783,7 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
-                  id: "playAddForm" + numClips,
-                  onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
-                  type: "hidden",
-                  name: "_csrf",
-                  value: props.csrf
-                }), React.createElement("input", {
-                  name: "clipID",
-                  type: "hidden",
-                  value: clip.id
-                }), React.createElement("button", {
-                  type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                }), React.createElement("form", {
                   id: "delForm" + numClips,
                   onSubmit: makePost,
                   name: "delForm",
@@ -795,6 +804,25 @@ var ClipList = function ClipList(props) {
                   title: "Delete Clip"
                 }, React.createElement("i", {
                   className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "playAddForm" + numClips,
+                  onSubmit: showAddPlaylist,
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
                 }))), React.createElement("form", {
                   id: "favForm" + numClips,
                   onSubmit: makePost,
@@ -841,22 +869,7 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
-                  id: "playAddForm" + numClips,
-                  onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
-                  type: "hidden",
-                  name: "_csrf",
-                  value: props.csrf
-                }), React.createElement("input", {
-                  name: "clipID",
-                  type: "hidden",
-                  value: clip.id
-                }), React.createElement("button", {
-                  type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                }), React.createElement("form", {
                   id: "delForm" + numClips,
                   onSubmit: makePost,
                   name: "delForm",
@@ -877,6 +890,25 @@ var ClipList = function ClipList(props) {
                   title: "Delete Clip"
                 }, React.createElement("i", {
                   className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "playAddForm" + numClips,
+                  onSubmit: showAddPlaylist,
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
                 }))), React.createElement("form", {
                   id: "remForm" + numClips,
                   onSubmit: makePost,
@@ -921,22 +953,7 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
-                  id: "playAddForm" + numClips,
-                  onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
-                  type: "hidden",
-                  name: "_csrf",
-                  value: props.csrf
-                }), React.createElement("input", {
-                  name: "clipID",
-                  type: "hidden",
-                  value: clip.id
-                }), React.createElement("button", {
-                  type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                }), React.createElement("form", {
                   id: "delForm" + numClips,
                   onSubmit: makePost,
                   name: "delForm",
@@ -957,6 +974,25 @@ var ClipList = function ClipList(props) {
                   title: "Delete Clip"
                 }, React.createElement("i", {
                   className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "playAddForm" + numClips,
+                  onSubmit: showAddPlaylist,
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
                 }))), React.createElement("form", {
                   id: "favForm" + numClips,
                   onSubmit: makePost,
@@ -1004,22 +1040,7 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
-                id: "playAddForm" + numClips,
-                onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
-                type: "hidden",
-                name: "_csrf",
-                value: props.csrf
-              }), React.createElement("input", {
-                name: "clipID",
-                type: "hidden",
-                value: clip.id
-              }), React.createElement("button", {
-                type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+              }), React.createElement("form", {
                 id: "delForm" + numClips,
                 onSubmit: makePost,
                 name: "delForm",
@@ -1040,6 +1061,25 @@ var ClipList = function ClipList(props) {
                 title: "Delete Clip"
               }, React.createElement("i", {
                 className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "playAddForm" + numClips,
+                onSubmit: showAddPlaylist,
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
               }))), React.createElement("form", {
                 id: "remForm" + numClips,
                 onSubmit: makePost,
@@ -1084,22 +1124,7 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
-                id: "playAddForm" + numClips,
-                onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
-                type: "hidden",
-                name: "_csrf",
-                value: props.csrf
-              }), React.createElement("input", {
-                name: "clipID",
-                type: "hidden",
-                value: clip.id
-              }), React.createElement("button", {
-                type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+              }), React.createElement("form", {
                 id: "delForm" + numClips,
                 onSubmit: makePost,
                 name: "delForm",
@@ -1120,6 +1145,25 @@ var ClipList = function ClipList(props) {
                 title: "Delete Clip"
               }, React.createElement("i", {
                 className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "playAddForm" + numClips,
+                onSubmit: showAddPlaylist,
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
               }))), React.createElement("form", {
                 id: "favForm" + numClips,
                 onSubmit: makePost,
@@ -1164,22 +1208,7 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
-                id: "playAddForm" + numClips,
-                onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
-                type: "hidden",
-                name: "_csrf",
-                value: props.csrf
-              }), React.createElement("input", {
-                name: "clipID",
-                type: "hidden",
-                value: clip.id
-              }), React.createElement("button", {
-                type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+              }), React.createElement("form", {
                 id: "delForm" + numClips,
                 onSubmit: makePost,
                 name: "delForm",
@@ -1200,6 +1229,25 @@ var ClipList = function ClipList(props) {
                 title: "Delete Clip"
               }, React.createElement("i", {
                 className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "playAddForm" + numClips,
+                onSubmit: showAddPlaylist,
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
               }))), React.createElement("form", {
                 id: "remForm" + numClips,
                 onSubmit: makePost,
@@ -1242,22 +1290,7 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
-                id: "playAddForm" + numClips,
-                onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
-                type: "hidden",
-                name: "_csrf",
-                value: props.csrf
-              }), React.createElement("input", {
-                name: "clipID",
-                type: "hidden",
-                value: clip.id
-              }), React.createElement("button", {
-                type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+              }), React.createElement("form", {
                 id: "delForm" + numClips,
                 onSubmit: makePost,
                 name: "delForm",
@@ -1278,6 +1311,25 @@ var ClipList = function ClipList(props) {
                 title: "Delete Clip"
               }, React.createElement("i", {
                 className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "playAddForm" + numClips,
+                onSubmit: showAddPlaylist,
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
               }))), React.createElement("form", {
                 id: "favForm" + numClips,
                 onSubmit: makePost,
@@ -1331,22 +1383,7 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
-                  id: "playAddForm" + numClips,
-                  onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
-                  type: "hidden",
-                  name: "_csrf",
-                  value: props.csrf
-                }), React.createElement("input", {
-                  name: "clipID",
-                  type: "hidden",
-                  value: clip.id
-                }), React.createElement("button", {
-                  type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                }), React.createElement("form", {
                   id: "delForm" + numClips,
                   onSubmit: makePost,
                   name: "delForm",
@@ -1367,6 +1404,25 @@ var ClipList = function ClipList(props) {
                   title: "Delete Clip"
                 }, React.createElement("i", {
                   className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "playAddForm" + numClips,
+                  onSubmit: showAddPlaylist,
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
                 }))), React.createElement("form", {
                   id: "remForm" + numClips,
                   onSubmit: makePost,
@@ -1415,22 +1471,7 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
-                  id: "playAddForm" + numClips,
-                  onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
-                  type: "hidden",
-                  name: "_csrf",
-                  value: props.csrf
-                }), React.createElement("input", {
-                  name: "clipID",
-                  type: "hidden",
-                  value: clip.id
-                }), React.createElement("button", {
-                  type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                }), React.createElement("form", {
                   id: "delForm" + numClips,
                   onSubmit: makePost,
                   name: "delForm",
@@ -1451,6 +1492,25 @@ var ClipList = function ClipList(props) {
                   title: "Delete Clip"
                 }, React.createElement("i", {
                   className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "playAddForm" + numClips,
+                  onSubmit: showAddPlaylist,
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
                 }))), React.createElement("form", {
                   id: "favForm" + numClips,
                   onSubmit: makePost,
@@ -1499,22 +1559,7 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
-                  id: "playAddForm" + numClips,
-                  onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
-                  type: "hidden",
-                  name: "_csrf",
-                  value: props.csrf
-                }), React.createElement("input", {
-                  name: "clipID",
-                  type: "hidden",
-                  value: clip.id
-                }), React.createElement("button", {
-                  type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                }), React.createElement("form", {
                   id: "delForm" + numClips,
                   onSubmit: makePost,
                   name: "delForm",
@@ -1535,6 +1580,25 @@ var ClipList = function ClipList(props) {
                   title: "Delete Clip"
                 }, React.createElement("i", {
                   className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "playAddForm" + numClips,
+                  onSubmit: showAddPlaylist,
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
                 }))), React.createElement("form", {
                   id: "remForm" + numClips,
                   onSubmit: makePost,
@@ -1581,22 +1645,7 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
-                  id: "playAddForm" + numClips,
-                  onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
-                  type: "hidden",
-                  name: "_csrf",
-                  value: props.csrf
-                }), React.createElement("input", {
-                  name: "clipID",
-                  type: "hidden",
-                  value: clip.id
-                }), React.createElement("button", {
-                  type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                }), React.createElement("form", {
                   id: "delForm" + numClips,
                   onSubmit: makePost,
                   name: "delForm",
@@ -1617,6 +1666,25 @@ var ClipList = function ClipList(props) {
                   title: "Delete Clip"
                 }, React.createElement("i", {
                   className: "fas fa-trash trash"
+                }))), React.createElement("form", {
+                  id: "playAddForm" + numClips,
+                  onSubmit: showAddPlaylist,
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
                 }))), React.createElement("form", {
                   id: "favForm" + numClips,
                   onSubmit: makePost,
@@ -1666,22 +1734,7 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
-                id: "playAddForm" + numClips,
-                onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
-                type: "hidden",
-                name: "_csrf",
-                value: props.csrf
-              }), React.createElement("input", {
-                name: "clipID",
-                type: "hidden",
-                value: clip.id
-              }), React.createElement("button", {
-                type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+              }), React.createElement("form", {
                 id: "delForm" + numClips,
                 onSubmit: makePost,
                 name: "delForm",
@@ -1702,6 +1755,25 @@ var ClipList = function ClipList(props) {
                 title: "Delete Clip"
               }, React.createElement("i", {
                 className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "playAddForm" + numClips,
+                onSubmit: showAddPlaylist,
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
               }))), React.createElement("form", {
                 id: "remForm" + numClips,
                 onSubmit: makePost,
@@ -1748,22 +1820,7 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
-                id: "playAddForm" + numClips,
-                onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
-                type: "hidden",
-                name: "_csrf",
-                value: props.csrf
-              }), React.createElement("input", {
-                name: "clipID",
-                type: "hidden",
-                value: clip.id
-              }), React.createElement("button", {
-                type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+              }), React.createElement("form", {
                 id: "delForm" + numClips,
                 onSubmit: makePost,
                 name: "delForm",
@@ -1784,6 +1841,25 @@ var ClipList = function ClipList(props) {
                 title: "Delete Clip"
               }, React.createElement("i", {
                 className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "playAddForm" + numClips,
+                onSubmit: showAddPlaylist,
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
               }))), React.createElement("form", {
                 id: "favForm" + numClips,
                 onSubmit: makePost,
@@ -1830,22 +1906,7 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
-                id: "playAddForm" + numClips,
-                onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
-                type: "hidden",
-                name: "_csrf",
-                value: props.csrf
-              }), React.createElement("input", {
-                name: "clipID",
-                type: "hidden",
-                value: clip.id
-              }), React.createElement("button", {
-                type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+              }), React.createElement("form", {
                 id: "delForm" + numClips,
                 onSubmit: makePost,
                 name: "delForm",
@@ -1866,6 +1927,25 @@ var ClipList = function ClipList(props) {
                 title: "Delete Clip"
               }, React.createElement("i", {
                 className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "playAddForm" + numClips,
+                onSubmit: showAddPlaylist,
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
               }))), React.createElement("form", {
                 id: "remForm" + numClips,
                 onSubmit: makePost,
@@ -1910,22 +1990,7 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
-                id: "playAddForm" + numClips,
-                onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
-                type: "hidden",
-                name: "_csrf",
-                value: props.csrf
-              }), React.createElement("input", {
-                name: "clipID",
-                type: "hidden",
-                value: clip.id
-              }), React.createElement("button", {
-                type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+              }), React.createElement("form", {
                 id: "delForm" + numClips,
                 onSubmit: makePost,
                 name: "delForm",
@@ -1946,6 +2011,25 @@ var ClipList = function ClipList(props) {
                 title: "Delete Clip"
               }, React.createElement("i", {
                 className: "fas fa-trash trash"
+              }))), React.createElement("form", {
+                id: "playAddForm" + numClips,
+                onSubmit: showAddPlaylist,
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
+                type: "hidden",
+                name: "_csrf",
+                value: props.csrf
+              }), React.createElement("input", {
+                name: "clipID",
+                type: "hidden",
+                value: clip.id
+              }), React.createElement("button", {
+                className: "fa-button",
+                type: "submit",
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
               }))), React.createElement("form", {
                 id: "favForm" + numClips,
                 onSubmit: makePost,
@@ -1999,11 +2083,12 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
+                }), React.createElement("form", {
                   id: "playAddForm" + numClips,
                   onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
                   type: "hidden",
                   name: "_csrf",
                   value: props.csrf
@@ -2012,9 +2097,12 @@ var ClipList = function ClipList(props) {
                   type: "hidden",
                   value: clip.id
                 }), React.createElement("button", {
+                  className: "fa-button",
                   type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
+                }))), React.createElement("form", {
                   id: "remForm" + numClips,
                   onSubmit: makePost,
                   name: "remForm",
@@ -2060,11 +2148,12 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
+                }), React.createElement("form", {
                   id: "playAddForm" + numClips,
                   onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
                   type: "hidden",
                   name: "_csrf",
                   value: props.csrf
@@ -2073,9 +2162,12 @@ var ClipList = function ClipList(props) {
                   type: "hidden",
                   value: clip.id
                 }), React.createElement("button", {
+                  className: "fa-button",
                   type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
+                }))), React.createElement("form", {
                   id: "favForm" + numClips,
                   onSubmit: makePost,
                   name: "favForm",
@@ -2121,11 +2213,12 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
+                }), React.createElement("form", {
                   id: "playAddForm" + numClips,
                   onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
                   type: "hidden",
                   name: "_csrf",
                   value: props.csrf
@@ -2134,9 +2227,12 @@ var ClipList = function ClipList(props) {
                   type: "hidden",
                   value: clip.id
                 }), React.createElement("button", {
+                  className: "fa-button",
                   type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
+                }))), React.createElement("form", {
                   id: "remForm" + numClips,
                   onSubmit: makePost,
                   name: "remForm",
@@ -2180,11 +2276,12 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
+                }), React.createElement("form", {
                   id: "playAddForm" + numClips,
                   onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
                   type: "hidden",
                   name: "_csrf",
                   value: props.csrf
@@ -2193,9 +2290,12 @@ var ClipList = function ClipList(props) {
                   type: "hidden",
                   value: clip.id
                 }), React.createElement("button", {
+                  className: "fa-button",
                   type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
+                }))), React.createElement("form", {
                   id: "favForm" + numClips,
                   onSubmit: makePost,
                   name: "favForm",
@@ -2242,11 +2342,12 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
+              }), React.createElement("form", {
                 id: "playAddForm" + numClips,
                 onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
                 type: "hidden",
                 name: "_csrf",
                 value: props.csrf
@@ -2255,9 +2356,12 @@ var ClipList = function ClipList(props) {
                 type: "hidden",
                 value: clip.id
               }), React.createElement("button", {
+                className: "fa-button",
                 type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
+              }))), React.createElement("form", {
                 id: "remForm" + numClips,
                 onSubmit: makePost,
                 name: "remForm",
@@ -2301,11 +2405,12 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
+              }), React.createElement("form", {
                 id: "playAddForm" + numClips,
                 onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
                 type: "hidden",
                 name: "_csrf",
                 value: props.csrf
@@ -2314,9 +2419,12 @@ var ClipList = function ClipList(props) {
                 type: "hidden",
                 value: clip.id
               }), React.createElement("button", {
+                className: "fa-button",
                 type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
+              }))), React.createElement("form", {
                 id: "favForm" + numClips,
                 onSubmit: makePost,
                 name: "favForm",
@@ -2360,11 +2468,12 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
+              }), React.createElement("form", {
                 id: "playAddForm" + numClips,
                 onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
                 type: "hidden",
                 name: "_csrf",
                 value: props.csrf
@@ -2373,9 +2482,12 @@ var ClipList = function ClipList(props) {
                 type: "hidden",
                 value: clip.id
               }), React.createElement("button", {
+                className: "fa-button",
                 type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
+              }))), React.createElement("form", {
                 id: "remForm" + numClips,
                 onSubmit: makePost,
                 name: "remForm",
@@ -2417,11 +2529,12 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
+              }), React.createElement("form", {
                 id: "playAddForm" + numClips,
                 onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
                 type: "hidden",
                 name: "_csrf",
                 value: props.csrf
@@ -2430,9 +2543,12 @@ var ClipList = function ClipList(props) {
                 type: "hidden",
                 value: clip.id
               }), React.createElement("button", {
+                className: "fa-button",
                 type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
+              }))), React.createElement("form", {
                 id: "favForm" + numClips,
                 onSubmit: makePost,
                 name: "favForm",
@@ -2485,11 +2601,12 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
+                }), React.createElement("form", {
                   id: "playAddForm" + numClips,
                   onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
                   type: "hidden",
                   name: "_csrf",
                   value: props.csrf
@@ -2498,9 +2615,12 @@ var ClipList = function ClipList(props) {
                   type: "hidden",
                   value: clip.id
                 }), React.createElement("button", {
+                  className: "fa-button",
                   type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
+                }))), React.createElement("form", {
                   id: "remForm" + numClips,
                   onSubmit: makePost,
                   name: "remForm",
@@ -2548,11 +2668,12 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
+                }), React.createElement("form", {
                   id: "playAddForm" + numClips,
                   onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
                   type: "hidden",
                   name: "_csrf",
                   value: props.csrf
@@ -2561,9 +2682,12 @@ var ClipList = function ClipList(props) {
                   type: "hidden",
                   value: clip.id
                 }), React.createElement("button", {
+                  className: "fa-button",
                   type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
+                }))), React.createElement("form", {
                   id: "favForm" + numClips,
                   onSubmit: makePost,
                   name: "favForm",
@@ -2611,11 +2735,12 @@ var ClipList = function ClipList(props) {
                   frameBorder: "0",
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
-                }), React.createElement("form", _defineProperty({
+                }), React.createElement("form", {
                   id: "playAddForm" + numClips,
                   onSubmit: showAddPlaylist,
-                  name: "playAddForm"
-                }, "name", "clipForm"), React.createElement("input", {
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
                   type: "hidden",
                   name: "_csrf",
                   value: props.csrf
@@ -2624,9 +2749,12 @@ var ClipList = function ClipList(props) {
                   type: "hidden",
                   value: clip.id
                 }), React.createElement("button", {
+                  className: "fa-button",
                   type: "submit",
-                  title: "Add to Playlist"
-                }, "Add to Playlist")), React.createElement("form", {
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
+                }))), React.createElement("form", {
                   id: "remForm" + numClips,
                   onSubmit: makePost,
                   name: "remForm",
@@ -2673,6 +2801,25 @@ var ClipList = function ClipList(props) {
                   allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                   allowFullScreen: true
                 }), React.createElement("form", {
+                  id: "playAddForm" + numClips,
+                  onSubmit: showAddPlaylist,
+                  name: "playAddForm",
+                  className: "clipForm"
+                }, React.createElement("input", {
+                  type: "hidden",
+                  name: "_csrf",
+                  value: props.csrf
+                }), React.createElement("input", {
+                  name: "clipID",
+                  type: "hidden",
+                  value: clip.id
+                }), React.createElement("button", {
+                  className: "fa-button",
+                  type: "submit",
+                  title: "Add to/Remove from Playlist"
+                }, React.createElement("i", {
+                  className: "fas fa-list-ul playlist-icon"
+                }))), React.createElement("form", {
                   id: "favForm" + numClips,
                   onSubmit: makePost,
                   name: "favForm",
@@ -2721,11 +2868,12 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
+              }), React.createElement("form", {
                 id: "playAddForm" + numClips,
                 onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
                 type: "hidden",
                 name: "_csrf",
                 value: props.csrf
@@ -2734,9 +2882,12 @@ var ClipList = function ClipList(props) {
                 type: "hidden",
                 value: clip.id
               }), React.createElement("button", {
+                className: "fa-button",
                 type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
+              }))), React.createElement("form", {
                 id: "remForm" + numClips,
                 onSubmit: makePost,
                 name: "remForm",
@@ -2782,11 +2933,12 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
+              }), React.createElement("form", {
                 id: "playAddForm" + numClips,
                 onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
                 type: "hidden",
                 name: "_csrf",
                 value: props.csrf
@@ -2795,9 +2947,12 @@ var ClipList = function ClipList(props) {
                 type: "hidden",
                 value: clip.id
               }), React.createElement("button", {
+                className: "fa-button",
                 type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
+              }))), React.createElement("form", {
                 id: "favForm" + numClips,
                 onSubmit: makePost,
                 name: "favForm",
@@ -2843,11 +2998,12 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
+              }), React.createElement("form", {
                 id: "playAddForm" + numClips,
                 onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
                 type: "hidden",
                 name: "_csrf",
                 value: props.csrf
@@ -2856,9 +3012,12 @@ var ClipList = function ClipList(props) {
                 type: "hidden",
                 value: clip.id
               }), React.createElement("button", {
+                className: "fa-button",
                 type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
+              }))), React.createElement("form", {
                 id: "remForm" + numClips,
                 onSubmit: makePost,
                 name: "remForm",
@@ -2902,11 +3061,12 @@ var ClipList = function ClipList(props) {
                 frameBorder: "0",
                 allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
                 allowFullScreen: true
-              }), React.createElement("form", _defineProperty({
+              }), React.createElement("form", {
                 id: "playAddForm" + numClips,
                 onSubmit: showAddPlaylist,
-                name: "playAddForm"
-              }, "name", "clipForm"), React.createElement("input", {
+                name: "playAddForm",
+                className: "clipForm"
+              }, React.createElement("input", {
                 type: "hidden",
                 name: "_csrf",
                 value: props.csrf
@@ -2915,9 +3075,12 @@ var ClipList = function ClipList(props) {
                 type: "hidden",
                 value: clip.id
               }), React.createElement("button", {
+                className: "fa-button",
                 type: "submit",
-                title: "Add to Playlist"
-              }, "Add to Playlist")), React.createElement("form", {
+                title: "Add to/Remove from Playlist"
+              }, React.createElement("i", {
+                className: "fas fa-list-ul playlist-icon"
+              }))), React.createElement("form", {
                 id: "favForm" + numClips,
                 onSubmit: makePost,
                 name: "favForm",

@@ -162,7 +162,7 @@ const removeFromPlaylist = (req, res) => {
       if (err2) return res.status(400).json({ error: err2 });
       // If the clip is found, update its array
       if (doc2) {
-        const tempClip = doc;
+        const tempClip = doc2;
         const index2 = tempClip.inPlaylists.indexOf(foundList.id);
         if (index2 !== -1) { // if the playlist is in the array
           tempClip.inPlaylists.splice(index, 1); // cut playlist out of array

@@ -114,7 +114,8 @@ const displayPlaylist = (e) =>{
 //Displaying the area which allows the user to add or remove a clip from a playlist
 const showAddPlaylist = (e) =>{
     e.preventDefault();
-
+    console.log(e.target._csrf);
+    
     //Temporary variables to be used later
     let csrf = e.target._csrf.value;
     let id = e.target.clipID.value;
@@ -246,11 +247,17 @@ const removeFromPlaylist = (e) =>{
 // Form for creating a new playlist
 const PlaylistForm = function(props)
 {
+    console.log(props.csrf);
     if(!props.clipID)
     {
         return(
-            <div classname="playlistList">
-                <button className="back pointer" onClick={showPlaylists}>Go back</button>
+            <div className="content-box">
+            <div className="playlistList">
+                <form id="backForm" onSubmit={showPlaylists} name="backForm">
+                    <input type="hidden" name="_csrf" value={props.csrf}/>
+                    <input className="back pointer" type="submit" value="Go back"/>
+                </form>
+                
                 <form id="createForm" onSubmit={createPlaylist} name="createForm" action="/createPlaylist" method="POST" classname="createForm">
                     <h3 id="requiredHeader">Name your new playlist: </h3>
                     
@@ -263,12 +270,14 @@ const PlaylistForm = function(props)
                     <input className="formSubmit" type="submit" value="Submit Clip"/>
                 </form>
             </div>
+            </div>
         );
     }
     else
     {
         return(
-            <div classname="playlistList">
+            <div className="content-box">
+            <div className="playlistList">
                 <button className="back pointer" onClick={showAddPlaylist}>Go back</button>
                 <form id="createForm" onSubmit={createPlaylist} name="createForm" action="/createPlaylist" method="POST" classname="createForm">
                     <h3 id="requiredHeader">Name your new playlist: </h3>
@@ -282,6 +291,7 @@ const PlaylistForm = function(props)
                     <input type="hidden" name="_csrf" value={props.csrf}/>
                     <input className="formSubmit" type="submit" value="Submit Clip"/>
                 </form>
+            </div>
             </div>
         );
     }
@@ -380,35 +390,41 @@ const PlaylistAddDisplay = function(props)
 
 
     let playlistAddDrop = 
-    <div className="input-item">
-        <select id="playlistDropList">
-            <option value="newList">Create new Playlist</option>
-            {listAddNodes}
-        </select>
-        <label className="input-label" htmlFor="playlistDropList">Select Playlist to Add to: </label>
-        <form id="submitAddPlaylist" onSubmit={addToPlaylist} name="playAddForm" name="clipForm">
+    <div className="content-box">
+        <div className="input-item">
+            <select id="playlistDropList">
+                <option value="newList">Create new Playlist</option>
+                {listAddNodes}
+            </select>
+            <label className="input-label" htmlFor="playlistDropList">Select Playlist to Add to: </label>
+        </div>        
+        
+        <form id="submitAddPlaylist" onSubmit={addToPlaylist} name="playAddForm">
             <input type="hidden" name="_csrf" value={props.csrf}/>
             <input name="clipID" type="hidden" value={props.clipID}/>
             <input name="title" type="hidden" value=""/>
             <input name="playlistID" type="hidden" value=""/>
-            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
+            <input className="formSubmit" type="submit" value="Add to Playlist" />
         </form>
     </div>;
     let playlistRemDrop = "";
     if(listRemNodes != "")
     {
         playlistRemDrop =
-        <div className="input-item">
-            <select id="playlistDropList">
-                {listRemNodes}
-            </select>
-            <label className="input-label" htmlFor="playlistDropList">Select Playlist to Remove from: </label>
-            <form id="submitRemPlaylist" onSubmit={removeFromPlaylist} name="playRemForm" name="clipForm">
+        <div className="content-box">
+            <div className="input-item">
+                <select id="playlistDropList">
+                    {listRemNodes}
+                </select>
+                <label className="input-label" htmlFor="playlistDropList">Select Playlist to Remove from: </label>
+            </div>
+        
+            <form id="submitRemPlaylist" onSubmit={removeFromPlaylist} name="playRemForm">
                 <input type="hidden" name="_csrf" value={props.csrf}/>
                 <input name="clipID" type="hidden" value={props.clipID}/>
                 <input name="title" type="hidden" value=""/>
                 <input name="playlistID" type="hidden" value=""/>
-                <button  type="submit" title="Add to Playlist">Remove From Playlist</button>
+                <input className="formSubmit" type="submit" value="Remove from Playlist" />
             </form>
         </div>;
     }
@@ -636,21 +652,19 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
                                         </form>
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
+                                        </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-
                                             <button className="fa-button" type="submit" title="Remove Favorite"><i className="fas fa-heart-broken un-fave"></i></button>
                                         </form>
                                     </div>
@@ -675,16 +689,15 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -714,16 +727,15 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -751,16 +763,15 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -791,16 +802,15 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                     </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -828,16 +838,15 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                     </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -866,16 +875,15 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="id" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                     </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -902,16 +910,15 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="id" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                     </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -948,16 +955,15 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -987,16 +993,15 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1027,16 +1032,15 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1065,16 +1069,15 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                         <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
                                             <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                        </form>
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1106,16 +1109,15 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                     </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1144,16 +1146,15 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                     </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1183,16 +1184,15 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                     </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1220,16 +1220,15 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
                                     <form id={"delForm" + numClips} onSubmit={makePost} name="delForm" action="/deleteClips" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
                                         <button className="fa-button" type="submit" title="Delete Clip"><i className="fas fa-trash trash"></i></button>
+                                    </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                     </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1266,11 +1265,10 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1299,11 +1297,10 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1333,11 +1330,10 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1365,11 +1361,10 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1400,12 +1395,11 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
+                                    </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
@@ -1432,12 +1426,11 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
+                                    </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
@@ -1465,12 +1458,11 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
+                                    </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
@@ -1496,12 +1488,11 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
+                                    </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
@@ -1537,11 +1528,10 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1571,11 +1561,10 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1606,11 +1595,10 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
-                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
                                         </form>
                                         <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
@@ -1639,6 +1627,11 @@ const ClipList = function(props)
                                             allowFullScreen
                                             >
                                         </iframe>
+                                        <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                            <input type="hidden" name="_csrf" value={props.csrf}/>
+                                            <input name="clipID" type="hidden" value={clip.id}/>
+                                            <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
+                                        </form>
                                         <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                             <input type="hidden" name="_csrf" value={props.csrf}/>
                                             <input name="clipID" type="hidden" value={clip.id}/>
@@ -1669,12 +1662,11 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
+                                    </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
@@ -1702,12 +1694,11 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
+                                    </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
@@ -1736,12 +1727,11 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
+                                    </form>
                                     <form id={"remForm" + numClips} onSubmit={makePost} name="remForm" action="/remFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
@@ -1768,12 +1758,11 @@ const ClipList = function(props)
                                         allowFullScreen
                                         >
                                     </iframe>
-                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" name="clipForm">
-                                            <input type="hidden" name="_csrf" value={props.csrf}/>
-                                            <input name="clipID" type="hidden" value={clip.id}/>
-                                             
-                                            <button  type="submit" title="Add to Playlist">Add to Playlist</button>
-                                        </form>
+                                    <form id={"playAddForm" + numClips} onSubmit={showAddPlaylist} name="playAddForm" className="clipForm">
+                                        <input type="hidden" name="_csrf" value={props.csrf}/>
+                                        <input name="clipID" type="hidden" value={clip.id}/>
+                                        <button className="fa-button" type="submit" title="Add to/Remove from Playlist"><i className="fas fa-list-ul playlist-icon"></i></button>
+                                    </form>
                                     <form id={"favForm" + numClips} onSubmit={makePost} name="favForm" action="/addFavorite" method="POST" className="clipForm">
                                         <input type="hidden" name="_csrf" value={props.csrf}/>
                                         <input name="clipID" type="hidden" value={clip.id}/>
