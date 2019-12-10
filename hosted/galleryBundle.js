@@ -362,11 +362,7 @@ var PlaylistList = function PlaylistList(props) {
   if (props.listCount === 0) {
     return React.createElement("div", {
       className: "loader-container"
-    }, React.createElement("h3", null, "No playlists found!"), React.createElement("button", {
-      onClick: function onClick() {
-        return showCreatePlaylist(props.csrf);
-      }
-    }, "Make one now!"));
+    }, React.createElement("h3", null, "No playlists found!"));
   } //Variable to increment the number of playlists being shown
 
 
@@ -381,9 +377,9 @@ var PlaylistList = function PlaylistList(props) {
       playlistCount++;
       return React.createElement("div", {
         className: "playlist"
-      }, React.createElement("h4", {
+      }, React.createElement("h3", {
         className: "playlist-title"
-      }, React.createElement("u", null, list.title)), React.createElement("h3", {
+      }, React.createElement("u", null, list.title)), React.createElement("h5", {
         classname: "playlistClipCount"
       }, "Number of clips: ", list.numEntries), React.createElement("form", {
         id: "showList" + playlistCount,
