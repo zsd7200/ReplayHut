@@ -169,11 +169,13 @@ var createPlaylist = function createPlaylist(e) {
   if ($("#clipTitle").val() == '') {
     showMessage("Hey! Make sure you fill out all the fields!");
     return false;
-  } //Sending the request to add the playlist
+  }
 
+  var csrf = e.target._csrf.value; //Sending the request to add the playlist
 
   sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), function (result) {
     showMessage(result.message);
+    setup(csrf);
   }, function (xhr, status, error) {
     var messageObj = JSON.parse(xhr.responseText);
     showMessage(messageObj.error);

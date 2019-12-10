@@ -154,8 +154,11 @@ const createPlaylist = (e) =>{
         showMessage("Hey! Make sure you fill out all the fields!");
         return false;
     }
+    let csrf = e.target._csrf.value;
+
     //Sending the request to add the playlist
-    sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), (result)=>{showMessage(result.message);}, 
+    sendAjax('POST', $("#createForm").attr("action"), $("#createForm").serialize(), (result)=>{showMessage(result.message);
+        setup(csrf);}, 
     (xhr, status, error) =>{var messageObj = JSON.parse(xhr.responseText);
         showMessage(messageObj.error);});
 }
