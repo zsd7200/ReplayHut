@@ -207,7 +207,7 @@ var addToPlaylist = function addToPlaylist(e) {
         }
       }
 
-      console.log(document.querySelector("#submitAddPlaylist")); //Send the request
+      console.log($("#submitAddPlaylist").serialize()); //Send the request
 
       sendAjax('POST', '/addToPlaylist', $("#submitAddPlaylist").serialize(), function (result) {
         showMessage(result.message);
@@ -423,11 +423,12 @@ var PlaylistAddDisplay = function PlaylistAddDisplay(props) {
 
   var listAddNodes = props.playlists.map(function (list) {
     var showLists = true;
+    if (list.creatorUN !== props.user) showLists = false;
 
     if (thisClipPlaylists.length !== 0) {
       //Checking if the current clip is in the array of playlists the clip is in
       for (var _i = 0; _i < thisClipPlaylists.length; _i++) {
-        if (thisClipPlaylists[_i] === list.id) if (list.creatorUN === props.user) showLists = false;
+        if (thisClipPlaylists[_i] === list.id) showLists = false;
       }
     }
 

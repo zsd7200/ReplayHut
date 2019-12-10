@@ -190,12 +190,11 @@ const addToPlaylist = (e) =>{
                 {
                     console.log(accdata.account.savedPlaylists[i].title);
                     console.log(accdata.account.savedPlaylists[i].id);
-
                     playlistid.value = accdata.account.savedPlaylists[i].id; 
                     break;
                 }
             }
-            console.log(document.querySelector("#submitAddPlaylist"));
+            console.log($("#submitAddPlaylist").serialize());
             //Send the request
             sendAjax('POST', '/addToPlaylist', $("#submitAddPlaylist").serialize(), (result) => {
                 showMessage(result.message)
@@ -367,14 +366,15 @@ const PlaylistAddDisplay = function(props)
     const listAddNodes = props.playlists.map(function(list)
     {
         let showLists = true;
+        if(list.creatorUN !== props.user)
+            showLists = false;
         if(thisClipPlaylists.length !== 0)
         {
             //Checking if the current clip is in the array of playlists the clip is in
             for (let i = 0; i < thisClipPlaylists.length; i++) 
             {
                 if(thisClipPlaylists[i] === list.id)
-                    if(list.creatorUN === props.user)
-                        showLists = false;
+                    showLists = false;
             }
         }
        
