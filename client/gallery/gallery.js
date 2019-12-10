@@ -492,14 +492,14 @@ const ClipList = function(props)
         let searchParams = $("#sortList").val();
         if(searchParams == 'newest')
         {
-            //https://stackoverflow.com/questions/10123953/how-to-sort-an-array-by-a-date-property
+            // Code for sorting by date from: https://stackoverflow.com/questions/10123953/how-to-sort-an-array-by-a-date-property
             props.clips.sort(function(a,b){
                 return new Date(b.postDate) - new Date(a.postDate);
             })
         }
         else if(searchParams == 'alphabeticalDown')
         {
-            //https://stackoverflow.com/questions/6712034/sort-array-by-firstname-alphabetically-in-javascript
+            //Code for sorting alphabetically from: https://stackoverflow.com/questions/6712034/sort-array-by-firstname-alphabetically-in-javascript
             props.clips.sort(function(a,b){
                 if(a.title < b.title) { return -1; }
                 if(a.title > b.title) { return 1; }
@@ -508,7 +508,7 @@ const ClipList = function(props)
         }
         else if(searchParams == 'alphabeticalUp')
         {
-            //https://stackoverflow.com/questions/6712034/sort-array-by-firstname-alphabetically-in-javascript
+            //Code for sorting alphabetically from: https://stackoverflow.com/questions/6712034/sort-array-by-firstname-alphabetically-in-javascript
             props.clips.sort(function(a,b){
                 if(a.title < b.title) { return 1; }
                 if(a.title > b.title) { return -1; }
@@ -545,7 +545,7 @@ const ClipList = function(props)
             )
         }
     }
-    
+
     // set faveStatus of all the clips
     for(let i = 0; i < props.userfaves.length; i++) {
         for(let j = 0; j < props.clips.length; j++) {
