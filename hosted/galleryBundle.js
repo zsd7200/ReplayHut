@@ -251,8 +251,6 @@ var removeFromPlaylist = function removeFromPlaylist(e) {
 
 
 var PlaylistForm = function PlaylistForm(props) {
-  checkPremium();
-
   if (!props.clipID) {
     return React.createElement("div", {
       className: "content-box"
@@ -352,8 +350,7 @@ var PlaylistForm = function PlaylistForm(props) {
 
 
 var PlaylistList = function PlaylistList(props) {
-  checkPremium(); //If there are no playlists on the user's account, display that there are none
-
+  //If there are no playlists on the user's account, display that there are none
   if (props.listCount === 0) {
     return React.createElement("div", {
       className: "loader-container"
@@ -676,7 +673,207 @@ var ClipList = function ClipList(props) {
         numClips++;
       }
     } else {
-      if (playlistCheck) clipCheck = true;
+      if (playlistCheck) {
+        clipCheck = true;
+        numClips++;
+      }
+    } // if playlist check passes, don't add any of the bottom buttons
+
+
+    if (playlistCheck) {
+      if (clip.creatorPremStatus) {
+        if (clip.character1 !== '') {
+          if (clip.character2 !== '') {
+            return React.createElement("div", {
+              className: "clip"
+            }, React.createElement("h4", {
+              className: "clip-title"
+            }, React.createElement("u", null, clip.title), React.createElement("span", {
+              className: "creator"
+            }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "description"
+            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+              className: "char1"
+            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+              className: "char2"
+            }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+              className: "post-date"
+            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+              width: ytWidth,
+              height: ytHeight,
+              src: clip.youtube,
+              frameBorder: "0",
+              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+              allowFullScreen: true
+            }));
+          } else {
+            return React.createElement("div", {
+              className: "clip"
+            }, React.createElement("h4", {
+              className: "clip-title"
+            }, React.createElement("u", null, clip.title), React.createElement("span", {
+              className: "creator"
+            }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "description"
+            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+              className: "char1"
+            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+              className: "post-date"
+            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+              width: ytWidth,
+              height: ytHeight,
+              src: clip.youtube,
+              frameBorder: "0",
+              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+              allowFullScreen: true
+            }));
+          }
+        } else if (clip.character2 !== '') {
+          return React.createElement("div", {
+            className: "clip"
+          }, React.createElement("h4", {
+            className: "clip-title"
+          }, React.createElement("u", null, clip.title), React.createElement("span", {
+            className: "creator"
+          }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "description"
+          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+            className: "char2"
+          }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+            className: "post-date"
+          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+            width: ytWidth,
+            height: ytHeight,
+            src: clip.youtube,
+            frameBorder: "0",
+            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+            allowFullScreen: true
+          }));
+        } else {
+          return React.createElement("div", {
+            className: "clip"
+          }, React.createElement("h4", {
+            className: "clip-title"
+          }, React.createElement("u", null, clip.title), React.createElement("span", {
+            className: "creator"
+          }, "Creator: ", clip.creatorUN, " \u2B50")), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "description"
+          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+            className: "post-date"
+          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+            width: ytWidth,
+            height: ytHeight,
+            src: clip.youtube,
+            frameBorder: "0",
+            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+            allowFullScreen: true
+          }));
+        }
+      } else {
+        if (clip.character1 !== '') {
+          if (clip.character2 !== '') {
+            return React.createElement("div", {
+              className: "clip"
+            }, React.createElement("h4", {
+              className: "clip-title"
+            }, React.createElement("u", null, clip.title), React.createElement("span", {
+              className: "creator"
+            }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "description"
+            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+              className: "char1"
+            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+              className: "char2"
+            }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+              className: "post-date"
+            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+              width: ytWidth,
+              height: ytHeight,
+              src: clip.youtube,
+              frameBorder: "0",
+              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+              allowFullScreen: true
+            }));
+          } else {
+            return React.createElement("div", {
+              className: "clip"
+            }, React.createElement("h4", {
+              className: "clip-title"
+            }, React.createElement("u", null, clip.title), React.createElement("span", {
+              className: "creator"
+            }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+              className: "game"
+            }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+              className: "description"
+            }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+              className: "char1"
+            }, React.createElement("b", null, "Character 1:"), " ", clip.character1), React.createElement("p", {
+              className: "post-date"
+            }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+              width: ytWidth,
+              height: ytHeight,
+              src: clip.youtube,
+              frameBorder: "0",
+              allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+              allowFullScreen: true
+            }));
+          }
+        } else if (clip.character2 !== '') {
+          return React.createElement("div", {
+            className: "clip"
+          }, React.createElement("h4", {
+            className: "clip-title"
+          }, React.createElement("u", null, clip.title), React.createElement("span", {
+            className: "creator"
+          }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "description"
+          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+            className: "char2"
+          }, React.createElement("b", null, "Character 2:"), " ", clip.character2), React.createElement("p", {
+            className: "post-date"
+          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+            width: ytWidth,
+            height: ytHeight,
+            src: clip.youtube,
+            frameBorder: "0",
+            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+            allowFullScreen: true
+          }));
+        } else {
+          return React.createElement("div", {
+            className: "clip"
+          }, React.createElement("h4", {
+            className: "clip-title"
+          }, React.createElement("u", null, clip.title), React.createElement("span", {
+            className: "creator"
+          }, "Creator: ", clip.creatorUN)), React.createElement("p", {
+            className: "game"
+          }, React.createElement("b", null, "Game:"), " ", clip.game), React.createElement("p", {
+            className: "description"
+          }, React.createElement("b", null, "Description:"), " ", clip.description), React.createElement("p", {
+            className: "post-date"
+          }, React.createElement("b", null, "Posted:"), " ", formatDate(clip.postDate)), React.createElement("iframe", {
+            width: ytWidth,
+            height: ytHeight,
+            src: clip.youtube,
+            frameBorder: "0",
+            allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+            allowFullScreen: true
+          }));
+        }
+      }
     } // If all the checks pass, display that clip
 
 
